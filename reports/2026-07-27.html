@@ -137,8 +137,78 @@
   }
   code{font-family:var(--mono); font-size:.86em; color:var(--ink)}
 
+  /* ---------- 详细内容 ---------- */
+  .detail-head{
+    margin:44px 0 0; padding-bottom:9px; border-bottom:1px solid var(--ink);
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+  }
+  details{border-bottom:1px solid var(--rule)}
+  details>summary{
+    display:flex; align-items:baseline; gap:12px; cursor:pointer;
+    padding:20px 0; list-style:none;
+  }
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::after{
+    content:"＋"; margin-left:auto; color:var(--ink-3); font-size:15px; line-height:1.6;
+  }
+  details[open]>summary::after{content:"−"}
+  details>summary:hover .st,details>summary:focus-visible .st{text-decoration:underline}
+  .sn{font-family:var(--serif); font-size:15px; font-weight:700; color:var(--ink-3); min-width:16px}
+  .st{font-family:var(--serif); font-size:21px; font-weight:700; letter-spacing:-.01em}
+  .dbody{padding:0 0 26px}
+  .dbody>p{margin:0 0 14px; color:var(--ink-2); font-size:15px}
+  h4{
+    font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+    margin:24px 0 12px; font-weight:700;
+  }
+  h4:first-child{margin-top:4px}
+
+  /* 条目 */
+  ul.facts{list-style:none; margin:0 0 4px; padding:0}
+  ul.facts>li{padding:13px 0; border-top:1px solid var(--rule-2); font-size:14.5px; line-height:1.85}
+  ul.facts>li>span.t{display:block; color:var(--ink-2)}
+  ul.facts>li>span.t strong{color:var(--ink)}
+  ol.watch{margin:0; padding-left:20px; color:var(--ink-2); font-size:14.5px}
+  ol.watch li{padding:6px 0}
+  ol.watch li::marker{color:var(--ink-3); font-family:var(--serif)}
+
+  /* 信源印记 */
+  .src{
+    display:inline-block; margin-top:6px; margin-right:8px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.01em; color:var(--ink-3);
+  }
+  .src .lv{font-weight:700; margin-right:4px}
+  .lv.t1{color:var(--open)}
+  .lv.t2{color:var(--dated)}
+  .lv.t3{color:var(--promised)}
+
+  /* 强调条 */
+  .note{
+    margin:14px 0; padding:12px 15px; font-size:14px; line-height:1.85;
+    background:var(--rule-2); border-left:2px solid var(--dated); color:var(--ink-2);
+  }
+  .note.gap{border-left-color:var(--promised)}
+  .note b{color:var(--ink)}
+
+  /* 表格 */
+  .tw{overflow-x:auto; margin:4px 0 8px}
+  table{border-collapse:collapse; width:100%; font-size:13px; min-width:480px}
+  caption{text-align:left; color:var(--ink-3); font-size:12px; padding:0 0 8px}
+  th,td{padding:8px 12px 8px 0; text-align:left; border-bottom:1px solid var(--rule-2); vertical-align:top}
+  thead th{
+    border-bottom:1px solid var(--ink); color:var(--ink-3);
+    font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap;
+  }
+  td.n{white-space:nowrap; color:var(--ink-2)}
+  td.u{font-family:var(--mono); font-size:11.5px; word-break:break-all}
+  tr.hl td{background:var(--dated-bg)}
+  .yes{color:var(--open); font-weight:700}
+  .no{color:#a33131; font-weight:700}
+  .sum{color:var(--ink-3); font-size:12.5px; margin:6px 0 0}
+
   @media (max-width:600px){
     .srcline .lbl{float:none; display:block; margin-bottom:4px; line-height:1.6}
+    .st{font-size:18px}
     .sheet{padding:36px 20px 48px}
     h1{font-size:29px}
     .lead h2{font-size:23px}
@@ -216,6 +286,198 @@
     </li>
 
   </ul>
+
+  <p class="detail-head">详细内容 / Detail</p>
+
+  <!-- ===== 2 Kimi ===== -->
+  <details open>
+    <summary><span class="sn">2</span><span class="st">Kimi（K3）</span><span class="pill dated">已定档</span></summary>
+    <div class="dbody">
+      <p>定在今天，权重尚未落地。简单说：模型今天已经能用了，但权重文件还在倒计时里，许可证一个字都没露。</p>
+
+      <h4>开源进度</h4>
+      <ul class="facts">
+        <li><span class="t">仓库还是“Upcoming release”占位页，Expected release 标 July 27, 2026，计划产物 1 个，页面明说权重就发在这一页。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face 官方发布页 · 页面日期 2026-07-27 · 渲染抓取</span></li>
+        <li><span class="t"><strong>落地时点只能推算，不能当官方数</strong>：倒计时读数为“00 DAYS 12 HOURS 52 MIN”，10:07 和 10:24 两次抓取读数完全相同，页面疑有缓存，因此只能给区间 —— 约今晚 23:00–23:15 CST。官方从头到尾只说 “by July 27, 2026”，没给钟点。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face 官方发布页 · 两次渲染抓取 10:07 与 10:24</span></li>
+        <li><span class="t">订阅发布通知的人数 822。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face 官方发布页 · 渲染抓取</span></li>
+        <li><span class="t">两个托管平台交叉核对一致：Hugging Face 与 ModelScope 的 moonshotai 组织页最新模型都是 Kimi-K2.7-Code（06-15），均无 K3 仓库。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face 与 ModelScope 组织页 · 渲染抓取</span></li>
+        <li><span class="t">官方文档顶部已挂“Kimi K3 has launched”横幅，但同页正文仍写权重将在 07-27 前发布，正与推理伙伴和开源维护者对齐细节。API 侧已可用 <code>kimi-k3</code> 调用。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 开发者文档 · 渲染抓取</span></li>
+      </ul>
+
+      <h4>技术要点</h4>
+      <p>官方技术博客今天已全文可读，这是昨天没有的。</p>
+      <ul class="facts">
+        <li><span class="t">2.8T 参数，官方称是首个 3T 量级的开源模型；原生视觉，1M token 上下文；思考模式常开。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客 · 渲染抓取</span></li>
+        <li><span class="t">MoE（混合专家，推理时只激活一部分参数）稀疏度：<strong>896 个专家里激活 16 个</strong>，配 Stable LatentMoE 框架。给了专家比例，但没给激活参数的绝对值。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客 · 渲染抓取</span></li>
+        <li><span class="t">两个架构件：KDA（Kimi Delta Attention，一种混合线性注意力）和 AttnRes（跨深度选择性取表征，而非逐层累加）。官方称整体扩展效率约为 K2 的 2.5 倍。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 开发者文档 · 渲染抓取</span></li>
+        <li><span class="t">训练侧：从 SFT 阶段起就做量化感知训练，权重 MXFP4、激活 MXFP8。部署建议 64 卡以上的超节点。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客 · 渲染抓取</span></li>
+        <li><span class="t">定价三档：缓存命中输入 $0.30 / 百万 token，未命中输入 $3.00，输出 $15.00。官方称编码场景缓存命中率超 90%。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客 · 渲染抓取</span></li>
+        <li><span class="t">官方自己承认整体性能仍落后 Claude Fable 5 和 GPT 5.6 Sol，并列了三条局限：思考历史必须完整回传否则输出不稳、任务中容易替用户做决定、用户体验与前两家有明显差距。厂商主动写局限，这段可信度相对高。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客 · 渲染抓取</span></li>
+        <li><span class="t">Attention Residuals 的论文已挂在 Hugging Face papers（编号 2603.15031），但 K3 本身的技术报告仍说“随权重发布”。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face moonshotai 组织页 · 渲染抓取</span></li>
+      </ul>
+
+      <h4>许可证</h4>
+      <p class="note gap"><b>状态 未验证。</b>今天读的三个官方页面（发布页、开发者文档、技术博客）全都没提许可证类型，也没有 LICENSE 文件。此前媒体传的 Modified MIT 仅一家来源、无官方佐证，按“传闻”处理。权重不落地这一条就定不了性。</p>
+
+      <h4>生态适配</h4>
+      <ul class="facts">
+        <li><span class="t">vLLM 的 K3 生产级支持预览停在 07-22，内容包括 KDA 感知的前缀缓存、融合算子、MXFP4 MoE 优化、多模态接入，以及 NVIDIA 和 AMD 两条初始路径。今天列表页最新一篇是 07-23 的 AFD 插件，与 K3 无关，<strong>说明 vLLM 侧 24 小时内没有新动作</strong>。</span>
+          <span class="src"><span class="lv t2">T2</span>vLLM 官方博客 · 发文 07-22 与 07-23 · 渲染抓取</span></li>
+        <li><span class="t">月之暗面称已把 KDA 的前缀缓存实现贡献回 vLLM 社区，将随模型一起发布。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客 · 渲染抓取</span></li>
+        <li><span class="t">SGLang、llama.cpp、transformers 今天没查，状态未知。</span></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- ===== 3 Qwen ===== -->
+  <details open>
+    <summary><span class="sn">3</span><span class="st">Qwen</span><span class="pill promised">已承诺</span></summary>
+    <div class="dbody">
+      <p>旗舰状态“已承诺”（无日期）。实际已开源的最新通用模型：<span class="k">Qwen3.6-35B-A3B</span>（04-24）。简单说：Qwen 的旗舰线已经连续两代闭源——3.7-Max 和 3.8-Max 都只给 API，权重一个都没放。3.8 官方只承诺“开放权重”且没给日期，官方自己的研究页连这个条目都没有。</p>
+
+      <h4>Qwen3.8-Max-Preview</h4>
+      <ul class="facts">
+        <li><span class="t">07-19 在上海世界人工智能大会预览，2.4T 参数，稀疏 MoE，多模态。无日期、无 model card、无完整跑分表、无第三方独立评测。</span>
+          <span class="src"><span class="lv t3">T3</span>felloai、explainx、yottalabs、eesel 等媒体 · 07-18 至 07-20 · 搜索命中</span></li>
+        <li><span class="t"><strong>“已承诺”的官方原文（已核）</strong>：承诺主体是 Qwen 官方 X 账号 @Alibaba_Qwen，07-19 发帖，原话 “Qwen3.8 is launching and going open-weight soon!”（Qwen3.8 即将发布，并将很快开放权重）。同帖还写了 2.4T 参数、“仅次于 Fable 5”、Qwen3.8-Max-Preview 已在 Alibaba Token Plan / Qoder / QoderWork 上线，并给了国际站与国内站两个 Token Plan 定价链接。<strong>全帖只有 “soon” 一个词，没有日期，没有许可证，没有仓库地址。</strong></span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方 X 原帖 · 2026-07-19 · 截图核对</span></li>
+        <li><span class="t"><strong>官方用的词是 <code>open-weight</code>（开放权重），不是 <code>open-source</code>（开源）</strong>。这两个词的差别是实质性的：开放权重只表示权重文件可下载，不含训练代码、数据配方和技术报告，也不代表许可证宽松。因此本篇对 Qwen3.8 的表述统一为“开放权重”，不写“开源”。真正的许可条款要等 model card 和 LICENSE 出来才能判。</span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方 X 原帖 · 截图核对</span></li>
+        <li><span class="t">官方原帖的表述与四家媒体的转述完全一致，媒体没有加工。</span>
+          <span class="src"><span class="lv t3">T3</span>dataconomy、aireiter、siliconangle、fonearena · 07-19 至 07-20 · 搜索命中</span></li>
+        <li><span class="t">“仅次于 Fable 5”是官方原帖里的自我表述（原文 “second only to Fable 5”），同帖未附任何 benchmark 数据，也无第三方独立评测可交叉验证。</span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方 X 原帖 · 截图核对</span>
+          <span class="src"><span class="lv t3">T3</span>siliconangle、digitalapplied · 搜索命中</span></li>
+        <li><span class="t"><strong>回一级信源核对的结果：Qwen 官方研究页里没有 Qwen3.8 任何条目</strong>，最新一条是 07-21 的 Qwen-Image-3.0（官方标签 <code>Release</code>）；Hugging Face 的 Qwen 组织页 458 个模型里也没有 Qwen3.8 仓库。官方 X 说了“即将开放权重”，但自有的研究页和模型仓库零落地痕迹。</span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方研究页 · 渲染抓取</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face Qwen 组织页 · 渲染抓取</span></li>
+        <li><span class="t"><strong>连续两代旗舰闭源，这是判断承诺可信度的关键背景</strong>：Qwen3.7-Max（2026-05 发布）和 Qwen3.8-Max（07-19 预览）至今都只有 API，Hugging Face 458 个仓库、ModelScope 460 个仓库里都找不到这两代的任何权重。Max 系列历来如此，所以 3.8 这次的“开放权重”属于路线转向而非延续惯例，可信度要打折。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face 与 ModelScope 的 Qwen 组织页 · 渲染抓取</span>
+          <span class="src"><span class="lv t3">T3</span>dataconomy · 07-20 · 搜索命中</span></li>
+      </ul>
+
+      <h4>实际已开源清单</h4>
+      <div class="tw">
+        <table>
+          <caption>近期新增与最新旗舰，取自 Hugging Face 完整模型列表 · T1 渲染抓取</caption>
+          <thead><tr><th scope="col">模型</th><th scope="col">规模</th><th scope="col">更新</th><th scope="col">下载 / 点赞</th></tr></thead>
+          <tbody>
+            <tr><td>Qwen3-ASR-0.6B-hf</td><td class="n">0.8B</td><td class="n">5 天前</td><td class="n">136k / 41</td></tr>
+            <tr><td>Qwen3-ASR-1.7B-hf</td><td class="n">2B</td><td class="n">5 天前</td><td class="n">72.4k / 40</td></tr>
+            <tr><td>Qwen3-ForcedAligner-0.6B-hf</td><td class="n">0.9B</td><td class="n">约 1 个月前</td><td class="n">21.9k / 15</td></tr>
+            <tr><td>Qwen-AgentWorld-35B-A3B</td><td class="n">35B</td><td class="n">06-25</td><td class="n">99k / 632</td></tr>
+            <tr class="hl"><td><strong>Qwen3.6-35B-A3B</strong></td><td class="n">36B</td><td class="n">04-24</td><td class="n">6.31M / 2.52k</td></tr>
+            <tr><td>Qwen3.5-397B-A17B</td><td class="n">403B</td><td class="n">04-24</td><td class="n">410k / 1.54k</td></tr>
+            <tr><td>Qwen3.5-122B-A10B</td><td class="n">125B</td><td class="n">04-24</td><td class="n">1.51M / 593</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>判读：Qwen3.6-35B-A3B 是当前最新的通用开源模型，也是全家族下载量最高的一个（631 万）。04-24 之后旗舰级通用模型没有新的，新增集中在垂类（语音识别、强制对齐、Agent、图像评测）和 SAE 可解释性权重。</p>
+
+      <p class="note"><b>ModelScope 上有一条 Hugging Face 没看到的。</b><code>Qwen3.5-9B / 4B / 2B / 0.8B</code> 四个小尺寸通用模型在 <b>07-18 更新</b>，其中 9B 下载 240 万。这是近 7 天内确有的通用模型动作，只是尺寸小、不是旗舰。Hugging Face 最近更新列表前 10 名里没有它们，两个平台的更新时间不同步。<span class="src"><span class="lv t1">T1</span>ModelScope 千问组织页 · 渲染抓取</span></p>
+
+      <p class="note"><b>订正昨日。</b>昨日写的“Qwen3.6-27B（04-22）”型号和日期都不对。T1 核对为 Qwen3.6-35B-A3B（36B，04-24）；名字带 27B 的是 Qwen3.5-27B（28B，04-24）。</p>
+
+      <h4>官方研究页动态</h4>
+      <ul class="facts">
+        <li><span class="t">Qwen 官方研究页的条目自带 <code>Release</code> / <code>Open-Source</code> 官方标签，近三条：Qwen-Image-3.0（<code>Release</code>，07-21）、Qwen-AgentWorld（<code>Open-Source</code>，06-23）、Qwen-Robot Suite（<code>Release</code>，06-16）。</span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方研究页 · 渲染抓取</span></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- ===== 5 明日盯点 ===== -->
+  <details>
+    <summary><span class="sn">5</span><span class="st">明日盯点</span></summary>
+    <div class="dbody">
+      <ol class="watch">
+        <li>Hugging Face 的 K3 发布页 —— 权重是否落地。落地后立刻核三样：LICENSE 原文全文、<code>config.json</code> 里的激活参数量、放出的产物数量（Base / Instruct / MXFP4）。</li>
+        <li>K3 技术报告是否随权重发布，KDA 与 Quantile Balancing 的细节。</li>
+        <li>若跳票，抄下官方给的新口径原话，不要转述。</li>
+        <li>vLLM 的 K3 支持是否从预览转正；月之暗面承诺贡献的 KDA 前缀缓存实现是否进 main。</li>
+        <li>补查 SGLang / llama.cpp / transformers 的 K3 PR。</li>
+        <li>Qwen 官方研究页与 Hugging Face、ModelScope 的 Qwen 组织页 —— Qwen3.8 条目或仓库是否出现。</li>
+        <li>Artificial Analysis —— K3 落地后的第一份第三方跑分，用来校验官方“落后 Fable 5 / GPT 5.6 Sol”的自评是否诚实。</li>
+        <li>Qwen 官方 X 是否给出比 “soon” 更具体的口径。<strong>注意：X 时间线需登录，工具直读不到</strong>，需靠人工截图或换路径（阿里云 Model Studio 更新日志、Qwen 官方微信 / 知乎、qwen.ai 站内公告）。</li>
+        <li>补齐今天没读的 3 个 Tier-1 页面（Kimi 官方 X、MoonshotAI 与 QwenLM 的 GitHub）。</li>
+      </ol>
+    </div>
+  </details>
+
+  <!-- ===== 6 取证清单 ===== -->
+  <details>
+    <summary><span class="sn">6</span><span class="st">取证清单</span></summary>
+    <div class="dbody">
+
+      <h4>6.1 一级信源直查</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源</th><th scope="col">层级</th><th scope="col">方式</th><th scope="col">结果</th><th scope="col">读到的关键信息</th></tr></thead>
+          <tbody>
+            <tr><td class="u">huggingface.co/moonshotai/Kimi-K3</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>占位页；倒计时 12h52m；822 订阅；计划产物 1 个</td></tr>
+            <tr><td class="u">huggingface.co/moonshotai</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新 Kimi-K2.7-Code（1.1T，06-15）；AttnRes 论文 2603.15031</td></tr>
+            <tr><td class="u">platform.kimi.ai/docs/guide/kimi-k3-quickstart</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>2.8T、KDA、1M；16/896 专家；权重 07-27 前发布；API 已可用</td></tr>
+            <tr><td class="u">kimi.com/blog/kimi-k3</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>完整架构、MXFP4/MXFP8 QAT、三档定价、局限、评测脚注</td></tr>
+            <tr><td class="u">huggingface.co/Qwen</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>458 个模型；无 Qwen3.8</td></tr>
+            <tr><td class="u">huggingface.co/Qwen/models</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>Qwen3.6-35B-A3B 为最新通用开源模型（04-24，631 万下载）</td></tr>
+            <tr><td class="u">qwen.ai/research</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新 Qwen-Image-3.0（Release，07-21）；无 Qwen3.8 条目</td></tr>
+            <tr><td class="u">huggingface.co/zai-org</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>GLM-5.2 753B，约 07-02，82.7 万下载 / 4.48k 赞（本篇未计入第三家）</td></tr>
+            <tr><td class="u">modelscope.cn/organization/moonshotai</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>18 个模型，最新 Kimi-K2.7-Code（06-15）；无 K3</td></tr>
+            <tr><td class="u">modelscope.cn/organization/qwen</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>460 个模型；Qwen3.5-9B/4B/2B/0.8B 于 07-18 更新；无 Qwen3.8</td></tr>
+            <tr><td class="u">twitter.com/alibaba_qwen（07-19 帖）</td><td><span class="lv t1">T1</span></td><td class="n">截图核对</td><td><span class="yes">成功</span></td><td>原话 “going open-weight soon”；无日期 / 无许可证 / 无仓库；2.4T、“second only to Fable 5”</td></tr>
+            <tr><td class="u">vllm.ai/blog/</td><td><span class="lv t2">T2</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>K3 预览停在 07-22；最新 07-23 与 K3 无关</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sum">计 12 条，其中 11 条渲染抓取成功、1 条经截图核对（X 时间线需登录，工具无法直读）。Tier-1 覆盖率 8/11。</p>
+
+      <h4>6.2 网络搜索补充</h4>
+      <div class="tw">
+        <table>
+          <caption>检索词：Qwen3.8-Max 开源 权重 发布 日期 2026年7月</caption>
+          <thead><tr><th scope="col">来源</th><th scope="col">发文日期</th><th scope="col">命中内容</th><th scope="col">已回一级信源交叉验证</th></tr></thead>
+          <tbody>
+            <tr><td class="u">felloai.com</td><td class="n">07-18 前后</td><td>2.4T、WAIC 预览、无 benchmark / model card / 独立评测</td><td><span class="yes">是</span> —— 与官方 X 原帖一致；研究页与 HF 均无条目</td></tr>
+            <tr><td class="u">explainx.ai</td><td class="n">07-18</td><td>07-19 发布，开放权重 “soon”</td><td><span class="yes">是</span> —— 与原帖 “going open-weight soon” 一致</td></tr>
+            <tr><td class="u">dataconomy、aireiter、siliconangle、fonearena</td><td class="n">07-19 至 07-20</td><td>Qwen 团队在官方 X 上说权重将 “soon” 开放</td><td><span class="yes">是</span> —— 原帖已核对，四家转述均无加工</td></tr>
+            <tr><td class="u">yottalabs.ai</td><td class="n">07-18</td><td>2.4T、称仅次于 Fable 5</td><td><span class="yes">是</span> —— 原帖原文即 “second only to Fable 5”</td></tr>
+            <tr><td class="u">eesel.ai</td><td class="n">07-17</td><td>稀疏 MoE、首个超 1T 的多模态模型</td><td><span class="no">否</span> —— 这两点官方帖未提</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sum">计 5 条采用，4 条已回一级信源交叉验证。</p>
+
+      <h4>6.3 该查未查 / 抓取失败</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源 / 对象</th><th scope="col">层级</th><th scope="col">结果或原因</th></tr></thead>
+          <tbody>
+            <tr><td class="u">qwen.ai/robots.txt</td><td class="n">—</td><td><span class="no">抓取失败</span>，取不到内容，站点爬取声明仍未验证</td></tr>
+            <tr><td class="u">twitter.com/Kimi_Moonshot</td><td><span class="lv t1">T1</span></td><td>未查，时间不够</td></tr>
+            <tr><td class="u">github.com/MoonshotAI</td><td><span class="lv t1">T1</span></td><td>未查，时间不够</td></tr>
+            <tr><td class="u">github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td>未查，时间不够</td></tr>
+            <tr><td class="u">SGLang / llama.cpp / transformers 的 PR 列表</td><td><span class="lv t2">T2</span></td><td>未查，仅覆盖 vLLM</td></tr>
+            <tr><td class="u">artificialanalysis.ai</td><td><span class="lv t3">T3</span></td><td>未查。校验厂商自评的关键，明日必补</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="sum">层级说明：T1 厂商官方页面与模型仓库（判定“是否已开源”只认这一层）· T2 推理框架等生态适配信号 · T3 媒体与社区（只作线索）。</p>
+    </div>
+  </details>
 
 </div>
 </body>
