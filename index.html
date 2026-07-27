@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qwen / Kimi 开源动态日报</title>
+<style>
+  :root{
+    --paper:#fbfaf8; --ink:#15181d; --ink-2:#3f464f; --ink-3:#8a929c;
+    --rule:#e2ded7; --rule-2:#efece7;
+    --dated:#1b4d8f;    --dated-bg:#e8eef8;
+    --promised:#8a5300; --promised-bg:#fbf0dc;
+    --serif:"Songti SC","Source Han Serif SC","Noto Serif CJK SC",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#15171a; --ink:#eceef1; --ink-2:#b3bac2; --ink-3:#7d858f;
+      --rule:#2d3339; --rule-2:#232830;
+      --dated:#8ab4f8; --dated-bg:#1a2740;
+      --promised:#e2b563; --promised-bg:#33280f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.85;
+    font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:760px; margin:0 auto; padding:56px 28px 64px}
+  .kicker{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink-3); padding-bottom:10px; border-bottom:1px solid var(--ink);
+  }
+  h1{font-family:var(--serif); font-weight:700; font-size:38px; line-height:1.3;
+     letter-spacing:-.015em; margin:22px 0 10px}
+  .intro{color:var(--ink-3); font-size:13px; margin:0 0 30px}
+  ul.list{list-style:none; margin:0; padding:0}
+  ul.list>li{border-bottom:1px solid var(--rule-2)}
+  ul.list a{
+    display:grid; grid-template-columns:96px 1fr auto; gap:0 18px; align-items:baseline;
+    padding:20px 0; text-decoration:none; color:inherit;
+  }
+  ul.list a:hover .t,ul.list a:focus .t{text-decoration:underline}
+  .d{font-family:var(--serif); font-size:17px; font-weight:700; color:var(--ink-3)}
+  .t{font-size:16px; line-height:1.7}
+  .tags{display:flex; gap:6px; white-space:nowrap}
+  .pill{font-size:11px; font-weight:700; letter-spacing:.04em; padding:2px 8px; border-radius:2px}
+  .pill.dated{color:var(--dated); background:var(--dated-bg)}
+  .pill.promised{color:var(--promised); background:var(--promised-bg)}
+  footer{margin-top:34px; padding-top:18px; border-top:1px solid var(--ink);
+         color:var(--ink-3); font-size:12.5px}
+  @media (max-width:600px){
+    .sheet{padding:36px 20px 48px}
+    h1{font-size:29px}
+    ul.list a{grid-template-columns:1fr; gap:6px; padding:18px 0}
+    .tags{margin-top:2px}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="kicker">
+    <span>每日追踪 / Daily Brief</span>
+    <span>Qwen · Kimi · 开源动态</span>
+  </div>
+
+  <h1>Qwen / Kimi 开源动态日报</h1>
+  <p class="intro">每天早上盘点 Qwen 与 Kimi 的开源计划与信息。判定"是否已开源"只认厂商官方页面与模型仓库，媒体报道只作线索。</p>
+
+  <ul class="list">
+    <li>
+      <a href="reports/2026-07-27.html">
+        <span class="d">07-27</span>
+        <span class="t">Kimi K3 权重今晚 12 点前后开源；Qwen 旗舰连续两代闭源</span>
+        <span class="tags">
+          <span class="pill dated">K3 已定档</span>
+          <span class="pill promised">Qwen 已承诺</span>
+        </span>
+      </a>
+    </li>
+  </ul>
+
+  <footer>状态标签：已开源 / 已定档 / 已承诺 / 传闻 / 未验证。每篇日报附完整取证清单，含抓取失败与该查未查项。</footer>
+
+</div>
+</body>
+</html>

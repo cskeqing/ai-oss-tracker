@@ -1,0 +1,15 @@
+# 这个仓库只对外发布页面：index.html + reports/*.html
+# 以下内容属于内部工作流，不进公开仓库
+
+logs/
+prompts/
+scripts/
+sources.md
+README.md
+reports/*.md
+
+# Windows / 编辑器杂项
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/

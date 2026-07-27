@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qwen / Kimi 开源动态日报 · 2026-07-27</title>
+<style>
+  :root{
+    --paper:#fbfaf8;
+    --ink:#15181d;
+    --ink-2:#3f464f;
+    --ink-3:#8a929c;
+    --rule:#e2ded7;
+    --rule-2:#efece7;
+    --accent:#1b4d8f;
+    --dated:#1b4d8f;      --dated-bg:#e8eef8;
+    --promised:#8a5300;   --promised-bg:#fbf0dc;
+    --open:#146b3c;       --open-bg:#e6f3ea;
+    --none:#6b7280;       --none-bg:#eeeff1;
+    --serif:"Songti SC","Source Han Serif SC","Noto Serif CJK SC",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#15171a; --ink:#eceef1; --ink-2:#b3bac2; --ink-3:#7d858f;
+      --rule:#2d3339; --rule-2:#232830; --accent:#8ab4f8;
+      --dated:#8ab4f8;   --dated-bg:#1a2740;
+      --promised:#e2b563; --promised-bg:#33280f;
+      --open:#66cf94;    --open-bg:#14301f;
+      --none:#9aa1ab;    --none-bg:#252a31;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.85;
+    font-variant-numeric:tabular-nums;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:760px; margin:0 auto; padding:56px 28px 64px}
+
+  /* ---------- 报头 ---------- */
+  .kicker{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink-3); padding-bottom:10px; border-bottom:1px solid var(--ink);
+  }
+  .kicker .r{letter-spacing:.06em}
+  h1{
+    font-family:var(--serif); font-weight:700;
+    font-size:38px; line-height:1.3; letter-spacing:-.015em;
+    margin:22px 0 0;
+  }
+  .dateline{
+    margin-top:10px; margin-bottom:18px;
+    color:var(--ink-3); font-size:13px; letter-spacing:.02em;
+  }
+  .dateline span+span::before{content:"·"; margin:0 10px; color:var(--rule)}
+
+  /* ---------- 信息来源（紧随报头） ---------- */
+  .srcline{
+    padding:14px 0 16px;
+    border-top:1px solid var(--rule-2);
+    border-bottom:1px solid var(--rule);
+  }
+  .srcline .lbl{
+    float:left; margin-right:12px;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink-3); line-height:2.2;
+  }
+  .srcline p{
+    margin:0; overflow:hidden;
+    color:var(--ink-3); font-size:12.5px; line-height:1.85;
+  }
+
+  /* ---------- 头条 ---------- */
+  .lead{padding:34px 0 30px; border-bottom:1px solid var(--rule)}
+  .lead h2{
+    font-family:var(--serif); font-weight:700;
+    font-size:29px; line-height:1.45; letter-spacing:-.01em;
+    margin:0 0 16px; text-wrap:balance;
+  }
+  .lead h2 .mark{
+    background:linear-gradient(transparent 62%, var(--dated-bg) 62%);
+    padding:0 2px;
+  }
+  .lead p{
+    margin:0; color:var(--ink-2); font-size:15px; line-height:1.9;
+    padding-left:16px; border-left:2px solid var(--rule);
+  }
+
+  /* ---------- 四小节 ---------- */
+  .brief{margin:0; padding:0; list-style:none}
+  .brief>li{
+    display:grid; grid-template-columns:44px 1fr; gap:0 18px;
+    padding:26px 0; border-bottom:1px solid var(--rule-2);
+  }
+  .brief>li:last-child{border-bottom:none}
+  .no{
+    font-family:var(--serif); font-size:26px; line-height:1.25;
+    color:var(--ink-3); font-weight:700; letter-spacing:-.02em;
+  }
+  .hd{
+    display:flex; flex-wrap:wrap; align-items:center; gap:10px;
+    margin-bottom:4px;
+  }
+  .hd h3{
+    font-size:19px; font-weight:700; margin:0; letter-spacing:-.005em;
+  }
+  .body{margin:0; color:var(--ink-2); font-size:15px; line-height:1.9}
+  .body strong{color:var(--ink); font-weight:650}
+
+  /* 官方原话 */
+  .quote{
+    margin:10px 0 0; padding:12px 14px;
+    background:var(--rule-2); border-radius:2px;
+    border-left:2px solid var(--promised);
+    font-size:13.5px; line-height:1.8; color:var(--ink-2);
+  }
+  .quote .en{font-family:var(--mono); font-size:12.5px; color:var(--ink)}
+  .quote .cn{display:block; margin-top:4px; color:var(--ink-3)}
+
+  /* ---------- 状态标签 ---------- */
+  .pill{
+    font-size:11.5px; font-weight:700; letter-spacing:.04em;
+    padding:2px 9px; border-radius:2px; white-space:nowrap;
+  }
+  .pill.dated{color:var(--dated); background:var(--dated-bg)}
+  .pill.promised{color:var(--promised); background:var(--promised-bg)}
+  .pill.open{color:var(--open); background:var(--open-bg)}
+  .pill.none{color:var(--none); background:var(--none-bg)}
+
+  .k{
+    color:var(--ink); font-weight:650;
+    border-bottom:1px solid var(--rule); padding-bottom:1px;
+  }
+  code{font-family:var(--mono); font-size:.86em; color:var(--ink)}
+
+  @media (max-width:600px){
+    .srcline .lbl{float:none; display:block; margin-bottom:4px; line-height:1.6}
+    .sheet{padding:36px 20px 48px}
+    h1{font-size:29px}
+    .lead h2{font-size:23px}
+    .brief>li{grid-template-columns:30px 1fr; gap:0 12px; padding:22px 0}
+    .no{font-size:20px}
+    .hd h3{font-size:17px}
+  }
+  @media print{
+    body{background:#fff}
+    .sheet{padding:0; max-width:none}
+    .brief>li,.lead{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="kicker">
+    <span>每日追踪 / Daily Brief</span>
+    <span class="r">No. 01</span>
+  </div>
+
+  <h1>Qwen / Kimi 开源动态日报</h1>
+  <p class="dateline">
+    <span>2026-07-27　周一</span>
+    <span>取证时间 09:55–10:24 CST</span>
+  </p>
+
+  <div class="srcline">
+    <span class="lbl">信息来源</span>
+    <p>Kimi 官方技术博客与开发者文档、Qwen 官方研究页、Hugging Face 与 ModelScope 模型仓库（moonshotai / Qwen / zai-org）、vLLM 官方博客、媒体报道。</p>
+  </div>
+
+  <div class="lead">
+    <h2>Kimi K3 权重<span class="mark">今晚 12 点前后开源</span>。</h2>
+    <p>月之暗面官方文档与技术博客明确说明“完整模型权重不晚于 2026 年 7 月 27 日落地”，Hugging Face 官方发布页的倒计时指向今晚 12 点。</p>
+  </div>
+
+  <ul class="brief">
+
+    <li>
+      <div class="no">01</div>
+      <div>
+        <div class="hd"><h3>Kimi</h3><span class="pill dated">已定档</span></div>
+        <p class="body">官方技术博客今天全文放出，<span class="k">2.8T 参数</span>、896 专家激活 16 个、MXFP4 量化、三档定价全部对外，模型在 App 和 API 已可用。缺口只剩两个：<strong>权重仍是占位页，许可证暂未表述</strong>。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">02</div>
+      <div>
+        <div class="hd"><h3>Qwen</h3><span class="pill promised">已承诺</span></div>
+        <p class="body">连续两代旗舰 Qwen3.7-Max 与 Qwen3.8-Max 都是闭源，只给 API：官方研究页、Hugging Face、ModelScope 三处都查不到这两个仓库。实际能下载的最新通用模型仍是 04-24 的 <span class="k">Qwen3.6-35B-A3B</span>，近 7 天只有 Qwen3.5 小尺寸系列在 07-18 更新。</p>
+        <p class="quote">
+          官方 X 账号 @Alibaba_Qwen 原话　<span class="en">“Qwen3.8 is launching and going open-weight soon!”</span>
+          <span class="cn">只承诺<strong>开放权重</strong>，没说开源，也没给日期和许可证。</span>
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">03</div>
+      <div>
+        <div class="hd"><h3>第三家</h3><span class="pill none">暂无</span></div>
+        <p class="body">今日没有够格的第三家开源模型。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">04</div>
+      <div>
+        <div class="hd"><h3>明日盯点</h3></div>
+        <p class="body">K3 权重是否真落地——落地就立刻核 LICENSE 原文、<code>config.json</code> 激活参数、产物数量；跳票就抄下官方新口径。另补 Artificial Analysis 的第三方跑分。</p>
+      </div>
+    </li>
+
+  </ul>
+
+</div>
+</body>
+</html>
