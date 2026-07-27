@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -140,8 +140,21 @@
   /* ---------- 详细内容 ---------- */
   .detail-head{
     margin:44px 0 0; padding-bottom:9px; border-bottom:1px solid var(--ink);
+    display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px;
     font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
   }
+  .detail-head nav{display:flex; flex-wrap:wrap; gap:14px; letter-spacing:.02em; text-transform:none}
+  .detail-head nav a{
+    font-size:12.5px; color:var(--ink-3); text-decoration:none;
+    border-bottom:1px solid transparent; padding-bottom:1px;
+  }
+  .detail-head nav a:hover,.detail-head nav a:focus{color:var(--ink); border-bottom-color:var(--ink)}
+  details:target>summary .st{text-decoration:underline; text-decoration-thickness:2px}
+  .totop{
+    display:inline-block; margin-top:4px; font-size:12px; color:var(--ink-3);
+    text-decoration:none; border-bottom:1px solid var(--rule);
+  }
+  .totop:hover,.totop:focus{color:var(--ink)}
   details{border-bottom:1px solid var(--rule)}
   details>summary{
     display:flex; align-items:baseline; gap:12px; cursor:pointer;
@@ -223,7 +236,7 @@
   }
 </style>
 </head>
-<body>
+<body id="top">
 <div class="sheet">
 
   <div class="kicker">
@@ -287,10 +300,18 @@
 
   </ul>
 
-  <p class="detail-head">详细内容 / Detail</p>
+  <div class="detail-head">
+    <span>详细内容 / Detail</span>
+    <nav aria-label="正文导航">
+      <a href="#s2">2 Kimi</a>
+      <a href="#s3">3 Qwen</a>
+      <a href="#s4">4 明日盯点</a>
+      <a href="#s5">5 取证清单</a>
+    </nav>
+  </div>
 
   <!-- ===== 2 Kimi ===== -->
-  <details open>
+  <details id="s2" open>
     <summary><span class="sn">2</span><span class="st">Kimi（K3）</span><span class="pill dated">已定档</span></summary>
     <div class="dbody">
       <p>定在今天，权重尚未落地。简单说：模型今天已经能用了，但权重文件还在倒计时里，许可证一个字都没露。</p>
@@ -343,7 +364,7 @@
   </details>
 
   <!-- ===== 3 Qwen ===== -->
-  <details open>
+  <details id="s3" open>
     <summary><span class="sn">3</span><span class="st">Qwen</span><span class="pill promised">已承诺</span></summary>
     <div class="dbody">
       <p>旗舰状态“已承诺”（无日期）。实际已开源的最新通用模型：<span class="k">Qwen3.6-35B-A3B</span>（04-24）。简单说：Qwen 的旗舰线已经连续两代闭源——3.7-Max 和 3.8-Max 都只给 API，权重一个都没放。3.8 官方只承诺“开放权重”且没给日期，官方自己的研究页连这个条目都没有。</p>
@@ -399,9 +420,9 @@
     </div>
   </details>
 
-  <!-- ===== 5 明日盯点 ===== -->
-  <details>
-    <summary><span class="sn">5</span><span class="st">明日盯点</span></summary>
+  <!-- ===== 4 明日盯点 ===== -->
+  <details id="s4">
+    <summary><span class="sn">4</span><span class="st">明日盯点</span></summary>
     <div class="dbody">
       <ol class="watch">
         <li>Hugging Face 的 K3 发布页 —— 权重是否落地。落地后立刻核三样：LICENSE 原文全文、<code>config.json</code> 里的激活参数量、放出的产物数量（Base / Instruct / MXFP4）。</li>
@@ -417,12 +438,12 @@
     </div>
   </details>
 
-  <!-- ===== 6 取证清单 ===== -->
-  <details>
-    <summary><span class="sn">6</span><span class="st">取证清单</span></summary>
+  <!-- ===== 5 取证清单 ===== -->
+  <details id="s5">
+    <summary><span class="sn">5</span><span class="st">取证清单</span></summary>
     <div class="dbody">
 
-      <h4>6.1 一级信源直查</h4>
+      <h4>5.1 一级信源直查</h4>
       <div class="tw">
         <table>
           <thead><tr><th scope="col">来源</th><th scope="col">层级</th><th scope="col">方式</th><th scope="col">结果</th><th scope="col">读到的关键信息</th></tr></thead>
@@ -444,7 +465,7 @@
       </div>
       <p class="sum">计 12 条，其中 11 条渲染抓取成功、1 条经截图核对（X 时间线需登录，工具无法直读）。Tier-1 覆盖率 8/11。</p>
 
-      <h4>6.2 网络搜索补充</h4>
+      <h4>5.2 网络搜索补充</h4>
       <div class="tw">
         <table>
           <caption>检索词：Qwen3.8-Max 开源 权重 发布 日期 2026年7月</caption>
@@ -460,7 +481,7 @@
       </div>
       <p class="sum">计 5 条采用，4 条已回一级信源交叉验证。</p>
 
-      <h4>6.3 该查未查 / 抓取失败</h4>
+      <h4>5.3 该查未查 / 抓取失败</h4>
       <div class="tw">
         <table>
           <thead><tr><th scope="col">来源 / 对象</th><th scope="col">层级</th><th scope="col">结果或原因</th></tr></thead>
@@ -476,9 +497,20 @@
       </div>
 
       <p class="sum">层级说明：T1 厂商官方页面与模型仓库（判定“是否已开源”只认这一层）· T2 推理框架等生态适配信号 · T3 媒体与社区（只作线索）。</p>
+      <a class="totop" href="#top">回到顶部 ↑</a>
     </div>
   </details>
 
 </div>
+
+<script>
+  // 点击导航跳到已收起的段落时，自动展开它
+  function openTarget(){
+    var el = location.hash ? document.querySelector(location.hash) : null;
+    if (el && el.tagName === 'DETAILS') el.open = true;
+  }
+  window.addEventListener('hashchange', openTarget);
+  openTarget();
+</script>
 </body>
 </html>
