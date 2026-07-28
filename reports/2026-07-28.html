@@ -340,110 +340,74 @@
   <details id="s2" open>
     <summary><span class="sn">2</span><span class="st">Kimi（K3）</span><span class="pill open">已开源</span></summary>
     <div class="dbody">
-      <p>判定“已开源”的依据不是媒体报道，是直接查 Hugging Face API 端点和仓库文件列表得到的一级信源证据。</p>
+      <p>判定依据：Hugging Face API 端点直查，非媒体转述。</p>
 
-      <h4>权重状态</h4>
       <ul class="facts">
-        <li><span class="t">Hugging Face API 端点返回 <code>lastModified: 2026-07-27T16:29:18.000Z</code>，<code>gated: false</code>，仓库公开不设门槛。文件列表含 <code>model-00001</code> 至 <code>model-00096-of-000096.safetensors</code>，外加 LICENSE、config.json、tokenizer_config.json、多个自定义 Python 实现文件。</span>
-          <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
-        <li><span class="t">safetensors 元数据显示总参数约 <strong>2.78T</strong>，已用存储约 1.561 TB（约 1.42 TiB）。</span>
-          <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
-        <li><span class="t">下载量 2,850、点赞 6,249 ——点赞数远超下载量，符合“刚发布、大量关注但多数人硬件跑不动”的特征。</span>
-          <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
-        <li><span class="t">已有社区 Space 接入：<code>akhaliq/Kimi-K3</code>、<code>lalopenguin/kimi-k3-chat</code> 等 5 个演示应用挂在模型页下。</span>
-          <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
+        <li><span class="t"><strong>权重</strong>：<code>lastModified 2026-07-27T16:29 UTC</code>，96 分片、2.78T 参数、1.561 TB（1.42 TiB），仓库公开不设门槛。下载量 07-27→07-28 从 2,850 涨到 <strong>99,214</strong>（+35 倍），点赞 6,249→7,209——涨幅远超点赞，是目前最直接的采用信号，但涨不代表部署成功。</span>
+          <span class="src"><span class="lv t1">T1</span>HF API 端点，两次抓取对比</span></li>
+        <li><span class="t"><strong>许可证</strong>：自定义 Kimi K3 License，MIT 风格可商用，两条门槛——年营收超 2000 万美元的 MaaS 业务要单独签约；月活超 1 亿/月收入超 2000 万美元要展示“Kimi K3”字样。不是 OSI 开源许可证，是“开放权重 + 商用条件”。判读：防大厂白嫖转卖，不防中小团队；官方仍想把流量留在自己 API/授权伙伴里。</span>
+          <span class="src"><span class="lv t1">T1</span>官方 LICENSE 原文</span></li>
+        <li><span class="t"><strong>技术</strong>：KDA + AttnRes 架构，896 专家激活 16 个，1M 上下文，原生视觉。API 定价：缓存命中 $0.30 / 未命中 $3 / 输出 $15（每百万 token）。</span>
+          <span class="src"><span class="lv t1">T1</span>HF API 端点</span></li>
       </ul>
 
-      <h4>许可证 —— 今日解决，不再是“未验证”</h4>
-      <div class="note gap">
-        <b>官方 LICENSE 原文已直接读到。</b>核心条款：① 基础权限接近 MIT（可用、可改、可分发、可商用、可创作衍生作品），需保留版权与许可声明；② “Model as a Service”条款：若 MaaS 业务连续 12 个月内累计营收超 2000 万美元，须与 Moonshot 另行签约才能商用；③ 若衍生产品月活超 1 亿或月收入超 2000 万美元，须显著展示“Kimi K3”；④ 内部使用及经 Moonshot 官方产品/认证伙伴访问的场景不受②③约束；⑤ 不提供任何担保。
-        <br><b>这不是 OSI 认证的开源许可证</b>，准确说法是“开放权重，附带商用规模门槛”。媒体传的“Modified MIT”方向大致对，但没提两条商用条款，属简化转述。
-        <span class="src"><span class="lv t1">T1</span>Kimi K3 官方 LICENSE 原文 · 直接读取</span>
-      </div>
-
-      <h4>生态适配 —— 落后权重发布</h4>
-      <ul class="facts">
-        <li><span class="t">vLLM 官方博客最新一篇仍是 07-23 的《Announcing vLLM AFD Plugin》，与 K3 无关。上一篇 K3 相关文章仍是 07-22 的生产级支持预览，<strong>权重发布后 vLLM 侧还没有对应的正式支持文章</strong>，两者之间有滞后。</span>
-          <span class="src"><span class="lv t2">T2</span>vLLM 官方博客 · 渲染抓取</span></li>
-        <li><span class="t">SGLang、llama.cpp、transformers 的 K3 支持状态今天没查，见取证清单 5.3。</span></li>
-      </ul>
-
-      <h4>技术要点</h4>
-      <p>2.8T 参数，KDA（Kimi Delta Attention）+ AttnRes（Attention Residuals）架构，896 个专家中激活 16 个，1M token 上下文，原生视觉多模态。API 定价三档：缓存命中输入 $0.30 / 百万 token，未命中输入 $3.00，输出 $15.00。今日 API 端点数据与官方公布的参数规模一致。</p>
-
-      <h4>深度分析（模型进入已开源后的六项）</h4>
-
-      <p><strong>性能：Artificial Analysis 全球排名第四，但速度和幻觉率是两条要盯的短板。</strong>放进全榜（含闭源）看，K3 只落后三个闭源旗舰；单看开源模型，K3 排第一。价格比闭源旗舰便宜，但在开源分组里是最贵一档；速度是同分组里最慢的一个。</p>
+      <p><strong>性能</strong>：Artificial Analysis 全球第四（57 分），只落后 Opus 5 / Fable 5 / GPT-5.6 Sol；开源模型第一。</p>
 
       <div class="cmp-wrap">
         <table class="cmp">
-          <caption>Artificial Analysis Intelligence Index 全球排名（截取相关模型）</caption>
+          <caption>Artificial Analysis Intelligence Index（截取相关模型）</caption>
           <thead>
             <tr><th>排名</th><th>模型</th><th>类型</th><th class="num">分数</th><th class="num">速度</th><th class="num">输入 / 输出价</th></tr>
           </thead>
           <tbody>
-            <tr><td>#1</td><td>Claude Opus 5 (max)</td><td class="dim">闭源</td><td class="num">61</td><td class="num">55 tok/s</td><td class="num">$5 / $25</td></tr>
-            <tr><td>#2</td><td>Claude Fable 5</td><td class="dim">闭源</td><td class="num">60</td><td class="num">73 tok/s</td><td class="num">—</td></tr>
-            <tr><td>#3</td><td>GPT-5.6 Sol (max)</td><td class="dim">闭源</td><td class="num">59</td><td class="num">77 tok/s</td><td class="num">$5 / $30</td></tr>
+            <tr><td>#1</td><td>Claude Opus 5</td><td class="dim">闭源</td><td class="num">61</td><td class="num">55 tok/s</td><td class="num">$5 / $25</td></tr>
+            <tr><td>#3</td><td>GPT-5.6 Sol</td><td class="dim">闭源</td><td class="num">59</td><td class="num">77 tok/s</td><td class="num">$5 / $30</td></tr>
             <tr class="self"><td>#4</td><td>Kimi K3</td><td class="dim">开源 · 第 1</td><td class="num">57</td><td class="num">32 tok/s</td><td class="num">$3 / $15</td></tr>
-            <tr><td>#5</td><td>Grok 4.5 (high)</td><td class="dim">闭源</td><td class="num">54</td><td class="num">63 tok/s</td><td class="num">—</td></tr>
-            <tr><td>#6</td><td>GLM-5.2 (max)</td><td class="dim">开源 · 第 2</td><td class="num">51</td><td class="num">220 tok/s</td><td class="num">—</td></tr>
-            <tr><td>#9</td><td>MiniMax-M3</td><td class="dim">开源 · 第 3</td><td class="num">44</td><td class="num">83 tok/s</td><td class="num">—</td></tr>
+            <tr><td>#6</td><td>GLM-5.2</td><td class="dim">开源 · 第 2</td><td class="num">51</td><td class="num">220 tok/s</td><td class="num">—</td></tr>
           </tbody>
         </table>
       </div>
 
-      <p><b>这说明什么：</b>K3 不是"开源里比烂"，是真的挤进了全球前四，压过了 Grok、GLM、Gemini 这些同期在跑的模型（不管开源闭源）。价格也不是"贵"，跟 Opus/GPT 比反而便宜，"最贵"只在跟同为开源的模型比时才成立。真正的短板是速度：GLM-5.2 参数量（753B）比 K3 小得多，却能跑到 220 tok/s，说明 32 tok/s 未必是"模型太大"的物理下限，更可能是 KDA 这个新架构还没被 vLLM/SGLang 充分优化——07-25 的官方部署配方仍标"pre-release"。这个数字会不会随生态适配跟进而改善，是接下来最值得盯的一条。
-        <span class="src"><span class="lv t1">T1</span>Artificial Analysis（Kimi K3 / Claude Opus 5 / GPT-5.6 Sol / GLM-5.2 / DeepSeek V4 Pro 各页）· 渲染抓取</span></p>
+      <p>价格比闭源旗舰便宜，"最贵"只在跟同为开源的模型比时才成立。速度是短板：GLM-5.2 参数更小却跑 220 tok/s，更可能是 KDA 新架构还没被 vLLM 充分优化（配方仍标 pre-release），不是参数量的物理下限，值得持续盯是否随适配改善。
+        <span class="src"><span class="lv t1">T1</span>Artificial Analysis 各模型页</span></p>
 
-      <p><strong>能否真的用起来：官方给的门槛是 8 张顶级 GPU 起步，社区量化版本已经在追。</strong>vLLM 官方 recipe 明确写着最低硬件要求是 <strong>8 张 NVIDIA GB300</strong>（单卡 288GB 显存），多节点部署才谈得上生产级流量；这不是社区博客估算的数字，是 vLLM 官方发布的部署配方原文。与此同时，社区已经有多个 GGUF 量化仓库挂出（<code>AtomicChat/Kimi-K3-GGUF</code>、<code>unsloth/Kimi-K3</code>、<code>GrEarl/Kimi-K3-GGUF</code>），但 <code>GrEarl</code> 的仓库说明里作者自己承认“没有足够算力跑通和改进这个量化版本，这是理论上的量化”——说明量化版本已经有人在做，但目前还没有一个经过充分验证、可直接稳定使用的版本。
-        <br><b>这说明什么：</b>K3 的“开源”目前只对拥有多卡集群的团队是真开源，对普通开发者和中小团队，实际可用路径仍是官方 API，跟没开源时的处境差别不大。社区量化是自建的希望所在，但还在早期、不成熟阶段，观察这些仓库能不能跑通、能不能被更多人验证，是判断“K3 何时对普通人真正开放”的关键信号。
-        <span class="src"><span class="lv t2">T2</span>vLLM 官方 Recipe · 渲染抓取</span>
-        <span class="src"><span class="lv t3">T3</span>Hugging Face 社区量化仓库 · 搜索命中</span></p>
-
-      <h4>外部评测与真实使用反馈</h4>
+      <ul class="facts">
+        <li><span class="t"><strong>能否自建</strong>：vLLM 官方配方要求最低 <strong>8×NVIDIA GB300</strong>；社区已有 GGUF 量化（AtomicChat、unsloth、GrEarl），但 GrEarl 自述"算力不足未充分验证"。现阶段普通团队只能用官方 API，量化能不能跑通是判断"何时真正开放"的关键信号。</span>
+          <span class="src"><span class="lv t2">T2</span>vLLM Recipe</span>
+          <span class="src"><span class="lv t3">T3</span>HF 社区量化仓库</span></li>
+      </ul>
 
       <div class="revgrid">
         <div class="revcard neg">
-          <div class="rt"><b>幻觉率上升</b><span>Artificial Analysis</span></div>
-          <p>独立测出幻觉率 <b>51%</b>，比上一代 K2.6 的 39% 明显升高——智能分数涨的同时，编造答案的比例也涨了。官方自己没提这条，是评测挖出来的。</p>
+          <div class="rt"><b>幻觉率</b><span>Artificial Analysis</span></div>
+          <p>AA-Omniscience 测出 <b>51%</b>（K2.6 为 39%），5 家媒体交叉确认。但准确率同步从 33%→46%（更敢答，不是变差）；Claude Fable 5 同项 54.9%，比 K3 更高，不算突出短板。</p>
         </div>
         <div class="revcard neg">
-          <div class="rt"><b>定价叙事反转</b><span>eesel / puter.com</span></div>
-          <p>K2.6 约 $0.95/$4，K3 涨到 <b>$3/$15</b>，跟 <b>Claude Sonnet 5 同价</b>，涨幅 3–4 倍。Kimi 不再是"便宜的前沿模型"，社区反应最大的是这一点，不是能力。</p>
+          <div class="rt"><b>定价叙事</b><span>eesel / puter.com</span></div>
+          <p>较 K2.6 涨 3–4 倍，追平 <b>Claude Sonnet 5</b>，Kimi 不再是"便宜的前沿模型"，社区反应最大的是这一点，不是能力。</p>
         </div>
         <div class="revcard pos">
           <div class="rt"><b>视觉纠错实测</b><span>puter.com 可复现测试</span></div>
-          <p>网页截图对比找 5 处故意做的 CSS 差异，K3 <b>5/5 全找到</b>，且没有报告不存在的差异——跟幻觉率数据形成对照：具体、有明确答案的任务表现扎实。</p>
+          <p>网页截图找 5 处 CSS 差异，K3 <b>5/5 全对</b>，无幻觉——具体、有明确答案的任务表现扎实，跟上面幻觉率数据形成对照。</p>
         </div>
         <div class="revcard mixed">
-          <div class="rt"><b>Token 效率存疑</b><span>Hacker News 用户</span></div>
-          <p>多位用户反映 K3 完成同样任务比 Fable 5 <b>耗更多 token</b>，这直接影响实际账单，是比单价更该盯的成本变量。</p>
+          <div class="rt"><b>Token 效率</b><span>Hacker News 用户</span></div>
+          <p>用户认可能力（"盲测分不出跟 Fable 5 的区别"）但反映同任务比 Fable 5 耗更多 token，直接影响账单。</p>
         </div>
       </div>
+      <p class="sum">
+        <span class="src"><span class="lv t1">T1</span>AA-Omniscience 方法页</span>
+        <span class="src"><span class="lv t3">T3</span>puter.com（含测试代码）、eesel.ai（转引 HN/LinkedIn）</span>
+      </p>
 
-      <div class="quote-block">
-        “我用了几个小时，这是个很棒的模型。盲测的话我可能分不出它和 Fable 5 的区别。$100 的 Kimi Coding 套餐额度，大致相当于我用 $200 的 Anthropic 套餐主要跑 Fable 时的额度。”
-        <cite>InsideOutSanta · Hacker News（经 eesel.ai 转引）</cite>
-      </div>
-      <div class="quote-block">
-        “Fable 5 两周前才发布，GPT-5.6 Sol 一周前才发布。K3 是比它俩差一点，但比其他所有模型都强。所以我会说落后几周，不是几个月了……”
-        <cite>frabcus · Hacker News（经 eesel.ai 转引）</cite>
-      </div>
-
-      <p><b>这些评价放在一起说明什么：</b>K3 的"强"是真的，多篇独立评测方向一致；但"便宜"的叙事已经不成立了，这可能会削弱它对预算敏感的中小团队的吸引力——跟许可证设计形成一个有意思的反差：官方一边放宽许可证给中小团队用，一边用定价把这批人推向更谨慎的立场。
-        <span class="src"><span class="lv t3">T3</span>developer.puter.com、eesel.ai（转引 Hacker News / LinkedIn）· 搜索命中</span></p>
-
-      <h4>商业策略解读</h4>
-      <p>许可证条款把免费商用的门槛设在“年营收 2000 万美元”和“月活 1 亿 / 月收入 2000 万美元”，这两个数字都是相当大的规模。<strong>这说明官方判断中小团队产生的商业威胁可以忽略，真正想防的是大厂或大型 MaaS 平台白嫖权重再转卖服务</strong>。同时第 4 条豁免了“通过 Moonshot 官方产品或认证推理伙伴访问”的场景，这意味着官方仍然希望大部分流量走它自己的 API 或授权伙伴通道，权重开放更多是拉开发者生态和技术声誉，不是把主要收入让出去。往后看，如果真有大厂踩到这两条门槛，Moonshot 大概率会走“定制商业协议”而非公开涨价，这也是这类条款惯常的落地方式。</p>
-
-      <h4>官方承认的风险点</h4>
-      <p>K3 技术博客里官方自己写了三条局限：思考历史必须完整回传给模型，否则输出会不稳定；模型在长周期任务里遇到模糊指令时容易自作主张、不按用户预期执行；整体用户体验和 Claude Fable 5、GPT 5.6 Sol 相比有明显差距。这类是厂商主动承认的，不是媒体挑刺，可信度更高。<strong>实际影响</strong>：第一条意味着接入 K3 的工具链必须严格遵守官方的多轮对话协议，随便截断上下文会导致效果变差；第二条对需要模型严格听指令、不能自由发挥的场景（比如合规、金融流程）是个减分项。
-        <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客 · 渲染抓取</span></p>
-
-      <h4>下游落地信号</h4>
-      <p>目前查到的是生态合作方而非终端企业客户：vLLM 官方发布了针对 K3 的部署配方（NVIDIA、AMD 硬件路径均有），Artificial Analysis 显示已有 <strong>5 家 API 服务商</strong>上架 K3（包括 EvoLink 等第三方平台，非 Moonshot 官方渠道）。搜索未查到具名的企业采用案例（如“某公司用 K3 替换了什么系统”），只查到面向 life sciences / 医疗等受监管行业的第三方分析文章在讨论“能不能”部署 K3，还没有实际部署的公开案例。<strong>这说明什么</strong>：K3 上线不到两周，目前的下游信号还停留在“推理服务商愿意接入”这一层，还没有看到终端企业公开宣布采用，这类信号通常需要几周到几个月才会出现，是接下来几天值得持续盯的点。
-        <span class="src"><span class="lv t3">T3</span>Artificial Analysis 服务商列表、EvoLink 官方博客、行业分析文章 · 搜索命中</span></p>
+      <ul class="facts">
+        <li><span class="t"><strong>风险点（官方自认）</strong>：多轮对话须完整回传思考历史否则不稳定；长任务里可能自作主张；体验仍落后 Fable 5/GPT-5.6 Sol。厂商主动披露，可信度较高。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客</span></li>
+        <li><span class="t"><strong>下游落地</strong>：仅生态合作方信号（vLLM 部署配方、5 家 API 服务商），未查到具名企业采用案例，上线不到两周。</span>
+          <span class="src"><span class="lv t3">T3</span>AA 服务商列表、EvoLink</span></li>
+        <li><span class="t"><strong>生态适配</strong>：vLLM 最新一篇（07-23）与 K3 无关，落后权重发布；SGLang/llama.cpp/transformers 今天未查。</span>
+          <span class="src"><span class="lv t2">T2</span>vLLM 官方博客</span></li>
+      </ul>
     </div>
   </details>
 
@@ -451,26 +415,16 @@
   <details id="s3">
     <summary><span class="sn">3</span><span class="st">Qwen</span><span class="pill promised">已承诺</span></summary>
     <div class="dbody">
-      <p>官方口径仍是 @Alibaba_Qwen 07-19 那条帖子的原话：“Qwen3.8 is launching and going open-weight soon!”——只说了“soon”，没有日期，没有仓库地址。今日复查：</p>
-      <ul class="facts">
-        <li><span class="t">Qwen 官方研究页仍无 Qwen3.8 条目，最新一条是 07-21 的 Qwen-Image-3.0（<code>Release</code>）。</span>
-          <span class="src"><span class="lv t1">T1</span>Qwen 官方研究页 · 渲染抓取</span></li>
-        <li><span class="t">Hugging Face 的 Qwen 组织页模型列表最近更新是 5 天前的 Qwen3-ASR 系列，无 Qwen3.8。</span>
-          <span class="src"><span class="lv t1">T1</span>Hugging Face Qwen 组织页 · 渲染抓取</span></li>
-      </ul>
-      <p><strong>判读</strong>：官方研究页和模型仓库都没有 Qwen3.8 的任何仓库或条目痕迹，“soon”目前仍是一句空话，没有兑现时间表可循。</p>
+      <p>官方口径仍是 @Alibaba_Qwen 07-19 原话：<span class="k">“Qwen3.8 is launching and going open-weight soon!”</span>——只说“soon”，无日期无仓库。官方研究页、HF、ModelScope、GitHub 今日复查均无 Qwen3.8 踪迹，“soon”仍是空话。</p>
 
-      <h4>除 Qwen3.8 外的其他官方动态</h4>
-      <p>Qwen3.8 只是众多信号中的一个，今日按范围扩大后的核对结果如下——没有值得单独展开的新模型或新论文，但记录在案：</p>
       <ul class="facts">
-        <li><span class="t">Hugging Face 论文列表最新仍是 8 天前的 Qwen-Music Technical Report，无新增。</span>
-          <span class="src"><span class="lv t1">T1</span>Hugging Face Qwen 论文列表 · 渲染抓取</span></li>
-        <li><span class="t">ModelScope 千问组织页最近更新仍是 07-22 的 Qwen3-ASR 系列，无新模型。</span>
-          <span class="src"><span class="lv t1">T1</span>ModelScope 千问组织页 · 渲染抓取</span></li>
-        <li><span class="t">GitHub 组织页（49 个仓库）里活跃度最高的两个是常规迭代，不构成模型层面的新闻：<code>qwen-code</code>（终端编码 Agent，2.64 万星）1 分钟前有提交；<code>FlashQLA</code>（Qwen 团队维护的线性注意力 kernel 库）5 小时前发布精度修复的 bugfix，该库已被 <code>flash-linear-attention</code> 项目采纳为 Qwen3.5/Qwen3.6 家族的 GDN 加速后端。</span>
-          <span class="src"><span class="lv t1">T1</span>GitHub QwenLM 组织页 · 渲染抓取</span></li>
+        <li><span class="t">Qwen 官方研究页最新仍是 07-21 的 Qwen-Image-3.0；HF 组织页最近更新 5 天前的 Qwen3-ASR 系列。</span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方研究页、HF Qwen 组织页</span></li>
+        <li><span class="t">HF 论文列表、ModelScope 均无新增（分别停在 8 天前、07-22）。GitHub（49 个仓库）活跃的是常规迭代：<code>qwen-code</code> 1 分钟前有提交，<code>FlashQLA</code>（线性注意力库，已被 <code>flash-linear-attention</code> 采纳做 GDN 加速后端）5 小时前发 bugfix，均非模型新闻。</span>
+          <span class="src"><span class="lv t1">T1</span>HF Qwen 论文列表、ModelScope、GitHub QwenLM</span></li>
       </ul>
-      <p><strong>判读</strong>：Qwen 团队今天的实际工程投入在基础设施维护（推理加速库）和编码工具（qwen-code）上，模型层面（无论是 Qwen3.8 还是其他新模型）没有动作。</p>
+
+      <p><strong>判读</strong>：今天 Qwen 团队的工程投入在基础设施和编码工具上，模型层面（Qwen3.8 或其他）没有动作。</p>
     </div>
   </details>
 
@@ -504,42 +458,34 @@
         <table>
           <thead><tr><th scope="col">来源</th><th scope="col">层级</th><th scope="col">方式</th><th scope="col">结果</th><th scope="col">读到的关键信息</th></tr></thead>
           <tbody>
-            <tr><td class="u">huggingface.co/moonshotai/Kimi-K3（渲染页面）</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="no">过期缓存</span></td><td>显示占位页与倒计时，与实际状态不符</td></tr>
-            <tr class="hl"><td class="u">api/models/moonshotai/Kimi-K3</td><td><span class="lv t1">T1</span></td><td class="n">API 直查</td><td><span class="yes">成功</span></td><td>96 分片、lastModified 07-27 16:29 UTC、2.78T、1.561 TB（1.42 TiB）、下载 2850、点赞 6249</td></tr>
-            <tr class="hl"><td class="u">moonshotai/Kimi-K3/raw/main/LICENSE</td><td><span class="lv t1">T1</span></td><td class="n">直接读取</td><td><span class="yes">成功</span></td><td>Kimi K3 License 全文，含两条商用门槛条款</td></tr>
-            <tr><td class="u">huggingface.co/moonshotai</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>组织页 Collections 未更新，仍显示 K2.7-Code（页面缓存滞后于 API）</td></tr>
-            <tr><td class="u">qwen.ai/research</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>无变化，最新仍是 07-21 Qwen-Image-3.0</td></tr>
-            <tr><td class="u">huggingface.co/Qwen/models</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>无变化，无 Qwen3.8</td></tr>
-            <tr><td class="u">modelscope.cn/organization/moonshotai</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>页面缓存，未反映 K3 权重更新</td></tr>
+            <tr><td class="u">huggingface.co/moonshotai/Kimi-K3（渲染页面）</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="no">过期缓存</span></td><td>占位页与倒计时，与实际不符，见下方方法论提醒</td></tr>
+            <tr class="hl"><td class="u">api/models/moonshotai/Kimi-K3（首次/复查两次）</td><td><span class="lv t1">T1</span></td><td class="n">API 直查</td><td><span class="yes">成功</span></td><td>96 分片、2.78T、1.561TB；下载 2850→99,214、点赞 6249→7209</td></tr>
+            <tr class="hl"><td class="u">artificialanalysis.ai/evaluations/omniscience</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>准确率 33%→46%、幻觉率 39%→51% 同步上升的方法说明</td></tr>
+            <tr class="hl"><td class="u">moonshotai/Kimi-K3/raw/main/LICENSE</td><td><span class="lv t1">T1</span></td><td class="n">直接读取</td><td><span class="yes">成功</span></td><td>LICENSE 全文，两条商用门槛</td></tr>
+            <tr class="hl"><td class="u">artificialanalysis.ai/models/kimi-k3</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>Intelligence Index 57 分全球第四；速度 32 tok/s；$3/$15；5 家服务商上架</td></tr>
+            <tr class="hl"><td class="u">recipes.vllm.ai/moonshotai/Kimi-K3</td><td><span class="lv t2">T2</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>官方部署配方：最低 8×GB300 或 8×MI355X/MI350X；配方日期 07-25</td></tr>
+            <tr><td class="u">huggingface.co/moonshotai、qwen.ai/research、huggingface.co/Qwen/models、modelscope.cn（moonshotai/qwen 两个组织页）、huggingface.co/Qwen/papers、github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>均无新条目/新模型，详见正文第 2、3 段</td></tr>
             <tr><td class="u">vllm.ai/blog/</td><td><span class="lv t2">T2</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新一篇 07-23，与 K3 无关</td></tr>
-            <tr><td class="u">huggingface.co/Qwen/papers</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新仍是 8 天前的 Qwen-Music Technical Report，无新增</td></tr>
-            <tr><td class="u">modelscope.cn/organization/qwen</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最近更新仍是 07-22 的 Qwen3-ASR 系列，无新模型</td></tr>
-            <tr><td class="u">github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>49 个仓库；活跃项目为 qwen-code（1 分钟前提交）与 FlashQLA（5 小时前 bugfix），均非模型新闻</td></tr>
-            <tr class="hl"><td class="u">artificialanalysis.ai/models/kimi-k3</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>Intelligence Index 57 分（开源模型第一）；速度 32 tok/s（同类最低）；输入 $3/输出 $15（同类最贵）；5 家 API 服务商上架</td></tr>
-            <tr class="hl"><td class="u">recipes.vllm.ai/moonshotai/Kimi-K3</td><td><span class="lv t2">T2</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>官方部署配方：最低 8×NVIDIA GB300 或 8×AMD MI355X/MI350X，多节点生产部署；配方日期 07-25</td></tr>
-            <tr><td class="u">huggingface.co/unsloth/Kimi-K3</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>Unsloth 已建 K3 仓库；README 转述官方介绍，未见独立跑通说明</td></tr>
-            <tr><td class="u">huggingface.co/AtomicChat/Kimi-K3-GGUF、GrEarl/Kimi-K3-GGUF</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>社区 GGUF 量化已出现；GrEarl 版本作者自述“算力不足，未充分验证”</td></tr>
-            <tr><td class="u">evolink.ai/blog/kimi-k3-api-guide</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>第三方 API 服务商已上线 K3 路由</td></tr>
-            <tr><td class="u">developer.puter.com/blog/kimi-k3-review</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>幻觉率 51%（K2.6 为 39%）；定价涨 3–4 倍，与 Sonnet 5 同价；视觉纠错实测 5/5 全对</td></tr>
-            <tr><td class="u">eesel.ai/blog/kimi-k3-review</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>确认 AA 排名第四；转引 Hacker News / LinkedIn 真实用户评价</td></tr>
+            <tr><td class="u">huggingface.co/unsloth/Kimi-K3、AtomicChat/Kimi-K3-GGUF、GrEarl/Kimi-K3-GGUF</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>社区 GGUF 量化已出现，GrEarl 自述未充分验证</td></tr>
+            <tr><td class="u">evolink.ai、developer.puter.com、eesel.ai</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>API 服务商接入；幻觉率/定价/视觉实测；转引真实用户评价</td></tr>
+            <tr><td class="u">techtimes/memeburn/yourstory/winbuzzer/the-decoder</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>5 家交叉确认幻觉率 51%；Claude Fable 5 同项 54.9%</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="sum"><b>方法论提醒</b>：渲染抓取对 K3 模型页返回的是过期缓存（占位页+倒计时，读数不动）。是搜索结果里多篇媒体实时报道触发怀疑，才改用 API 端点核实到真实状态。以后遇到"关键页面长时间不变"要主动换 API 或 <code>raw</code> 路径核实。</p>
 
       <h4>5.2 网络搜索补充</h4>
       <div class="tw">
         <table>
           <caption>检索词：Kimi K3 weights released open source huggingface July 2026</caption>
-          <thead><tr><th scope="col">来源</th><th scope="col">发文日期</th><th scope="col">命中内容</th><th scope="col">已回一级信源交叉验证</th></tr></thead>
+          <thead><tr><th scope="col">来源</th><th scope="col">日期</th><th scope="col">命中内容</th><th scope="col">交叉验证</th></tr></thead>
           <tbody>
-            <tr><td class="u">techstartups.com</td><td class="n">07-27</td><td>权重于 07-27 00:00 UTC 发布，MXFP4 量化，约 1.4TB</td><td><span class="yes">是</span> —— API 端点确认 lastModified 与文件列表</td></tr>
-            <tr><td class="u">thenewstack.io</td><td class="n">07-27</td><td>“Moonshot opens Kimi K3 weights — but few can run it”</td><td><span class="yes">是</span> —— 与硬件门槛判断一致</td></tr>
-            <tr><td class="u">notebookcheck.net</td><td class="n">07-27</td><td>权重免费发布，2.8T 参数，称“1 万亿 token 上下文”</td><td>部分是 —— 权重发布属实，上下文数字与官方 1M 不符，未采信</td></tr>
-            <tr><td class="u">kingy.ai</td><td class="n">07-27</td><td>96 分片、约 104B 激活参数、许可证摘要、硬件需求表</td><td><span class="yes">是</span> —— 许可证摘要与激活参数推算的重要交叉源，许可证原文以本篇直接读取为准</td></tr>
+            <tr><td class="u">techstartups.com、thenewstack.io</td><td class="n">07-27</td><td>权重 07-27 发布、硬件门槛高</td><td><span class="yes">是</span></td></tr>
+            <tr><td class="u">notebookcheck.net</td><td class="n">07-27</td><td>权重发布属实，但"1 万亿 token 上下文"与官方 1M 不符</td><td>部分是，该数字未采信</td></tr>
+            <tr><td class="u">kingy.ai</td><td class="n">07-27</td><td>96 分片、<b>激活参数约 104B</b>、许可证摘要、硬件需求表</td><td><span class="yes">是</span>（激活参数字段本次 API 未读到，标 T3 未做一级确认）</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="sum">计 4 条采用，3 条完全交叉验证、1 条部分验证。约 104B 激活参数来自 kingy.ai 对 model card 的解读，标记为 T3，未做一级信源确认。</p>
 
       <h4>5.3 该查未查 / 抓取失败</h4>
       <div class="tw">
