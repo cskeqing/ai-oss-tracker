@@ -113,6 +113,63 @@
     .takes>li{grid-template-columns:52px 1fr}
   }
 
+  /* ---------- 评测对比表 ---------- */
+  .cmp-wrap{overflow-x:auto; margin:14px 0 4px; border-radius:3px}
+  table.cmp{border-collapse:collapse; width:100%; font-size:13.5px; min-width:520px}
+  table.cmp caption{
+    text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--ink-3); padding:0 0 8px;
+  }
+  table.cmp th, table.cmp td{
+    padding:9px 12px; text-align:left; border-bottom:1px solid var(--rule-2);
+    font-variant-numeric:tabular-nums; white-space:nowrap;
+  }
+  table.cmp thead th{
+    border-bottom:1.5px solid var(--ink); color:var(--ink-3);
+    font-size:11px; letter-spacing:.04em; text-transform:uppercase; font-weight:600;
+  }
+  table.cmp tbody tr.self td{background:var(--open-bg); font-weight:700}
+  table.cmp tbody tr.self td:first-child{
+    border-left:3px solid var(--open); padding-left:9px;
+  }
+  table.cmp td.num{text-align:right}
+  table.cmp td.dim{color:var(--ink-3); font-weight:400}
+  @media (max-width:600px){
+    table.cmp{font-size:12px}
+    table.cmp th, table.cmp td{padding:7px 8px}
+  }
+
+  /* ---------- 外部评测 / 用户评价卡片 ---------- */
+  .revgrid{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    margin:14px 0 6px;
+  }
+  .revcard{
+    border:1px solid var(--rule); border-radius:4px; padding:13px 15px;
+    background:var(--paper);
+  }
+  .revcard .rt{
+    display:flex; align-items:baseline; justify-content:space-between; gap:8px;
+    margin-bottom:6px;
+  }
+  .revcard .rt b{font-size:13.5px; color:var(--ink)}
+  .revcard .rt span{font-size:11px; color:var(--ink-3)}
+  .revcard p{margin:0; font-size:13px; line-height:1.7; color:var(--ink-2)}
+  .revcard.neg{border-left:3px solid #a33131}
+  .revcard.pos{border-left:3px solid var(--open)}
+  .revcard.mixed{border-left:3px solid var(--promised)}
+  .quote-block{
+    margin:10px 0; padding:10px 13px; background:var(--rule-2);
+    border-radius:3px; font-size:13px; line-height:1.7; color:var(--ink-2);
+  }
+  .quote-block cite{
+    display:block; margin-top:6px; font-size:11.5px; color:var(--ink-3);
+    font-style:normal;
+  }
+  @media (max-width:600px){
+    .revgrid{grid-template-columns:1fr}
+  }
+
   .detail-head{
     margin:44px 0 0; padding-bottom:9px; border-bottom:1px solid var(--ink);
     display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px;
@@ -216,17 +273,19 @@
       <div class="no">01</div>
       <div>
         <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span></div>
-        <p class="body"><strong>权重全放出来了，独立评测里开源模型排第一，但代价是又慢又贵</strong>——大部分团队目前自建不起，只能用官方 API。许可证是自定义的 <strong>Kimi K3 License</strong>：MIT 风格可商用，但带商用门槛，不是 OSI 认证的开源许可证。</p>
+        <p class="body"><strong>权重全放出来了，独立评测全球第四、开源第一，但幻觉率涨了、还自建不起</strong>——大部分团队现阶段只能用官方 API。许可证是自定义的 <strong>Kimi K3 License</strong>：MIT 风格可商用，但带商用门槛，不是 OSI 认证的开源许可证。</p>
         <dl class="stats">
-          <div><dt>智能分数（开源第一）</dt><dd>57<span class="u">/ 中位数 25</span></dd></div>
-          <div><dt>速度（同类最低）</dt><dd class="warn">32<span class="u">tok/s</span></dd></div>
-          <div><dt>价格（同类最贵）</dt><dd class="warn">$3<span class="u">/ $15</span></dd></div>
+          <div><dt>全球排名（含闭源）</dt><dd>#4<span class="u">57 分</span></dd></div>
+          <div><dt>速度（开源最低）</dt><dd class="warn">32<span class="u">tok/s</span></dd></div>
+          <div><dt>幻觉率（较上代↑）</dt><dd class="warn">51%<span class="u">K2.6: 39%</span></dd></div>
           <div><dt>部署门槛</dt><dd class="warn">8×<span class="u">GB300</span></dd></div>
         </dl>
         <ul class="takes">
           <li><b>权重</b><span>Hugging Face 官方 API 端点核实，96 分片、2.78T 参数，仓库公开不设门槛，非媒体转述。</span></li>
+          <li><b>排名</b><span>Artificial Analysis 全球第四（57 分），只落后 3 个闭源旗舰，开源模型里第一；但幻觉率 51%，比上一代 K2.6 的 39% 明显上升。</span></li>
           <li><b>许可证</b><span>官方 LICENSE 原文已读到：年营收超 2000 万美元的 MaaS 业务要单独签约，月活超 1 亿或月收入超 2000 万美元要显著展示“Kimi K3”。防的是大厂白嫖，不是中小团队。</span></li>
           <li><b>能否自建</b><span>vLLM 官方部署配方要求最低 8×NVIDIA GB300；社区 GGUF 量化已出现但还没有充分验证的版本，普通团队现阶段只能走官方 API。</span></li>
+          <li><b>定价叙事</b><span>较 K2.6 涨 3–4 倍，跟 Claude Sonnet 5 同价，Kimi 不再是"便宜的前沿模型"，社区反应最大的是这一点。</span></li>
           <li><b>生态适配</b><span>vLLM 侧还没有 K3 正式支持文章，落后权重发布；SGLang / llama.cpp / transformers 今天未查。</span></li>
           <li><b>风险点</b><span>官方自己承认：多轮对话必须完整回传思考历史，否则输出不稳定；长周期任务里可能自作主张；整体体验仍落后 Claude Fable 5 / GPT 5.6 Sol。</span></li>
           <li><b>下游落地</b><span>目前只查到生态合作方（vLLM、5 家 API 服务商），未查到具名企业采用案例，上线不到两周，值得持续盯。</span></li>
@@ -307,14 +366,66 @@
 
       <h4>深度分析（模型进入已开源后的六项）</h4>
 
-      <p><strong>性能：官方评测领先，但第三方评测揭出一个反差。</strong>Artificial Analysis 独立评测显示 K3 拿到 Intelligence Index <strong>57 分，是目前所有开源权重模型里排名第一</strong>（第二 GLM-5.2 得 51 分，第三 MiniMax-M3 得 44 分），高于 95 个被评测的开源模型的中位数（25 分）。但同一份评测也揭出一个问题：K3 的推理速度只有 <strong>32 tokens/秒</strong>，在同量级开源模型里排在倒数（中位数 69.3），首字延迟 98.27 秒，同样是同类模型里最高的。API 定价（输入 $3、输出 $15）也是同类开源模型里最贵的一档（中位数输入 $0.58、输出 $2.20）。
-        <br><b>这说明什么：</b>K3 用“更慢、更贵”换来了“更聪明”，且这个聪明是第三方独立测出来的，不是厂商自称——这点比很多“仅次于 XX”的营销话术可信。但对追求响应速度或成本敏感的场景，K3 目前不是好选择，这是一个真实的取舍，不是简单的“最强模型”。
-        <span class="src"><span class="lv t1">T1</span>Artificial Analysis 模型页 · 渲染抓取</span></p>
+      <p><strong>性能：Artificial Analysis 全球排名第四，但速度和幻觉率是两条要盯的短板。</strong>放进全榜（含闭源）看，K3 只落后三个闭源旗舰；单看开源模型，K3 排第一。价格比闭源旗舰便宜，但在开源分组里是最贵一档；速度是同分组里最慢的一个。</p>
+
+      <div class="cmp-wrap">
+        <table class="cmp">
+          <caption>Artificial Analysis Intelligence Index 全球排名（截取相关模型）</caption>
+          <thead>
+            <tr><th>排名</th><th>模型</th><th>类型</th><th class="num">分数</th><th class="num">速度</th><th class="num">输入 / 输出价</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>#1</td><td>Claude Opus 5 (max)</td><td class="dim">闭源</td><td class="num">61</td><td class="num">55 tok/s</td><td class="num">$5 / $25</td></tr>
+            <tr><td>#2</td><td>Claude Fable 5</td><td class="dim">闭源</td><td class="num">60</td><td class="num">73 tok/s</td><td class="num">—</td></tr>
+            <tr><td>#3</td><td>GPT-5.6 Sol (max)</td><td class="dim">闭源</td><td class="num">59</td><td class="num">77 tok/s</td><td class="num">$5 / $30</td></tr>
+            <tr class="self"><td>#4</td><td>Kimi K3</td><td class="dim">开源 · 第 1</td><td class="num">57</td><td class="num">32 tok/s</td><td class="num">$3 / $15</td></tr>
+            <tr><td>#5</td><td>Grok 4.5 (high)</td><td class="dim">闭源</td><td class="num">54</td><td class="num">63 tok/s</td><td class="num">—</td></tr>
+            <tr><td>#6</td><td>GLM-5.2 (max)</td><td class="dim">开源 · 第 2</td><td class="num">51</td><td class="num">220 tok/s</td><td class="num">—</td></tr>
+            <tr><td>#9</td><td>MiniMax-M3</td><td class="dim">开源 · 第 3</td><td class="num">44</td><td class="num">83 tok/s</td><td class="num">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><b>这说明什么：</b>K3 不是"开源里比烂"，是真的挤进了全球前四，压过了 Grok、GLM、Gemini 这些同期在跑的模型（不管开源闭源）。价格也不是"贵"，跟 Opus/GPT 比反而便宜，"最贵"只在跟同为开源的模型比时才成立。真正的短板是速度：GLM-5.2 参数量（753B）比 K3 小得多，却能跑到 220 tok/s，说明 32 tok/s 未必是"模型太大"的物理下限，更可能是 KDA 这个新架构还没被 vLLM/SGLang 充分优化——07-25 的官方部署配方仍标"pre-release"。这个数字会不会随生态适配跟进而改善，是接下来最值得盯的一条。
+        <span class="src"><span class="lv t1">T1</span>Artificial Analysis（Kimi K3 / Claude Opus 5 / GPT-5.6 Sol / GLM-5.2 / DeepSeek V4 Pro 各页）· 渲染抓取</span></p>
 
       <p><strong>能否真的用起来：官方给的门槛是 8 张顶级 GPU 起步，社区量化版本已经在追。</strong>vLLM 官方 recipe 明确写着最低硬件要求是 <strong>8 张 NVIDIA GB300</strong>（单卡 288GB 显存），多节点部署才谈得上生产级流量；这不是社区博客估算的数字，是 vLLM 官方发布的部署配方原文。与此同时，社区已经有多个 GGUF 量化仓库挂出（<code>AtomicChat/Kimi-K3-GGUF</code>、<code>unsloth/Kimi-K3</code>、<code>GrEarl/Kimi-K3-GGUF</code>），但 <code>GrEarl</code> 的仓库说明里作者自己承认“没有足够算力跑通和改进这个量化版本，这是理论上的量化”——说明量化版本已经有人在做，但目前还没有一个经过充分验证、可直接稳定使用的版本。
         <br><b>这说明什么：</b>K3 的“开源”目前只对拥有多卡集群的团队是真开源，对普通开发者和中小团队，实际可用路径仍是官方 API，跟没开源时的处境差别不大。社区量化是自建的希望所在，但还在早期、不成熟阶段，观察这些仓库能不能跑通、能不能被更多人验证，是判断“K3 何时对普通人真正开放”的关键信号。
         <span class="src"><span class="lv t2">T2</span>vLLM 官方 Recipe · 渲染抓取</span>
         <span class="src"><span class="lv t3">T3</span>Hugging Face 社区量化仓库 · 搜索命中</span></p>
+
+      <h4>外部评测与真实使用反馈</h4>
+
+      <div class="revgrid">
+        <div class="revcard neg">
+          <div class="rt"><b>幻觉率上升</b><span>Artificial Analysis</span></div>
+          <p>独立测出幻觉率 <b>51%</b>，比上一代 K2.6 的 39% 明显升高——智能分数涨的同时，编造答案的比例也涨了。官方自己没提这条，是评测挖出来的。</p>
+        </div>
+        <div class="revcard neg">
+          <div class="rt"><b>定价叙事反转</b><span>eesel / puter.com</span></div>
+          <p>K2.6 约 $0.95/$4，K3 涨到 <b>$3/$15</b>，跟 <b>Claude Sonnet 5 同价</b>，涨幅 3–4 倍。Kimi 不再是"便宜的前沿模型"，社区反应最大的是这一点，不是能力。</p>
+        </div>
+        <div class="revcard pos">
+          <div class="rt"><b>视觉纠错实测</b><span>puter.com 可复现测试</span></div>
+          <p>网页截图对比找 5 处故意做的 CSS 差异，K3 <b>5/5 全找到</b>，且没有报告不存在的差异——跟幻觉率数据形成对照：具体、有明确答案的任务表现扎实。</p>
+        </div>
+        <div class="revcard mixed">
+          <div class="rt"><b>Token 效率存疑</b><span>Hacker News 用户</span></div>
+          <p>多位用户反映 K3 完成同样任务比 Fable 5 <b>耗更多 token</b>，这直接影响实际账单，是比单价更该盯的成本变量。</p>
+        </div>
+      </div>
+
+      <div class="quote-block">
+        “我用了几个小时，这是个很棒的模型。盲测的话我可能分不出它和 Fable 5 的区别。$100 的 Kimi Coding 套餐额度，大致相当于我用 $200 的 Anthropic 套餐主要跑 Fable 时的额度。”
+        <cite>InsideOutSanta · Hacker News（经 eesel.ai 转引）</cite>
+      </div>
+      <div class="quote-block">
+        “Fable 5 两周前才发布，GPT-5.6 Sol 一周前才发布。K3 是比它俩差一点，但比其他所有模型都强。所以我会说落后几周，不是几个月了……”
+        <cite>frabcus · Hacker News（经 eesel.ai 转引）</cite>
+      </div>
+
+      <p><b>这些评价放在一起说明什么：</b>K3 的"强"是真的，多篇独立评测方向一致；但"便宜"的叙事已经不成立了，这可能会削弱它对预算敏感的中小团队的吸引力——跟许可证设计形成一个有意思的反差：官方一边放宽许可证给中小团队用，一边用定价把这批人推向更谨慎的立场。
+        <span class="src"><span class="lv t3">T3</span>developer.puter.com、eesel.ai（转引 Hacker News / LinkedIn）· 搜索命中</span></p>
 
       <h4>商业策略解读</h4>
       <p>许可证条款把免费商用的门槛设在“年营收 2000 万美元”和“月活 1 亿 / 月收入 2000 万美元”，这两个数字都是相当大的规模。<strong>这说明官方判断中小团队产生的商业威胁可以忽略，真正想防的是大厂或大型 MaaS 平台白嫖权重再转卖服务</strong>。同时第 4 条豁免了“通过 Moonshot 官方产品或认证推理伙伴访问”的场景，这意味着官方仍然希望大部分流量走它自己的 API 或授权伙伴通道，权重开放更多是拉开发者生态和技术声誉，不是把主要收入让出去。往后看，如果真有大厂踩到这两条门槛，Moonshot 大概率会走“定制商业协议”而非公开涨价，这也是这类条款惯常的落地方式。</p>
@@ -402,6 +513,8 @@
             <tr><td class="u">huggingface.co/unsloth/Kimi-K3</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>Unsloth 已建 K3 仓库；README 转述官方介绍，未见独立跑通说明</td></tr>
             <tr><td class="u">huggingface.co/AtomicChat/Kimi-K3-GGUF、GrEarl/Kimi-K3-GGUF</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>社区 GGUF 量化已出现；GrEarl 版本作者自述“算力不足，未充分验证”</td></tr>
             <tr><td class="u">evolink.ai/blog/kimi-k3-api-guide</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>第三方 API 服务商已上线 K3 路由</td></tr>
+            <tr><td class="u">developer.puter.com/blog/kimi-k3-review</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>幻觉率 51%（K2.6 为 39%）；定价涨 3–4 倍，与 Sonnet 5 同价；视觉纠错实测 5/5 全对</td></tr>
+            <tr><td class="u">eesel.ai/blog/kimi-k3-review</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>确认 AA 排名第四；转引 Hacker News / LinkedIn 真实用户评价</td></tr>
           </tbody>
         </table>
       </div>
