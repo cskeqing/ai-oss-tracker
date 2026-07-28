@@ -99,6 +99,20 @@
     .stats dd{font-size:13.5px}
   }
 
+  /* ---------- 速览用的判断清单 ---------- */
+  .takes{list-style:none; margin:10px 0 0; padding:0}
+  .takes>li{
+    display:grid; grid-template-columns:64px 1fr; gap:0 10px;
+    padding:6px 0; font-size:13.5px; line-height:1.65; color:var(--ink-2);
+  }
+  .takes>li b{
+    color:var(--ink-3); font-weight:700; font-size:11.5px;
+    letter-spacing:.03em; padding-top:1px;
+  }
+  @media (max-width:600px){
+    .takes>li{grid-template-columns:52px 1fr}
+  }
+
   .detail-head{
     margin:44px 0 0; padding-bottom:9px; border-bottom:1px solid var(--ink);
     display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px;
@@ -202,14 +216,21 @@
       <div class="no">01</div>
       <div>
         <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span></div>
-        <p class="body"><strong>权重全放出来了，独立评测里开源模型排第一，但代价是又慢又贵</strong>——大部分团队目前自建不起，只能用官方 API。</p>
+        <p class="body"><strong>权重全放出来了，独立评测里开源模型排第一，但代价是又慢又贵</strong>——大部分团队目前自建不起，只能用官方 API。许可证是自定义的 <strong>Kimi K3 License</strong>：MIT 风格可商用，但带商用门槛，不是 OSI 认证的开源许可证。</p>
         <dl class="stats">
           <div><dt>智能分数（开源第一）</dt><dd>57<span class="u">/ 中位数 25</span></dd></div>
           <div><dt>速度（同类最低）</dt><dd class="warn">32<span class="u">tok/s</span></dd></div>
           <div><dt>价格（同类最贵）</dt><dd class="warn">$3<span class="u">/ $15</span></dd></div>
           <div><dt>部署门槛</dt><dd class="warn">8×<span class="u">GB300</span></dd></div>
         </dl>
-        <p class="body">许可证是自定义的 <strong>Kimi K3 License</strong>：MIT 风格可商用，但两条门槛——年营收超 2000 万美元的 MaaS 业务要单独签约，月活超 1 亿或月收入超 2000 万美元要显著展示“Kimi K3”字样。不是 OSI 认证的开源许可证，准确说法是<strong>开放权重 + 商用条件</strong>。</p>
+        <ul class="takes">
+          <li><b>权重</b><span>Hugging Face 官方 API 端点核实，96 分片、2.78T 参数，仓库公开不设门槛，非媒体转述。</span></li>
+          <li><b>许可证</b><span>官方 LICENSE 原文已读到：年营收超 2000 万美元的 MaaS 业务要单独签约，月活超 1 亿或月收入超 2000 万美元要显著展示“Kimi K3”。防的是大厂白嫖，不是中小团队。</span></li>
+          <li><b>能否自建</b><span>vLLM 官方部署配方要求最低 8×NVIDIA GB300；社区 GGUF 量化已出现但还没有充分验证的版本，普通团队现阶段只能走官方 API。</span></li>
+          <li><b>生态适配</b><span>vLLM 侧还没有 K3 正式支持文章，落后权重发布；SGLang / llama.cpp / transformers 今天未查。</span></li>
+          <li><b>风险点</b><span>官方自己承认：多轮对话必须完整回传思考历史，否则输出不稳定；长周期任务里可能自作主张；整体体验仍落后 Claude Fable 5 / GPT 5.6 Sol。</span></li>
+          <li><b>下游落地</b><span>目前只查到生态合作方（vLLM、5 家 API 服务商），未查到具名企业采用案例，上线不到两周，值得持续盯。</span></li>
+        </ul>
       </div>
     </li>
 
