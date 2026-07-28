@@ -164,7 +164,7 @@
 
   <div class="srcline">
     <span class="lbl">信息来源</span>
-    <p>Hugging Face moonshotai 组织页与 API 端点、Kimi K3 官方 LICENSE 原文、Qwen 官方研究页、Hugging Face 与 ModelScope 模型仓库、vLLM 官方博客、媒体报道（用于交叉验证权重已落地）。</p>
+    <p>Hugging Face moonshotai 组织页与 API 端点、Kimi K3 官方 LICENSE 原文、Qwen 官方研究页、Hugging Face 论文列表与模型仓库、ModelScope 模型仓库、GitHub QwenLM 组织页、vLLM 官方博客、媒体报道（用于交叉验证权重已落地）。</p>
   </div>
 
   <div class="lead">
@@ -177,7 +177,7 @@
     <li>
       <div class="no">01</div>
       <div>
-        <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span><span class="note-inline"></span></div>
+        <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span></div>
         <p class="body"><strong>2.8T 参数权重已开源</strong>，96 个 safetensors 分片、总存储 1.56 TB，Hugging Face 仓库公开不设门槛。<strong>许可证是自定义的 Kimi K3 License</strong>：MIT 风格，可用可改可商用，但带两条商用门槛——年营收超 2000 万美元的 MaaS 业务要单独签约；月活超 1 亿或月收入超 2000 万美元要显著展示“Kimi K3”字样。这不是 OSI 认证的开源许可证，准确说法是“开放权重 + 商用条件”。vLLM 官方博客到今天还没有 K3 正式支持文章，生态适配落后权重发布。</p>
       </div>
     </li>
@@ -185,8 +185,8 @@
     <li>
       <div class="no">02</div>
       <div>
-        <div class="hd"><h3>Qwen</h3><span class="pill promised">已承诺</span><span class="note">无变化</span></div>
-        <p class="body">Qwen 官方研究页与 Hugging Face 组织页均无 Qwen3.8 条目，昨日记录的官方 X 原帖仍是唯一的官方口径。距“soon”表态已 9 天，无新进展。</p>
+        <div class="hd"><h3>Qwen</h3><span class="pill promised">已承诺</span></div>
+        <p class="body">Qwen3.8 至今没有仓库、没有日期，官方能拿出手的只有 07-19 那条 X 帖子，原话是 <span class="k">“Qwen3.8 is launching and going open-weight soon!”</span>。Qwen 官方研究页和 Hugging Face 组织页都查不到这个模型的踪迹。</p>
       </div>
     </li>
 
@@ -222,13 +222,13 @@
   <details id="s2" open>
     <summary><span class="sn">2</span><span class="st">Kimi（K3）</span><span class="pill open">已开源</span></summary>
     <div class="dbody">
-      <p><strong>这是关键转折</strong>：昨天的报告写“权重仍是占位页”，今天核实权重已经上线。判定“已开源”的依据不是媒体报道，是直接查 Hugging Face API 端点和仓库文件列表得到的一级信源证据。</p>
+      <p>判定“已开源”的依据不是媒体报道，是直接查 Hugging Face API 端点和仓库文件列表得到的一级信源证据。</p>
 
       <h4>权重状态</h4>
       <ul class="facts">
         <li><span class="t">Hugging Face API 端点返回 <code>lastModified: 2026-07-27T16:29:18.000Z</code>，<code>gated: false</code>，仓库公开不设门槛。文件列表含 <code>model-00001</code> 至 <code>model-00096-of-000096.safetensors</code>，外加 LICENSE、config.json、tokenizer_config.json、多个自定义 Python 实现文件。</span>
           <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
-        <li><span class="t">safetensors 元数据显示总参数约 <strong>2.78T</strong>，已用存储约 1.45 TiB。与官方此前公布的 2.8T 参数一致。</span>
+        <li><span class="t">safetensors 元数据显示总参数约 <strong>2.78T</strong>，已用存储约 1.45 TiB。</span>
           <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
         <li><span class="t">下载量 2,850、点赞 6,249 ——点赞数远超下载量，符合“刚发布、大量关注但多数人硬件跑不动”的特征。</span>
           <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
@@ -239,7 +239,7 @@
       <h4>许可证 —— 今日解决，不再是“未验证”</h4>
       <div class="note gap">
         <b>官方 LICENSE 原文已直接读到。</b>核心条款：① 基础权限接近 MIT（可用、可改、可分发、可商用、可创作衍生作品），需保留版权与许可声明；② “Model as a Service”条款：若 MaaS 业务连续 12 个月内累计营收超 2000 万美元，须与 Moonshot 另行签约才能商用；③ 若衍生产品月活超 1 亿或月收入超 2000 万美元，须显著展示“Kimi K3”；④ 内部使用及经 Moonshot 官方产品/认证伙伴访问的场景不受②③约束；⑤ 不提供任何担保。
-        <br><b>这不是 OSI 认证的开源许可证</b>，准确说法是“开放权重，附带商用规模门槛”。此前媒体传的“Modified MIT”方向大致对，但没提两条商用条款，属简化转述。
+        <br><b>这不是 OSI 认证的开源许可证</b>，准确说法是“开放权重，附带商用规模门槛”。媒体传的“Modified MIT”方向大致对，但没提两条商用条款，属简化转述。
         <span class="src"><span class="lv t1">T1</span>Kimi K3 官方 LICENSE 原文 · 直接读取</span>
       </div>
 
@@ -251,7 +251,7 @@
       </ul>
 
       <h4>技术要点</h4>
-      <p>昨日已记录的 2.8T 参数、KDA / AttnRes 架构、16/896 专家稀疏度、三档定价，今日 API 端点数据与之一致，不再重复列出。</p>
+      <p>2.8T 参数，KDA（Kimi Delta Attention）+ AttnRes（Attention Residuals）架构，896 个专家中激活 16 个，1M token 上下文，原生视觉多模态。API 定价三档：缓存命中输入 $0.30 / 百万 token，未命中输入 $3.00，输出 $15.00。今日 API 端点数据与官方公布的参数规模一致。</p>
     </div>
   </details>
 
@@ -259,14 +259,26 @@
   <details id="s3">
     <summary><span class="sn">3</span><span class="st">Qwen</span><span class="pill promised">已承诺</span></summary>
     <div class="dbody">
-      <p>昨日记录的官方 X 原帖（@Alibaba_Qwen，07-19，“Qwen3.8 is launching and going open-weight soon!”）仍是唯一的官方口径。今日复查：</p>
+      <p>官方口径仍是 @Alibaba_Qwen 07-19 那条帖子的原话：“Qwen3.8 is launching and going open-weight soon!”——只说了“soon”，没有日期，没有仓库地址。今日复查：</p>
       <ul class="facts">
-        <li><span class="t">Qwen 官方研究页仍无 Qwen3.8 条目，最新一条仍是 07-21 的 Qwen-Image-3.0（<code>Release</code>）。</span>
+        <li><span class="t">Qwen 官方研究页仍无 Qwen3.8 条目，最新一条是 07-21 的 Qwen-Image-3.0（<code>Release</code>）。</span>
           <span class="src"><span class="lv t1">T1</span>Qwen 官方研究页 · 渲染抓取</span></li>
-        <li><span class="t">Hugging Face 的 Qwen 组织页模型列表最近更新仍是 5 天前的 Qwen3-ASR 系列，无 Qwen3.8。</span>
+        <li><span class="t">Hugging Face 的 Qwen 组织页模型列表最近更新是 5 天前的 Qwen3-ASR 系列，无 Qwen3.8。</span>
           <span class="src"><span class="lv t1">T1</span>Hugging Face Qwen 组织页 · 渲染抓取</span></li>
       </ul>
-      <p><strong>判读</strong>：Qwen3.8 距官方“soon”表态已 9 天，尚无任何仓库或研究页动作。对比 Kimi K3——官方口径是“by July 27”，权重在 07-27 当天（16:29 UTC）如期兑现。两家对“承诺”的兑现速度形成明显对比。</p>
+      <p><strong>判读</strong>：官方研究页和模型仓库都没有 Qwen3.8 的任何仓库或条目痕迹，“soon”目前仍是一句空话，没有兑现时间表可循。</p>
+
+      <h4>除 Qwen3.8 外的其他官方动态</h4>
+      <p>Qwen3.8 只是众多信号中的一个，今日按范围扩大后的核对结果如下——没有值得单独展开的新模型或新论文，但记录在案：</p>
+      <ul class="facts">
+        <li><span class="t">Hugging Face 论文列表最新仍是 8 天前的 Qwen-Music Technical Report，无新增。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face Qwen 论文列表 · 渲染抓取</span></li>
+        <li><span class="t">ModelScope 千问组织页最近更新仍是 07-22 的 Qwen3-ASR 系列，无新模型。</span>
+          <span class="src"><span class="lv t1">T1</span>ModelScope 千问组织页 · 渲染抓取</span></li>
+        <li><span class="t">GitHub 组织页（49 个仓库）里活跃度最高的两个是常规迭代，不构成模型层面的新闻：<code>qwen-code</code>（终端编码 Agent，2.64 万星）1 分钟前有提交；<code>FlashQLA</code>（Qwen 团队维护的线性注意力 kernel 库）5 小时前发布精度修复的 bugfix，该库已被 <code>flash-linear-attention</code> 项目采纳为 Qwen3.5/Qwen3.6 家族的 GDN 加速后端。</span>
+          <span class="src"><span class="lv t1">T1</span>GitHub QwenLM 组织页 · 渲染抓取</span></li>
+      </ul>
+      <p><strong>判读</strong>：Qwen 团队今天的实际工程投入在基础设施维护（推理加速库）和编码工具（qwen-code）上，模型层面（无论是 Qwen3.8 还是其他新模型）没有动作。</p>
     </div>
   </details>
 
@@ -292,7 +304,7 @@
     <div class="dbody">
 
       <div class="note warn">
-        <b>方法论提醒（今日教训）。</b>渲染抓取工具对 <code>huggingface.co/moonshotai/Kimi-K3</code> 返回的是<strong>过期缓存</strong>（占位页 + 与昨日完全一致的倒计时读数）。是网络搜索里多篇独立媒体的实时报道触发了怀疑，进而改用 API 端点直查才核实到真实状态。以后遇到“关键页面读数与前一天完全相同”，要主动换 API 端点或 <code>raw</code> 文件路径核实，不能只信渲染结果。
+        <b>方法论提醒。</b>渲染抓取工具对 <code>huggingface.co/moonshotai/Kimi-K3</code> 返回的是<strong>过期缓存</strong>（占位页 + 倒计时读数固定不动）。是网络搜索里多篇独立媒体的实时报道触发了怀疑，进而改用 API 端点直查才核实到真实状态。以后遇到“关键页面倒计时/发布状态长时间不变”，要主动换 API 端点或 <code>raw</code> 文件路径核实，不能只信渲染结果。
       </div>
 
       <h4>5.1 一级信源直查</h4>
@@ -308,6 +320,9 @@
             <tr><td class="u">huggingface.co/Qwen/models</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>无变化，无 Qwen3.8</td></tr>
             <tr><td class="u">modelscope.cn/organization/moonshotai</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>页面缓存，未反映 K3 权重更新</td></tr>
             <tr><td class="u">vllm.ai/blog/</td><td><span class="lv t2">T2</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新一篇 07-23，与 K3 无关</td></tr>
+            <tr><td class="u">huggingface.co/Qwen/papers</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新仍是 8 天前的 Qwen-Music Technical Report，无新增</td></tr>
+            <tr><td class="u">modelscope.cn/organization/qwen</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最近更新仍是 07-22 的 Qwen3-ASR 系列，无新模型</td></tr>
+            <tr><td class="u">github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>49 个仓库；活跃项目为 qwen-code（1 分钟前提交）与 FlashQLA（5 小时前 bugfix），均非模型新闻</td></tr>
           </tbody>
         </table>
       </div>
@@ -336,7 +351,7 @@
             <tr><td class="u">SGLang / llama.cpp / transformers 的 K3 支持 PR</td><td><span class="lv t2">T2</span></td><td>未查，时间不够</td></tr>
             <tr><td class="u">github.com/MoonshotAI/Kimi-K3 技术报告全文</td><td><span class="lv t1">T1</span></td><td>未查，kingy.ai 提到该报告存在，本篇未直接核实</td></tr>
             <tr><td class="u">twitter.com/Kimi_Moonshot、Qwen 官方 X 后续</td><td><span class="lv t1">T1</span></td><td>未查</td></tr>
-            <tr><td class="u">github.com/MoonshotAI、github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td>未查</td></tr>
+            <tr><td class="u">github.com/MoonshotAI</td><td><span class="lv t1">T1</span></td><td>未查</td></tr>
             <tr><td class="u">artificialanalysis.ai</td><td><span class="lv t3">T3</span></td><td>未查</td></tr>
             <tr><td class="u">config.json 中激活参数绝对值</td><td><span class="lv t1">T1</span></td><td>未直接读取，本篇引用的 104B 来自 T3 二级解读</td></tr>
           </tbody>
