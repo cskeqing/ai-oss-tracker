@@ -99,18 +99,25 @@
     .stats dd{font-size:13.5px}
   }
 
-  /* ---------- 速览用的判断清单 ---------- */
-  .takes{list-style:none; margin:10px 0 0; padding:0}
-  .takes>li{
-    display:grid; grid-template-columns:64px 1fr; gap:0 10px;
-    padding:6px 0; font-size:13.5px; line-height:1.65; color:var(--ink-2);
+  /* ---------- 速览用的判断卡片网格 ---------- */
+  .chips{
+    display:grid; grid-template-columns:1fr 1fr; gap:8px;
+    margin:12px 0 0;
   }
-  .takes>li b{
-    color:var(--ink-3); font-weight:700; font-size:11.5px;
-    letter-spacing:.03em; padding-top:1px;
+  .chip{
+    border-radius:3px; padding:9px 11px;
+    background:var(--rule-2); border-left:3px solid var(--ink-3);
   }
+  .chip.good{border-left-color:var(--open); background:var(--open-bg)}
+  .chip.bad{border-left-color:#a33131; background:#a331311a}
+  .chip.warn{border-left-color:var(--promised); background:var(--promised-bg)}
+  .chip .lbl{
+    display:block; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--ink-3); margin-bottom:3px; font-weight:700;
+  }
+  .chip p{margin:0; font-size:12.5px; line-height:1.55; color:var(--ink-2)}
   @media (max-width:600px){
-    .takes>li{grid-template-columns:52px 1fr}
+    .chips{grid-template-columns:1fr}
   }
 
   /* ---------- 评测对比表 ---------- */
@@ -280,16 +287,16 @@
           <div><dt>幻觉率（较上代↑）</dt><dd class="warn">51%<span class="u">K2.6: 39%</span></dd></div>
           <div><dt>部署门槛</dt><dd class="warn">8×<span class="u">GB300</span></dd></div>
         </dl>
-        <ul class="takes">
-          <li><b>权重</b><span>Hugging Face 官方 API 端点核实，96 分片、2.78T 参数，仓库公开不设门槛，非媒体转述。</span></li>
-          <li><b>排名</b><span>Artificial Analysis 全球第四（57 分），只落后 3 个闭源旗舰，开源模型里第一；但幻觉率 51%，比上一代 K2.6 的 39% 明显上升。</span></li>
-          <li><b>许可证</b><span>官方 LICENSE 原文已读到：年营收超 2000 万美元的 MaaS 业务要单独签约，月活超 1 亿或月收入超 2000 万美元要显著展示“Kimi K3”。防的是大厂白嫖，不是中小团队。</span></li>
-          <li><b>能否自建</b><span>vLLM 官方部署配方要求最低 8×NVIDIA GB300；社区 GGUF 量化已出现但还没有充分验证的版本，普通团队现阶段只能走官方 API。</span></li>
-          <li><b>定价叙事</b><span>较 K2.6 涨 3–4 倍，跟 Claude Sonnet 5 同价，Kimi 不再是"便宜的前沿模型"，社区反应最大的是这一点。</span></li>
-          <li><b>生态适配</b><span>vLLM 侧还没有 K3 正式支持文章，落后权重发布；SGLang / llama.cpp / transformers 今天未查。</span></li>
-          <li><b>风险点</b><span>官方自己承认：多轮对话必须完整回传思考历史，否则输出不稳定；长周期任务里可能自作主张；整体体验仍落后 Claude Fable 5 / GPT 5.6 Sol。</span></li>
-          <li><b>下游落地</b><span>目前只查到生态合作方（vLLM、5 家 API 服务商），未查到具名企业采用案例，上线不到两周，值得持续盯。</span></li>
-        </ul>
+        <div class="chips">
+          <div class="chip good"><span class="lbl">权重</span><p>API 端点核实，96 分片，仓库公开不设门槛。</p></div>
+          <div class="chip good"><span class="lbl">排名</span><p>全球第四，开源第一，只落后 3 个闭源旗舰。</p></div>
+          <div class="chip bad"><span class="lbl">幻觉率</span><p>51%，比上一代 K2.6（39%）明显上升。</p></div>
+          <div class="chip bad"><span class="lbl">定价叙事</span><p>涨 3–4 倍，追平 Sonnet 5，不再是"便宜"的代表。</p></div>
+          <div class="chip warn"><span class="lbl">能否自建</span><p>最低 8×GB300；量化版本还不成熟，现阶段只能用 API。</p></div>
+          <div class="chip warn"><span class="lbl">生态适配</span><p>vLLM 还没正式支持文章，落后权重发布。</p></div>
+          <div class="chip"><span class="lbl">许可证</span><p>防大厂白嫖，非中小团队；营收超 2000 万美元才要签约。</p></div>
+          <div class="chip"><span class="lbl">下游落地</span><p>只有生态合作方，未查到具名企业案例，上线不到两周。</p></div>
+        </div>
       </div>
     </li>
 
