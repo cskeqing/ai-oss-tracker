@@ -284,18 +284,18 @@
         <dl class="stats">
           <div><dt>全球排名（含闭源）</dt><dd>#4<span class="u">57 分</span></dd></div>
           <div><dt>速度（开源最低）</dt><dd class="warn">32<span class="u">tok/s</span></dd></div>
-          <div><dt>幻觉率（Fable 5: 55%）</dt><dd>51%<span class="u">准确率 33%→46%</span></dd></div>
+          <div><dt>准确率（AA-Omniscience）</dt><dd>46%<span class="u">K2.6: 33%</span></dd></div>
           <div><dt>部署门槛</dt><dd class="warn">8×<span class="u">GB300</span></dd></div>
         </dl>
         <div class="chips">
           <div class="chip good"><span class="lbl">权重</span><p>API 端点核实，96 分片，仓库公开不设门槛。</p></div>
           <div class="chip good"><span class="lbl">排名</span><p>全球第四，开源第一，只落后 3 个闭源旗舰。</p></div>
-          <div class="chip warn"><span class="lbl">幻觉率</span><p>51%，同步准确率也从 33%→46%（更敢答）；Claude Fable 5 同项 55%，K3 不算突出。</p></div>
+          <div class="chip good"><span class="lbl">准确率</span><p>AA-Omniscience 从 33%（K2.6）升到 46%，答对题变多了；伴随幻觉率也从 39%升到 51%，但 Claude Fable 5 同项 55%更高，不算 K3 突出短板。</p></div>
           <div class="chip bad"><span class="lbl">定价叙事</span><p>涨 3–4 倍，追平 Sonnet 5，不再是"便宜"的代表。</p></div>
           <div class="chip warn"><span class="lbl">能否自建</span><p>最低 8×GB300；量化版本还不成熟，现阶段只能用 API。</p></div>
           <div class="chip warn"><span class="lbl">生态适配</span><p>vLLM 还没正式支持文章，落后权重发布。</p></div>
           <div class="chip"><span class="lbl">许可证</span><p>防大厂白嫖，非中小团队；营收超 2000 万美元才要签约。</p></div>
-          <div class="chip"><span class="lbl">下游落地</span><p>只有生态合作方，未查到具名企业案例，上线不到两周。</p></div>
+          <div class="chip good"><span class="lbl">下游落地</span><p>下载量一天涨 35 倍（2,850→99,214）；用户评价两极但一致——认可能力、抱怨价格和 token 效率；未查到具名企业案例，上线不到两周。</p></div>
         </div>
       </div>
     </li>
@@ -378,9 +378,9 @@
       </ul>
 
       <div class="revgrid">
-        <div class="revcard neg">
-          <div class="rt"><b>幻觉率</b><span>Artificial Analysis</span></div>
-          <p>AA-Omniscience 测出 <b>51%</b>（K2.6 为 39%），5 家媒体交叉确认。但准确率同步从 33%→46%（更敢答，不是变差）；Claude Fable 5 同项 54.9%，比 K3 更高，不算突出短板。</p>
+        <div class="revcard pos">
+          <div class="rt"><b>准确率</b><span>Artificial Analysis</span></div>
+          <p>AA-Omniscience 从 33%（K2.6）升到 <b>46%</b>，5 家媒体交叉确认。伴随幻觉率同步从 39%升到 51%（更敢答，不是变差）；Claude Fable 5 同项幻觉率 54.9%，比 K3 更高，不算突出短板。</p>
         </div>
         <div class="revcard neg">
           <div class="rt"><b>定价叙事</b><span>eesel / puter.com</span></div>
@@ -403,8 +403,9 @@
       <ul class="facts">
         <li><span class="t"><strong>风险点（官方自认）</strong>：多轮对话须完整回传思考历史否则不稳定；长任务里可能自作主张；体验仍落后 Fable 5/GPT-5.6 Sol。厂商主动披露，可信度较高。</span>
           <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客</span></li>
-        <li><span class="t"><strong>下游落地</strong>：仅生态合作方信号（vLLM 部署配方、5 家 API 服务商），未查到具名企业采用案例，上线不到两周。</span>
-          <span class="src"><span class="lv t3">T3</span>AA 服务商列表、EvoLink</span></li>
+        <li><span class="t"><strong>下游落地</strong>：下载量一天涨 35 倍（2,850→99,214），是目前最直接的采用信号，但涨不代表部署成功。生态合作方信号有 vLLM 部署配方、5 家 API 服务商；Hacker News 用户评价两极但一致——认可能力、抱怨价格和 token 效率。未查到具名企业采用案例，上线不到两周。</span>
+          <span class="src"><span class="lv t1">T1</span>HF API 端点</span>
+          <span class="src"><span class="lv t3">T3</span>AA 服务商列表、EvoLink、eesel.ai（转引 HN/LinkedIn）</span></li>
         <li><span class="t"><strong>生态适配</strong>：vLLM 最新一篇（07-23）与 K3 无关，落后权重发布；SGLang/llama.cpp/transformers 今天未查。</span>
           <span class="src"><span class="lv t2">T2</span>vLLM 官方博客</span></li>
       </ul>
