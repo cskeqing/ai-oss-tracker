@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qwen / Kimi 开源动态日报 · 2026-07-28</title>
+<style>
+  :root{
+    --paper:#fbfaf8; --ink:#15181d; --ink-2:#3f464f; --ink-3:#8a929c;
+    --rule:#e2ded7; --rule-2:#efece7;
+    --dated:#1b4d8f;    --dated-bg:#e8eef8;
+    --promised:#8a5300; --promised-bg:#fbf0dc;
+    --open:#146b3c;      --open-bg:#e6f3ea;
+    --none:#6b7280;      --none-bg:#eeeff1;
+    --serif:"Songti SC","Source Han Serif SC","Noto Serif CJK SC",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#15171a; --ink:#eceef1; --ink-2:#b3bac2; --ink-3:#7d858f;
+      --rule:#2d3339; --rule-2:#232830;
+      --dated:#8ab4f8; --dated-bg:#1a2740;
+      --promised:#e2b563; --promised-bg:#33280f;
+      --open:#66cf94;    --open-bg:#14301f;
+      --none:#9aa1ab;    --none-bg:#252a31;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.85;
+    font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:760px; margin:0 auto; padding:56px 28px 64px}
+
+  .kicker{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink-3); padding-bottom:10px; border-bottom:1px solid var(--ink);
+  }
+  h1{font-family:var(--serif); font-weight:700; font-size:38px; line-height:1.3;
+     letter-spacing:-.015em; margin:22px 0 0}
+  .dateline{margin-top:10px; margin-bottom:18px; color:var(--ink-3); font-size:13px; letter-spacing:.02em}
+  .dateline span+span::before{content:"·"; margin:0 10px; color:var(--rule)}
+
+  .srcline{padding:14px 0 16px; border-top:1px solid var(--rule-2); border-bottom:1px solid var(--rule)}
+  .srcline .lbl{float:left; margin-right:12px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); line-height:2.2}
+  .srcline p{margin:0; overflow:hidden; color:var(--ink-3); font-size:12.5px; line-height:1.85}
+
+  .lead{padding:34px 0 30px; border-bottom:1px solid var(--rule)}
+  .lead h2{font-family:var(--serif); font-weight:700; font-size:29px; line-height:1.45; letter-spacing:-.01em; margin:0 0 16px; text-wrap:balance}
+  .lead h2 .mark{background:linear-gradient(transparent 62%, var(--open-bg) 62%); padding:0 2px}
+  .lead p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.9; padding-left:16px; border-left:2px solid var(--rule)}
+
+  .brief{margin:0; padding:0; list-style:none}
+  .brief>li{display:grid; grid-template-columns:44px 1fr; gap:0 18px; padding:26px 0; border-bottom:1px solid var(--rule-2)}
+  .brief>li:last-child{border-bottom:none}
+  .no{font-family:var(--serif); font-size:26px; line-height:1.25; color:var(--ink-3); font-weight:700; letter-spacing:-.02em}
+  .hd{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:4px}
+  .hd h3{font-size:19px; font-weight:700; margin:0; letter-spacing:-.005em}
+  .body{margin:0; color:var(--ink-2); font-size:15px; line-height:1.9}
+  .body strong{color:var(--ink); font-weight:650}
+
+  .quote{margin:10px 0 0; padding:12px 14px; background:var(--rule-2); border-radius:2px; border-left:2px solid var(--open); font-size:13.5px; line-height:1.8; color:var(--ink-2)}
+  .quote .en{font-family:var(--mono); font-size:12.5px; color:var(--ink)}
+  .quote .cn{display:block; margin-top:4px; color:var(--ink-3)}
+
+  .pill{font-size:11.5px; font-weight:700; letter-spacing:.04em; padding:2px 9px; border-radius:2px; white-space:nowrap}
+  .pill.dated{color:var(--dated); background:var(--dated-bg)}
+  .pill.promised{color:var(--promised); background:var(--promised-bg)}
+  .pill.open{color:var(--open); background:var(--open-bg)}
+  .pill.none{color:var(--none); background:var(--none-bg)}
+
+  .k{color:var(--ink); font-weight:650; border-bottom:1px solid var(--rule); padding-bottom:1px}
+  code{font-family:var(--mono); font-size:.86em; color:var(--ink)}
+
+  .detail-head{
+    margin:44px 0 0; padding-bottom:9px; border-bottom:1px solid var(--ink);
+    display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+  }
+  .detail-head nav{display:flex; flex-wrap:wrap; gap:14px; letter-spacing:.02em; text-transform:none}
+  .detail-head nav a{font-size:12.5px; color:var(--ink-3); text-decoration:none; border-bottom:1px solid transparent; padding-bottom:1px}
+  .detail-head nav a:hover,.detail-head nav a:focus{color:var(--ink); border-bottom-color:var(--ink)}
+  details:target>summary .st{text-decoration:underline; text-decoration-thickness:2px}
+  .totop{display:inline-block; margin-top:4px; font-size:12px; color:var(--ink-3); text-decoration:none; border-bottom:1px solid var(--rule)}
+  .totop:hover,.totop:focus{color:var(--ink)}
+
+  details{border-bottom:1px solid var(--rule)}
+  details>summary{display:flex; align-items:baseline; gap:12px; cursor:pointer; padding:20px 0; list-style:none}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::after{content:"＋"; margin-left:auto; color:var(--ink-3); font-size:15px; line-height:1.6}
+  details[open]>summary::after{content:"−"}
+  details>summary:hover .st,details>summary:focus-visible .st{text-decoration:underline}
+  .sn{font-family:var(--serif); font-size:15px; font-weight:700; color:var(--ink-3); min-width:16px}
+  .st{font-family:var(--serif); font-size:21px; font-weight:700; letter-spacing:-.01em}
+  .dbody{padding:0 0 26px}
+  .dbody>p{margin:0 0 14px; color:var(--ink-2); font-size:15px}
+  h4{font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin:24px 0 12px; font-weight:700}
+  h4:first-child{margin-top:4px}
+
+  ul.facts{list-style:none; margin:0 0 4px; padding:0}
+  ul.facts>li{padding:13px 0; border-top:1px solid var(--rule-2); font-size:14.5px; line-height:1.85}
+  ul.facts>li>span.t{display:block; color:var(--ink-2)}
+  ul.facts>li>span.t strong{color:var(--ink)}
+  ol.watch{margin:0; padding-left:20px; color:var(--ink-2); font-size:14.5px}
+  ol.watch li{padding:6px 0}
+  ol.watch li::marker{color:var(--ink-3); font-family:var(--serif)}
+
+  .src{display:inline-block; margin-top:6px; margin-right:8px; font-family:var(--mono); font-size:11px; letter-spacing:.01em; color:var(--ink-3)}
+  .src .lv{font-weight:700; margin-right:4px}
+  .lv.t1{color:var(--open)}
+  .lv.t2{color:var(--dated)}
+  .lv.t3{color:var(--promised)}
+
+  .note{margin:14px 0; padding:12px 15px; font-size:14px; line-height:1.85; background:var(--rule-2); border-left:2px solid var(--dated); color:var(--ink-2)}
+  .note.gap{border-left-color:var(--promised)}
+  .note.warn{border-left-color:#a33131}
+  .note b{color:var(--ink)}
+
+  .tw{overflow-x:auto; margin:4px 0 8px}
+  table{border-collapse:collapse; width:100%; font-size:13px; min-width:480px}
+  caption{text-align:left; color:var(--ink-3); font-size:12px; padding:0 0 8px}
+  th,td{padding:8px 12px 8px 0; text-align:left; border-bottom:1px solid var(--rule-2); vertical-align:top}
+  thead th{border-bottom:1px solid var(--ink); color:var(--ink-3); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap}
+  td.n{white-space:nowrap; color:var(--ink-2)}
+  td.u{font-family:var(--mono); font-size:11.5px; word-break:break-all}
+  tr.hl td{background:var(--open-bg)}
+  .yes{color:var(--open); font-weight:700}
+  .no{color:#a33131; font-weight:700}
+  .sum{color:var(--ink-3); font-size:12.5px; margin:6px 0 0}
+
+  @media (max-width:600px){
+    .srcline .lbl{float:none; display:block; margin-bottom:4px; line-height:1.6}
+    .sheet{padding:36px 20px 48px}
+    h1{font-size:29px}
+    .lead h2{font-size:23px}
+    .brief>li{grid-template-columns:30px 1fr; gap:0 12px; padding:22px 0}
+    .no{font-size:20px}
+    .hd h3{font-size:17px}
+    .st{font-size:18px}
+  }
+  @media print{
+    body{background:#fff}
+    .sheet{padding:0; max-width:none}
+    .brief>li,.lead{break-inside:avoid}
+  }
+</style>
+</head>
+<body id="top">
+<div class="sheet">
+
+  <div class="kicker">
+    <span>每日追踪 / Daily Brief</span>
+    <span class="r">No. 02</span>
+  </div>
+
+  <h1>Qwen / Kimi 开源动态日报</h1>
+  <p class="dateline">
+    <span>2026-07-28　周二</span>
+    <span>取证时间 09:40–10:10 CST</span>
+  </p>
+
+  <div class="srcline">
+    <span class="lbl">信息来源</span>
+    <p>Hugging Face moonshotai 组织页与 API 端点、Kimi K3 官方 LICENSE 原文、Qwen 官方研究页、Hugging Face 与 ModelScope 模型仓库、vLLM 官方博客、媒体报道（用于交叉验证权重已落地）。</p>
+  </div>
+
+  <div class="lead">
+    <h2>Kimi K3 权重<span class="mark">已经落地</span>。</h2>
+    <p>Hugging Face 仓库不再是占位页，API 端点显示最后更新时间 2026-07-27 16:29 UTC，96 个 safetensors 分片、LICENSE、config.json 全部到位。这是本项目追踪以来 K3 的首次实质性状态变化。</p>
+  </div>
+
+  <ul class="brief">
+
+    <li>
+      <div class="no">01</div>
+      <div>
+        <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span><span class="note-inline"></span></div>
+        <p class="body"><code>huggingface.co/moonshotai/Kimi-K3</code> 已是正式模型页：96 个权重分片，总存储 1.56 TB，<strong>LICENSE 原文已读到</strong>——自定义许可证，MIT 风格但带两条商用门槛（年营收超 2000 万美元的 MaaS 业务要单独签约；月活超 1 亿或月收入超 2000 万美元要显著展示“Kimi K3”）。这不是 OSI 认证的开源许可证。vLLM 官方博客到今天还没有 K3 正式支持文章，生态适配落后权重发布。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">02</div>
+      <div>
+        <div class="hd"><h3>Qwen</h3><span class="pill promised">已承诺</span><span class="note">无变化</span></div>
+        <p class="body">Qwen 官方研究页与 Hugging Face 组织页均无 Qwen3.8 条目，昨日记录的官方 X 原帖仍是唯一的官方口径。距“soon”表态已 9 天，无新进展。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">03</div>
+      <div>
+        <div class="hd"><h3>第三家</h3><span class="pill none">暂无</span></div>
+        <p class="body">今日没有够格的第三家开源模型。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">04</div>
+      <div>
+        <div class="hd"><h3>明日盯点</h3></div>
+        <p class="body">K3 的 <code>config.json</code> 是否公开激活参数绝对值；vLLM / SGLang 的正式支持文章是否发布；权重下载量与点赞数的第一周增长曲线。</p>
+      </div>
+    </li>
+
+  </ul>
+
+  <div class="detail-head">
+    <span>详细内容 / Detail</span>
+    <nav aria-label="正文导航">
+      <a href="#s2">2 Kimi</a>
+      <a href="#s3">3 Qwen</a>
+      <a href="#s4">4 明日盯点</a>
+      <a href="#s5">5 取证清单</a>
+    </nav>
+  </div>
+
+  <!-- ===== 2 Kimi ===== -->
+  <details id="s2" open>
+    <summary><span class="sn">2</span><span class="st">Kimi（K3）</span><span class="pill open">已开源</span></summary>
+    <div class="dbody">
+      <p><strong>这是关键转折</strong>：昨天的报告写“权重仍是占位页”，今天核实权重已经上线。判定“已开源”的依据不是媒体报道，是直接查 Hugging Face API 端点和仓库文件列表得到的一级信源证据。</p>
+
+      <h4>权重状态</h4>
+      <ul class="facts">
+        <li><span class="t">Hugging Face API 端点返回 <code>lastModified: 2026-07-27T16:29:18.000Z</code>，<code>gated: false</code>，仓库公开不设门槛。文件列表含 <code>model-00001</code> 至 <code>model-00096-of-000096.safetensors</code>，外加 LICENSE、config.json、tokenizer_config.json、多个自定义 Python 实现文件。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
+        <li><span class="t">safetensors 元数据显示总参数约 <strong>2.78T</strong>，已用存储约 1.45 TiB。与官方此前公布的 2.8T 参数一致。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
+        <li><span class="t">下载量 2,850、点赞 6,249 ——点赞数远超下载量，符合“刚发布、大量关注但多数人硬件跑不动”的特征。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
+        <li><span class="t">已有社区 Space 接入：<code>akhaliq/Kimi-K3</code>、<code>lalopenguin/kimi-k3-chat</code> 等 5 个演示应用挂在模型页下。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face API 端点 · 直接查询 JSON</span></li>
+      </ul>
+
+      <h4>许可证 —— 今日解决，不再是“未验证”</h4>
+      <div class="note gap">
+        <b>官方 LICENSE 原文已直接读到。</b>核心条款：① 基础权限接近 MIT（可用、可改、可分发、可商用、可创作衍生作品），需保留版权与许可声明；② “Model as a Service”条款：若 MaaS 业务连续 12 个月内累计营收超 2000 万美元，须与 Moonshot 另行签约才能商用；③ 若衍生产品月活超 1 亿或月收入超 2000 万美元，须显著展示“Kimi K3”；④ 内部使用及经 Moonshot 官方产品/认证伙伴访问的场景不受②③约束；⑤ 不提供任何担保。
+        <br><b>这不是 OSI 认证的开源许可证</b>，准确说法是“开放权重，附带商用规模门槛”。此前媒体传的“Modified MIT”方向大致对，但没提两条商用条款，属简化转述。
+        <span class="src"><span class="lv t1">T1</span>Kimi K3 官方 LICENSE 原文 · 直接读取</span>
+      </div>
+
+      <h4>生态适配 —— 落后权重发布</h4>
+      <ul class="facts">
+        <li><span class="t">vLLM 官方博客最新一篇仍是 07-23 的《Announcing vLLM AFD Plugin》，与 K3 无关。上一篇 K3 相关文章仍是 07-22 的生产级支持预览，<strong>权重发布后 vLLM 侧还没有对应的正式支持文章</strong>，两者之间有滞后。</span>
+          <span class="src"><span class="lv t2">T2</span>vLLM 官方博客 · 渲染抓取</span></li>
+        <li><span class="t">SGLang、llama.cpp、transformers 的 K3 支持状态今天没查，见取证清单 5.3。</span></li>
+      </ul>
+
+      <h4>技术要点</h4>
+      <p>昨日已记录的 2.8T 参数、KDA / AttnRes 架构、16/896 专家稀疏度、三档定价，今日 API 端点数据与之一致，不再重复列出。</p>
+    </div>
+  </details>
+
+  <!-- ===== 3 Qwen ===== -->
+  <details id="s3">
+    <summary><span class="sn">3</span><span class="st">Qwen</span><span class="pill promised">已承诺</span></summary>
+    <div class="dbody">
+      <p>昨日记录的官方 X 原帖（@Alibaba_Qwen，07-19，“Qwen3.8 is launching and going open-weight soon!”）仍是唯一的官方口径。今日复查：</p>
+      <ul class="facts">
+        <li><span class="t">Qwen 官方研究页仍无 Qwen3.8 条目，最新一条仍是 07-21 的 Qwen-Image-3.0（<code>Release</code>）。</span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方研究页 · 渲染抓取</span></li>
+        <li><span class="t">Hugging Face 的 Qwen 组织页模型列表最近更新仍是 5 天前的 Qwen3-ASR 系列，无 Qwen3.8。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face Qwen 组织页 · 渲染抓取</span></li>
+      </ul>
+      <p><strong>判读</strong>：Qwen3.8 距官方“soon”表态已 9 天，尚无任何仓库或研究页动作。对比 Kimi K3——官方口径是“by July 27”，权重在 07-27 当天（16:29 UTC）如期兑现。两家对“承诺”的兑现速度形成明显对比。</p>
+    </div>
+  </details>
+
+  <!-- ===== 4 明日盯点 ===== -->
+  <details id="s4">
+    <summary><span class="sn">4</span><span class="st">明日盯点</span></summary>
+    <div class="dbody">
+      <ol class="watch">
+        <li>K3 的 <code>config.json</code> 是否公开激活参数绝对值（896 专家取 16 个，缺具体 B 数）。</li>
+        <li>vLLM / SGLang 是否发布 K3 正式支持文章（区别于 07-22 的预览）。</li>
+        <li>K3 权重下载量与点赞数的第一周增长曲线。</li>
+        <li>K3 技术报告全文（github.com/MoonshotAI/Kimi-K3）是否已发布，本次仅由二级来源提及，未直接核实。</li>
+        <li>Qwen 官方研究页与 Hugging Face、ModelScope 的 Qwen 组织页 —— Qwen3.8 条目或仓库是否出现。</li>
+        <li>Artificial Analysis —— K3 的第一份第三方独立跑分。</li>
+        <li>补齐今天没查的 Tier-1 页面（两家官方 X、MoonshotAI 与 QwenLM 的 GitHub）。</li>
+      </ol>
+    </div>
+  </details>
+
+  <!-- ===== 5 取证清单 ===== -->
+  <details id="s5">
+    <summary><span class="sn">5</span><span class="st">取证清单</span></summary>
+    <div class="dbody">
+
+      <div class="note warn">
+        <b>方法论提醒（今日教训）。</b>渲染抓取工具对 <code>huggingface.co/moonshotai/Kimi-K3</code> 返回的是<strong>过期缓存</strong>（占位页 + 与昨日完全一致的倒计时读数）。是网络搜索里多篇独立媒体的实时报道触发了怀疑，进而改用 API 端点直查才核实到真实状态。以后遇到“关键页面读数与前一天完全相同”，要主动换 API 端点或 <code>raw</code> 文件路径核实，不能只信渲染结果。
+      </div>
+
+      <h4>5.1 一级信源直查</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源</th><th scope="col">层级</th><th scope="col">方式</th><th scope="col">结果</th><th scope="col">读到的关键信息</th></tr></thead>
+          <tbody>
+            <tr><td class="u">huggingface.co/moonshotai/Kimi-K3（渲染页面）</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="no">过期缓存</span></td><td>显示占位页与倒计时，与实际状态不符</td></tr>
+            <tr class="hl"><td class="u">api/models/moonshotai/Kimi-K3</td><td><span class="lv t1">T1</span></td><td class="n">API 直查</td><td><span class="yes">成功</span></td><td>96 分片、lastModified 07-27 16:29 UTC、2.78T、1.45 TiB、下载 2850、点赞 6249</td></tr>
+            <tr class="hl"><td class="u">moonshotai/Kimi-K3/raw/main/LICENSE</td><td><span class="lv t1">T1</span></td><td class="n">直接读取</td><td><span class="yes">成功</span></td><td>Kimi K3 License 全文，含两条商用门槛条款</td></tr>
+            <tr><td class="u">huggingface.co/moonshotai</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>组织页 Collections 未更新，仍显示 K2.7-Code（页面缓存滞后于 API）</td></tr>
+            <tr><td class="u">qwen.ai/research</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>无变化，最新仍是 07-21 Qwen-Image-3.0</td></tr>
+            <tr><td class="u">huggingface.co/Qwen/models</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>无变化，无 Qwen3.8</td></tr>
+            <tr><td class="u">modelscope.cn/organization/moonshotai</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>页面缓存，未反映 K3 权重更新</td></tr>
+            <tr><td class="u">vllm.ai/blog/</td><td><span class="lv t2">T2</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新一篇 07-23，与 K3 无关</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>5.2 网络搜索补充</h4>
+      <div class="tw">
+        <table>
+          <caption>检索词：Kimi K3 weights released open source huggingface July 2026</caption>
+          <thead><tr><th scope="col">来源</th><th scope="col">发文日期</th><th scope="col">命中内容</th><th scope="col">已回一级信源交叉验证</th></tr></thead>
+          <tbody>
+            <tr><td class="u">techstartups.com</td><td class="n">07-27</td><td>权重于 07-27 00:00 UTC 发布，MXFP4 量化，约 1.4TB</td><td><span class="yes">是</span> —— API 端点确认 lastModified 与文件列表</td></tr>
+            <tr><td class="u">thenewstack.io</td><td class="n">07-27</td><td>“Moonshot opens Kimi K3 weights — but few can run it”</td><td><span class="yes">是</span> —— 与硬件门槛判断一致</td></tr>
+            <tr><td class="u">notebookcheck.net</td><td class="n">07-27</td><td>权重免费发布，2.8T 参数，称“1 万亿 token 上下文”</td><td>部分是 —— 权重发布属实，上下文数字与官方 1M 不符，未采信</td></tr>
+            <tr><td class="u">kingy.ai</td><td class="n">07-27</td><td>96 分片、约 104B 激活参数、许可证摘要、硬件需求表</td><td><span class="yes">是</span> —— 许可证摘要与激活参数推算的重要交叉源，许可证原文以本篇直接读取为准</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sum">计 4 条采用，3 条完全交叉验证、1 条部分验证。约 104B 激活参数来自 kingy.ai 对 model card 的解读，标记为 T3，未做一级信源确认。</p>
+
+      <h4>5.3 该查未查 / 抓取失败</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源 / 对象</th><th scope="col">层级</th><th scope="col">结果或原因</th></tr></thead>
+          <tbody>
+            <tr><td class="u">huggingface.co/moonshotai/Kimi-K3（渲染页面）</td><td><span class="lv t1">T1</span></td><td><span class="no">确认为过期缓存</span>，已用 API 端点覆盖</td></tr>
+            <tr><td class="u">SGLang / llama.cpp / transformers 的 K3 支持 PR</td><td><span class="lv t2">T2</span></td><td>未查，时间不够</td></tr>
+            <tr><td class="u">github.com/MoonshotAI/Kimi-K3 技术报告全文</td><td><span class="lv t1">T1</span></td><td>未查，kingy.ai 提到该报告存在，本篇未直接核实</td></tr>
+            <tr><td class="u">twitter.com/Kimi_Moonshot、Qwen 官方 X 后续</td><td><span class="lv t1">T1</span></td><td>未查</td></tr>
+            <tr><td class="u">github.com/MoonshotAI、github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td>未查</td></tr>
+            <tr><td class="u">artificialanalysis.ai</td><td><span class="lv t3">T3</span></td><td>未查</td></tr>
+            <tr><td class="u">config.json 中激活参数绝对值</td><td><span class="lv t1">T1</span></td><td>未直接读取，本篇引用的 104B 来自 T3 二级解读</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="sum">层级说明：T1 厂商官方页面与模型仓库（判定“是否已开源”只认这一层）· T2 推理框架等生态适配信号 · T3 媒体与社区（只作线索）。</p>
+      <a class="totop" href="#top">回到顶部 ↑</a>
+    </div>
+  </details>
+
+</div>
+
+<script>
+  function openTarget(){
+    var el = location.hash ? document.querySelector(location.hash) : null;
+    if (el && el.tagName === 'DETAILS') el.open = true;
+  }
+  window.addEventListener('hashchange', openTarget);
+  openTarget();
+</script>
+</body>
+</html>

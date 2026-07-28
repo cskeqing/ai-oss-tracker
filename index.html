@@ -10,6 +10,7 @@
     --rule:#e2ded7; --rule-2:#efece7;
     --dated:#1b4d8f;    --dated-bg:#e8eef8;
     --promised:#8a5300; --promised-bg:#fbf0dc;
+    --open:#146b3c;     --open-bg:#e6f3ea;
     --serif:"Songti SC","Source Han Serif SC","Noto Serif CJK SC",Georgia,serif;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   }
@@ -19,6 +20,7 @@
       --rule:#2d3339; --rule-2:#232830;
       --dated:#8ab4f8; --dated-bg:#1a2740;
       --promised:#e2b563; --promised-bg:#33280f;
+      --open:#66cf94;     --open-bg:#14301f;
     }
   }
   *{box-sizing:border-box}
@@ -49,6 +51,7 @@
   .pill{font-size:11px; font-weight:700; letter-spacing:.04em; padding:2px 8px; border-radius:2px}
   .pill.dated{color:var(--dated); background:var(--dated-bg)}
   .pill.promised{color:var(--promised); background:var(--promised-bg)}
+  .pill.open{color:var(--open); background:var(--open-bg)}
   footer{margin-top:34px; padding-top:18px; border-top:1px solid var(--ink);
          color:var(--ink-3); font-size:12.5px}
   @media (max-width:600px){
@@ -71,6 +74,16 @@
   <p class="intro">每天早上盘点 Qwen 与 Kimi 的开源计划与信息。判定"是否已开源"只认厂商官方页面与模型仓库，媒体报道只作线索。</p>
 
   <ul class="list">
+    <li>
+      <a href="reports/2026-07-28.html">
+        <span class="d">07-28</span>
+        <span class="t">Kimi K3 权重已经落地；许可证原文核实，附商用门槛条款</span>
+        <span class="tags">
+          <span class="pill open">K3 已开源</span>
+          <span class="pill promised">Qwen 已承诺</span>
+        </span>
+      </a>
+    </li>
     <li>
       <a href="reports/2026-07-27.html">
         <span class="d">07-27</span>
