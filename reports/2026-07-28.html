@@ -164,7 +164,7 @@
 
   <div class="srcline">
     <span class="lbl">信息来源</span>
-    <p>Hugging Face moonshotai 组织页与 API 端点、Kimi K3 官方 LICENSE 原文、Qwen 官方研究页、Hugging Face 论文列表与模型仓库、ModelScope 模型仓库、GitHub QwenLM 组织页、vLLM 官方博客、媒体报道（用于交叉验证权重已落地）。</p>
+    <p>Hugging Face moonshotai 组织页与 API 端点、Kimi K3 官方 LICENSE 原文、Qwen 官方研究页、Hugging Face 论文列表与模型仓库、ModelScope 模型仓库、GitHub QwenLM 组织页、vLLM 官方博客与官方部署配方、Artificial Analysis 独立评测、媒体与社区报道（用于交叉验证权重落地、量化进展、下游落地）。</p>
   </div>
 
   <div class="lead">
@@ -178,7 +178,7 @@
       <div class="no">01</div>
       <div>
         <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span></div>
-        <p class="body"><strong>2.8T 参数权重已开源</strong>，96 个 safetensors 分片、总存储 1.56 TB，Hugging Face 仓库公开不设门槛。<strong>许可证是自定义的 Kimi K3 License</strong>：MIT 风格，可用可改可商用，但带两条商用门槛——年营收超 2000 万美元的 MaaS 业务要单独签约；月活超 1 亿或月收入超 2000 万美元要显著展示“Kimi K3”字样。这不是 OSI 认证的开源许可证，准确说法是“开放权重 + 商用条件”。vLLM 官方博客到今天还没有 K3 正式支持文章，生态适配落后权重发布。</p>
+        <p class="body"><strong>2.8T 参数权重已开源</strong>，96 个 safetensors 分片、总存储 1.56 TB，Hugging Face 仓库公开不设门槛。<strong>许可证是自定义的 Kimi K3 License</strong>：MIT 风格，可用可改可商用，但带两条商用门槛——年营收超 2000 万美元的 MaaS 业务要单独签约；月活超 1 亿或月收入超 2000 万美元要显著展示“Kimi K3”字样。这不是 OSI 认证的开源许可证，准确说法是“开放权重 + 商用条件”。<strong>独立评测 Artificial Analysis 显示 K3 是当前开源模型里智能分数第一（57 分），但速度和价格也是同类最差</strong>（32 tok/s、输入 $3/输出 $15），部署门槛是 8 张 NVIDIA GB300 起步——强但贵，且普通团队目前还自建不起。</p>
       </div>
     </li>
 
@@ -252,6 +252,28 @@
 
       <h4>技术要点</h4>
       <p>2.8T 参数，KDA（Kimi Delta Attention）+ AttnRes（Attention Residuals）架构，896 个专家中激活 16 个，1M token 上下文，原生视觉多模态。API 定价三档：缓存命中输入 $0.30 / 百万 token，未命中输入 $3.00，输出 $15.00。今日 API 端点数据与官方公布的参数规模一致。</p>
+
+      <h4>深度分析（模型进入已开源后的六项）</h4>
+
+      <p><strong>性能：官方评测领先，但第三方评测揭出一个反差。</strong>Artificial Analysis 独立评测显示 K3 拿到 Intelligence Index <strong>57 分，是目前所有开源权重模型里排名第一</strong>（第二 GLM-5.2 得 51 分，第三 MiniMax-M3 得 44 分），高于 95 个被评测的开源模型的中位数（25 分）。但同一份评测也揭出一个问题：K3 的推理速度只有 <strong>32 tokens/秒</strong>，在同量级开源模型里排在倒数（中位数 69.3），首字延迟 98.27 秒，同样是同类模型里最高的。API 定价（输入 $3、输出 $15）也是同类开源模型里最贵的一档（中位数输入 $0.58、输出 $2.20）。
+        <br><b>这说明什么：</b>K3 用“更慢、更贵”换来了“更聪明”，且这个聪明是第三方独立测出来的，不是厂商自称——这点比很多“仅次于 XX”的营销话术可信。但对追求响应速度或成本敏感的场景，K3 目前不是好选择，这是一个真实的取舍，不是简单的“最强模型”。
+        <span class="src"><span class="lv t1">T1</span>Artificial Analysis 模型页 · 渲染抓取</span></p>
+
+      <p><strong>能否真的用起来：官方给的门槛是 8 张顶级 GPU 起步，社区量化版本已经在追。</strong>vLLM 官方 recipe 明确写着最低硬件要求是 <strong>8 张 NVIDIA GB300</strong>（单卡 288GB 显存），多节点部署才谈得上生产级流量；这不是社区博客估算的数字，是 vLLM 官方发布的部署配方原文。与此同时，社区已经有多个 GGUF 量化仓库挂出（<code>AtomicChat/Kimi-K3-GGUF</code>、<code>unsloth/Kimi-K3</code>、<code>GrEarl/Kimi-K3-GGUF</code>），但 <code>GrEarl</code> 的仓库说明里作者自己承认“没有足够算力跑通和改进这个量化版本，这是理论上的量化”——说明量化版本已经有人在做，但目前还没有一个经过充分验证、可直接稳定使用的版本。
+        <br><b>这说明什么：</b>K3 的“开源”目前只对拥有多卡集群的团队是真开源，对普通开发者和中小团队，实际可用路径仍是官方 API，跟没开源时的处境差别不大。社区量化是自建的希望所在，但还在早期、不成熟阶段，观察这些仓库能不能跑通、能不能被更多人验证，是判断“K3 何时对普通人真正开放”的关键信号。
+        <span class="src"><span class="lv t2">T2</span>vLLM 官方 Recipe · 渲染抓取</span>
+        <span class="src"><span class="lv t3">T3</span>Hugging Face 社区量化仓库 · 搜索命中</span></p>
+
+      <h4>商业策略解读</h4>
+      <p>许可证条款把免费商用的门槛设在“年营收 2000 万美元”和“月活 1 亿 / 月收入 2000 万美元”，这两个数字都是相当大的规模。<strong>这说明官方判断中小团队产生的商业威胁可以忽略，真正想防的是大厂或大型 MaaS 平台白嫖权重再转卖服务</strong>。同时第 4 条豁免了“通过 Moonshot 官方产品或认证推理伙伴访问”的场景，这意味着官方仍然希望大部分流量走它自己的 API 或授权伙伴通道，权重开放更多是拉开发者生态和技术声誉，不是把主要收入让出去。往后看，如果真有大厂踩到这两条门槛，Moonshot 大概率会走“定制商业协议”而非公开涨价，这也是这类条款惯常的落地方式。</p>
+
+      <h4>官方承认的风险点</h4>
+      <p>K3 技术博客里官方自己写了三条局限：思考历史必须完整回传给模型，否则输出会不稳定；模型在长周期任务里遇到模糊指令时容易自作主张、不按用户预期执行；整体用户体验和 Claude Fable 5、GPT 5.6 Sol 相比有明显差距。这类是厂商主动承认的，不是媒体挑刺，可信度更高。<strong>实际影响</strong>：第一条意味着接入 K3 的工具链必须严格遵守官方的多轮对话协议，随便截断上下文会导致效果变差；第二条对需要模型严格听指令、不能自由发挥的场景（比如合规、金融流程）是个减分项。
+        <span class="src"><span class="lv t1">T1</span>Kimi 官方技术博客 · 渲染抓取</span></p>
+
+      <h4>下游落地信号</h4>
+      <p>目前查到的是生态合作方而非终端企业客户：vLLM 官方发布了针对 K3 的部署配方（NVIDIA、AMD 硬件路径均有），Artificial Analysis 显示已有 <strong>5 家 API 服务商</strong>上架 K3（包括 EvoLink 等第三方平台，非 Moonshot 官方渠道）。搜索未查到具名的企业采用案例（如“某公司用 K3 替换了什么系统”），只查到面向 life sciences / 医疗等受监管行业的第三方分析文章在讨论“能不能”部署 K3，还没有实际部署的公开案例。<strong>这说明什么</strong>：K3 上线不到两周，目前的下游信号还停留在“推理服务商愿意接入”这一层，还没有看到终端企业公开宣布采用，这类信号通常需要几周到几个月才会出现，是接下来几天值得持续盯的点。
+        <span class="src"><span class="lv t3">T3</span>Artificial Analysis 服务商列表、EvoLink 官方博客、行业分析文章 · 搜索命中</span></p>
     </div>
   </details>
 
@@ -323,6 +345,11 @@
             <tr><td class="u">huggingface.co/Qwen/papers</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新仍是 8 天前的 Qwen-Music Technical Report，无新增</td></tr>
             <tr><td class="u">modelscope.cn/organization/qwen</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最近更新仍是 07-22 的 Qwen3-ASR 系列，无新模型</td></tr>
             <tr><td class="u">github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>49 个仓库；活跃项目为 qwen-code（1 分钟前提交）与 FlashQLA（5 小时前 bugfix），均非模型新闻</td></tr>
+            <tr class="hl"><td class="u">artificialanalysis.ai/models/kimi-k3</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>Intelligence Index 57 分（开源模型第一）；速度 32 tok/s（同类最低）；输入 $3/输出 $15（同类最贵）；5 家 API 服务商上架</td></tr>
+            <tr class="hl"><td class="u">recipes.vllm.ai/moonshotai/Kimi-K3</td><td><span class="lv t2">T2</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>官方部署配方：最低 8×NVIDIA GB300 或 8×AMD MI355X/MI350X，多节点生产部署；配方日期 07-25</td></tr>
+            <tr><td class="u">huggingface.co/unsloth/Kimi-K3</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>Unsloth 已建 K3 仓库；README 转述官方介绍，未见独立跑通说明</td></tr>
+            <tr><td class="u">huggingface.co/AtomicChat/Kimi-K3-GGUF、GrEarl/Kimi-K3-GGUF</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>社区 GGUF 量化已出现；GrEarl 版本作者自述“算力不足，未充分验证”</td></tr>
+            <tr><td class="u">evolink.ai/blog/kimi-k3-api-guide</td><td><span class="lv t3">T3</span></td><td class="n">搜索命中</td><td><span class="yes">成功</span></td><td>第三方 API 服务商已上线 K3 路由</td></tr>
           </tbody>
         </table>
       </div>
