@@ -243,8 +243,8 @@
       <ul class="facts">
         <li><span class="t"><strong>国产芯生态扩展到三家</strong>：继海光 DCU（07-28 报道，性能损耗 12% 以内）之后，华为昇腾（Ascend 950 系列、Atlas A3，Ascend CANN 官方公告）和摩尔线程（MTT S5000，MUSA 软件栈）今天分别公告完成 K3 适配并实现稳定运行。三家的适配都是官方/合作方自己公告的结果，暂无第三方独立复现的性能数字。</span>
           <span class="src"><span class="lv t3">T3</span>aibase.com、futunn.com</span></li>
-        <li><span class="t"><strong>18 家美国公司连夜部署，舆论反差被放大</strong>：网友 Ding 整理的名单显示，在美国政府和 Anthropic 等公司花钱游说封锁中国开源模型的同时，至少 18 家美国公司权重开源当晚就部署商用。Cursor、Cognition（Devin 开发商）公开确认接入；Cognition 原话是"在 Frontier Code1.1 基准上，K3 是我们测试过的第一个性能接近前沿水平的开源模型"。这条只反映了部分美国科技公司的快速反应，不代表美国政府封锁政策本身发生了变化，两者是同一新闻里的不同主体。</span>
-          <span class="src"><span class="lv t3">T3</span>aibase.com（转引网友 Ding 整理名单）、futunn.com（转引 Cognition 官方表态）</span></li>
+        <li><span class="t"><strong>18 家美国公司连夜部署，跟白宫内部的禁用讨论形成反差</strong>：财联社（cls.cn，权重发布报道的原始中文源）与转译稿 futunn.com 确认，K3 权重开源当晚，Cursor、Cognition（Devin 开发商）等公司公开确认接入；Cognition 原话是"在 Frontier Code1.1 基准上，K3 是我们测试过的第一个性能接近前沿水平的开源模型"。"18 家美国公司"这个数字来自 aibase.com 转引的网友整理名单，本篇未逐一核实名单真实性，只确认 Cursor、Cognition 两家的官方公开表态属实。</span>
+          <span class="src"><span class="lv t3">T3</span>cls.cn（原始中文源）、futunn.com（转引 Cognition 官方表态）、aibase.com（18 家名单未逐一核实）</span></li>
         <li><span class="t"><strong>阿里云同时上架 K3</strong>：阿里云 Bailian 与通义千问 API 平台均已上架 K3 模型 API，与摩尔线程超节点实例达成 Day-0 兼容——即 Qwen 的运营方阿里云，同时在卖 Kimi 的模型服务。</span>
           <span class="src"><span class="lv t3">T3</span>futunn.com</span></li>
       </ul>
@@ -252,6 +252,11 @@
       <p><strong>下载量/点赞数</strong>：downloads 99,214（与 07-28 记录一致，24 小时内未见新增，说明这个数字本身在 API 端可能有更新延迟，需要明天再核实一次），likes 8,082（较 07-28 记录的 7,209 上升 873）。Hugging Face CEO Clem Delangue 公开发帖称 K3 开源半小时内冲上平台热榜第一，"史上最快的增长速度"。
         <span class="src"><span class="lv t1">T1</span>HF API 端点</span>
         <span class="src"><span class="lv t3">T3</span>futunn.com 转引 Clem Delangue 推文</span></p>
+
+      <div class="note gap">
+        <b>白宫内部确有讨论是否禁用中国开放权重模型</b>（Politico 07-23 报道，援引两名知情人士，称当时"全面禁令"没有正式提上台面），近 200 家硅谷公司（含 Y Combinator、Proton）已在 07-22 联名致信反对（Politico）；179 家创业公司和创始人 07-29 联名信致白宫 AI 政策负责人 Kratsios 与商务部长 Lutnick，信中写"开放分发现在是一种竞争策略"（Channel News Asia 评论）。这条线更准确的状态是"白宫内部讨论中，硅谷联名反对"，不是"美国政府已经在游说封锁"——媒体报道之间口径不完全一致，本篇未找到白宫或商务部的官方声明原文，只有 Politico 转引的匿名知情人士说法。
+        <span class="src"><span class="lv t3">T3</span>Politico（硅谷联名信、白宫内部讨论）、Channel News Asia（179 家联名信评论）</span>
+      </div>
     </div>
   </details>
 
@@ -353,7 +358,19 @@
         </li>
         <li>
           <a href="https://news.aibase.com/news/29942" target="_blank" rel="noopener">At least 18 US companies quickly deployed Kimi K3 on its open-source night</a>
-          <p>政策游说与商业理性的反差，值得一读。</p>
+          <p>商业理性跑在了政策讨论前面，值得一读。</p>
+        </li>
+        <li>
+          <a href="https://www.politico.com/news/2026/07/22/startup-founders-urge-trump-not-to-shut-off-chinese-open-weight-ai-01008992" target="_blank" rel="noopener">Startup founders urge Trump not to shut off Chinese open weight AI</a>
+          <p>近 200 家硅谷公司联名反对切断中国开放权重模型，跟"18 家公司连夜部署"是同一条张力的两个侧面。</p>
+        </li>
+        <li>
+          <a href="https://www.politico.com/news/2026/07/23/inside-the-white-house-debate-over-what-to-do-about-chinese-ai-01010997" target="_blank" rel="noopener">Inside the White House debate over what to do about Chinese AI</a>
+          <p>白宫内部确有讨论，但援引知情人士称"全面禁令"当时没有正式提上台面，比"政府在游说封锁"的说法更准确。</p>
+        </li>
+        <li>
+          <a href="https://www.channelnewsasia.com/commentary/moonshot-kimi-panic-ai-sputnik-moment-6282731" target="_blank" rel="noopener">Commentary: Panic over Moonshot's Kimi K3 is a sputnik moment for 'open' AI</a>
+          <p>179 家创业公司联名信致白宫 AI 政策负责人，原话"开放分发现在是一种竞争策略"。</p>
         </li>
         <li>
           <a href="https://codingfleet.com/blog/kimi-k3-vs-claude-fable-5/" target="_blank" rel="noopener">2.8T Open Model vs Mythos-Class — 35 Benchmarks Compared</a>
