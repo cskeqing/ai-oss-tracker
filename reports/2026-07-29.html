@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qwen / Kimi 开源动态日报 · 2026-07-29</title>
+<style>
+  :root{
+    --paper:#fbfaf8; --ink:#15181d; --ink-2:#3f464f; --ink-3:#8a929c;
+    --rule:#e2ded7; --rule-2:#efece7;
+    --dated:#1b4d8f;    --dated-bg:#e8eef8;
+    --promised:#8a5300; --promised-bg:#fbf0dc;
+    --open:#146b3c;      --open-bg:#e6f3ea;
+    --none:#6b7280;      --none-bg:#eeeff1;
+    --serif:"Songti SC","Source Han Serif SC","Noto Serif CJK SC",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#15171a; --ink:#eceef1; --ink-2:#b3bac2; --ink-3:#7d858f;
+      --rule:#2d3339; --rule-2:#232830;
+      --dated:#8ab4f8; --dated-bg:#1a2740;
+      --promised:#e2b563; --promised-bg:#33280f;
+      --open:#66cf94;    --open-bg:#14301f;
+      --none:#9aa1ab;    --none-bg:#252a31;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.85;
+    font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:760px; margin:0 auto; padding:56px 28px 64px}
+
+  .kicker{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink-3); padding-bottom:10px; border-bottom:1px solid var(--ink);
+  }
+  h1{font-family:var(--serif); font-weight:700; font-size:38px; line-height:1.3;
+     letter-spacing:-.015em; margin:22px 0 0}
+  .dateline{margin-top:10px; margin-bottom:18px; color:var(--ink-3); font-size:13px; letter-spacing:.02em}
+  .dateline span+span::before{content:"·"; margin:0 10px; color:var(--rule)}
+
+  .srcline{padding:14px 0 16px; border-top:1px solid var(--rule-2); border-bottom:1px solid var(--rule)}
+  .srcline .lbl{float:left; margin-right:12px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); line-height:2.2}
+  .srcline p{margin:0; overflow:hidden; color:var(--ink-3); font-size:12.5px; line-height:1.85}
+
+  .lead{padding:34px 0 30px; border-bottom:1px solid var(--rule)}
+  .lead h2{font-family:var(--serif); font-weight:700; font-size:27px; line-height:1.45; letter-spacing:-.01em; margin:0 0 16px; text-wrap:balance}
+  .lead h2 .mark{background:linear-gradient(transparent 62%, var(--open-bg) 62%); padding:0 2px}
+  .lead p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.9; padding-left:16px; border-left:2px solid var(--rule)}
+
+  .brief{margin:0; padding:0; list-style:none}
+  .brief>li{display:grid; grid-template-columns:44px 1fr; gap:0 18px; padding:26px 0; border-bottom:1px solid var(--rule-2)}
+  .brief>li:last-child{border-bottom:none}
+  .no{font-family:var(--serif); font-size:26px; line-height:1.25; color:var(--ink-3); font-weight:700; letter-spacing:-.02em}
+  .hd{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:4px}
+  .hd h3{font-size:19px; font-weight:700; margin:0; letter-spacing:-.005em}
+  .body{margin:0; color:var(--ink-2); font-size:15px; line-height:1.9}
+  .body strong{color:var(--ink); font-weight:650}
+
+  .pill{font-size:11.5px; font-weight:700; letter-spacing:.04em; padding:2px 9px; border-radius:2px; white-space:nowrap}
+  .pill.dated{color:var(--dated); background:var(--dated-bg)}
+  .pill.promised{color:var(--promised); background:var(--promised-bg)}
+  .pill.open{color:var(--open); background:var(--open-bg)}
+  .pill.none{color:var(--none); background:var(--none-bg)}
+
+  .k{color:var(--ink); font-weight:650; border-bottom:1px solid var(--rule); padding-bottom:1px}
+  code{font-family:var(--mono); font-size:.86em; color:var(--ink)}
+
+  .detail-head{
+    margin:44px 0 0; padding-bottom:9px; border-bottom:1px solid var(--ink);
+    display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+  }
+  .detail-head nav{display:flex; flex-wrap:wrap; gap:14px; letter-spacing:.02em; text-transform:none}
+  .detail-head nav a{font-size:12.5px; color:var(--ink-3); text-decoration:none; border-bottom:1px solid transparent; padding-bottom:1px}
+  .detail-head nav a:hover,.detail-head nav a:focus{color:var(--ink); border-bottom-color:var(--ink)}
+  .totop{display:inline-block; margin-top:4px; font-size:12px; color:var(--ink-3); text-decoration:none; border-bottom:1px solid var(--rule)}
+  .totop:hover,.totop:focus{color:var(--ink)}
+
+  details{border-bottom:1px solid var(--rule)}
+  details>summary{display:flex; align-items:baseline; gap:12px; cursor:pointer; padding:20px 0; list-style:none}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::after{content:"＋"; margin-left:auto; color:var(--ink-3); font-size:15px; line-height:1.6}
+  details[open]>summary::after{content:"−"}
+  details>summary:hover .st,details>summary:focus-visible .st{text-decoration:underline}
+  .sn{font-family:var(--serif); font-size:15px; font-weight:700; color:var(--ink-3); min-width:16px}
+  .st{font-family:var(--serif); font-size:21px; font-weight:700; letter-spacing:-.01em}
+  .dbody{padding:0 0 26px}
+  .dbody>p{margin:0 0 14px; color:var(--ink-2); font-size:15px}
+  h4{font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin:24px 0 12px; font-weight:700}
+  h4:first-child{margin-top:4px}
+
+  ul.facts{list-style:none; margin:0 0 4px; padding:0}
+  ul.facts>li{padding:13px 0; border-top:1px solid var(--rule-2); font-size:14.5px; line-height:1.85}
+  ul.facts>li>span.t{display:block; color:var(--ink-2)}
+  ul.facts>li>span.t strong{color:var(--ink)}
+  ol.watch{margin:0; padding-left:20px; color:var(--ink-2); font-size:14.5px}
+  ol.watch li{padding:6px 0}
+  ol.watch li::marker{color:var(--ink-3); font-family:var(--serif)}
+
+  .src{display:inline-block; margin-top:6px; margin-right:8px; font-family:var(--mono); font-size:11px; letter-spacing:.01em; color:var(--ink-3)}
+  .src .lv{font-weight:700; margin-right:4px}
+  .lv.t1{color:var(--open)}
+  .lv.t2{color:var(--dated)}
+  .lv.t3{color:var(--promised)}
+
+  .note{margin:14px 0; padding:12px 15px; font-size:14px; line-height:1.85; background:var(--rule-2); border-left:2px solid var(--dated); color:var(--ink-2)}
+  .note.gap{border-left-color:var(--promised)}
+  .note.warn{border-left-color:#a33131}
+  .note b{color:var(--ink)}
+
+  .tw{overflow-x:auto; margin:4px 0 8px}
+  table{border-collapse:collapse; width:100%; font-size:13px; min-width:480px}
+  caption{text-align:left; color:var(--ink-3); font-size:12px; padding:0 0 8px}
+  th,td{padding:8px 12px 8px 0; text-align:left; border-bottom:1px solid var(--rule-2); vertical-align:top}
+  thead th{border-bottom:1px solid var(--ink); color:var(--ink-3); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap}
+  td.n{white-space:nowrap; color:var(--ink-2)}
+  td.u{font-family:var(--mono); font-size:11.5px; word-break:break-all}
+  tr.hl td{background:var(--open-bg)}
+  .yes{color:var(--open); font-weight:700}
+  .no{color:#a33131; font-weight:700}
+  .sum{color:var(--ink-3); font-size:12.5px; margin:6px 0 0}
+
+  .readlist{list-style:none; margin:0; padding:0}
+  .readlist>li{padding:12px 0; border-top:1px solid var(--rule-2)}
+  .readlist>li a{color:var(--ink); font-weight:650; text-decoration:none; border-bottom:1px solid var(--rule)}
+  .readlist>li a:hover{border-bottom-color:var(--ink)}
+  .readlist>li p{margin:5px 0 0; color:var(--ink-2); font-size:13.5px; line-height:1.7}
+
+  @media (max-width:600px){
+    .srcline .lbl{float:none; display:block; margin-bottom:4px; line-height:1.6}
+    .sheet{padding:36px 20px 48px}
+    h1{font-size:29px}
+    .lead h2{font-size:21px}
+    .brief>li{grid-template-columns:30px 1fr; gap:0 12px; padding:22px 0}
+    .no{font-size:20px}
+    .hd h3{font-size:17px}
+    .st{font-size:18px}
+  }
+  @media print{
+    body{background:#fff}
+    .sheet{padding:0; max-width:none}
+    .brief>li,.lead{break-inside:avoid}
+  }
+</style>
+</head>
+<body id="top">
+<div class="sheet">
+
+  <div class="kicker">
+    <span>每日追踪 / Daily Brief</span>
+    <span class="r">No. 03</span>
+  </div>
+
+  <h1>Qwen / Kimi 开源动态日报</h1>
+  <p class="dateline">
+    <span>2026-07-29　周三</span>
+    <span>取证时间 10:30–11:40 CST</span>
+  </p>
+
+  <div class="srcline">
+    <span class="lbl">信息来源</span>
+    <p>Hugging Face moonshotai 组织页与 API 端点、GitHub MoonshotAI 组织页、vLLM 官方博客（07-27 正式支持文章）、Qwen 官方研究页、Hugging Face 论文列表与模型仓库、ModelScope 模型仓库、GitHub QwenLM 组织页、媒体报道（futunn、aibase，用于交叉验证技术报告发布与生态落地）。</p>
+  </div>
+
+  <div class="lead">
+    <h2>Kimi K3 技术报告全文与三项训练基建 <span class="mark">已开源</span>。</h2>
+    <p>47 页技术报告全文公开，MoonEP、AgentEnv 随本次一并开源；vLLM 官方支持文章同步发布，DSpark 投机解码把速度从 118 提到 370 tok/s。Qwen3.8 今日仍无仓库无日期。</p>
+  </div>
+
+  <ul class="brief">
+
+    <li>
+      <div class="no">01</div>
+      <div>
+        <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span></div>
+        <p class="body"><strong>技术报告全文 + MoonEP/AgentEnv 训练基建今天正式开源</strong>，vLLM 官方支持文章同步发布（DSpark 投机解码 118→370 tok/s）。华为昇腾、摩尔线程跟进适配，国产芯生态扩展到三家。18 家美国公司权重开源当晚就部署商用，跟美国政府游说封锁形成反差。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">02</div>
+      <div>
+        <div class="hd"><h3>Qwen</h3><span class="pill promised">已承诺</span></div>
+        <p class="body">官方口径没有变化，仍是 07-19 那条 X 帖子的 <span class="k">"soon"</span>。今日五个一手信源（研究页、HF、ModelScope、论文列表、GitHub）复查全部空手，没有 Qwen3.8 踪迹。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">03</div>
+      <div>
+        <div class="hd"><h3>第三家</h3><span class="pill none">暂无</span></div>
+        <p class="body">今日没有够格的第三家开源模型。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">04</div>
+      <div>
+        <div class="hd"><h3>明日盯点</h3></div>
+        <p class="body">K3 下载量是否突破 10 万；SGLang 官方支持文章是否跟进发布（目前仍标"Final Verification In Progress"）。</p>
+      </div>
+    </li>
+
+  </ul>
+
+  <div class="detail-head">
+    <span>详细内容 / Detail</span>
+    <nav aria-label="正文导航">
+      <a href="#s2">2 Kimi</a>
+      <a href="#s3">3 Qwen</a>
+      <a href="#s4">4 明日盯点</a>
+      <a href="#s5">5 取证清单</a>
+      <a href="#s6">延伸阅读</a>
+    </nav>
+  </div>
+
+  <!-- ===== 2 Kimi ===== -->
+  <details id="s2" open>
+    <summary><span class="sn">2</span><span class="st">Kimi（K3）</span><span class="pill open">已开源</span></summary>
+    <div class="dbody">
+      <p>判定依据：Hugging Face API 端点直查 + GitHub MoonshotAI 组织页直查，非媒体转述。</p>
+
+      <ul class="facts">
+        <li><span class="t"><strong>技术报告全文首次公开</strong>：昨天取证清单里"该查未查"的技术报告全文，今天确认已随权重同批发布，47 页，公开于 K3 官方仓库。核心技术点：KDA 与 Gated MLA 按 3:1 比例混合；Stable LatentMoE 用 SiTU-GLU 和 Quantile Balancing 在 896 选 16 的极端稀疏度下保持训练稳定；视觉编码器 MoonViT-V2 用 next-token 预测从零训练，不需要对比学习预训练。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi K3 官方技术报告</span></li>
+        <li><span class="t"><strong>MoonEP、AgentEnv 正式开源</strong>：三项训练基建里，FlashKDA 此前已开源，MoonEP（专家并行通信库）和 AgentEnv（与 kvcache-ai 联合开发的 Agent 强化学习沙箱）随本次一并公开，均可在 GitHub MoonshotAI 组织页下载。</span>
+          <span class="src"><span class="lv t1">T1</span>GitHub MoonshotAI 组织页</span></li>
+        <li><span class="t"><strong>FlashKDA 在 H20 上有官方实测数据</strong>：技术报告披露 FlashKDA 在 NVIDIA H20 上比 flash-linear-attention 基线快 1.72–2.22 倍（prefill 阶段），可直接替换为 flash-linear-attention 的后端。这是官方首次公开 H20 相关的实测数字——但这是算子层面的速度对比，不是"H20 能不能部署 K3 整机推理"的答案，vLLM/SGLang 官方部署配方目前仍不含 H20 这一档。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi K3 官方技术报告</span></li>
+      </ul>
+
+      <div class="note">
+        <b>vLLM 官方支持文章已发布</b>（07-27，回应昨日明日盯点）。标题《Kimi K3 Is Here: Efficient Day-0 Support on vLLM》。基线速度 118 tok/s（单用户，TP16），DSpark 投机解码后到 <b>370 tok/s</b>（3.14 倍提升）。这个数字比 Artificial Analysis 昨天给出的 32 tok/s 高出一个量级——差异在于 AA 测的是默认配置下的批量吞吐场景，vLLM 这个数字是单用户、开启投机解码优化后的峰值，两者统计口径不同，不能直接比较谁的数字"更准"。官方最低硬件门槛口径未变：至少 1 个 8×B300（或 GB300 NVL72）节点，16×B200 同样支持。
+        <span class="src"><span class="lv t2">T2</span>vLLM 官方博客</span>
+      </div>
+
+      <ul class="facts">
+        <li><span class="t"><strong>国产芯生态扩展到三家</strong>：继海光 DCU（07-28 报道，性能损耗 12% 以内）之后，华为昇腾（Ascend 950 系列、Atlas A3，Ascend CANN 官方公告）和摩尔线程（MTT S5000，MUSA 软件栈）今天分别公告完成 K3 适配并实现稳定运行。三家的适配都是官方/合作方自己公告的结果，暂无第三方独立复现的性能数字。</span>
+          <span class="src"><span class="lv t3">T3</span>aibase.com、futunn.com</span></li>
+        <li><span class="t"><strong>18 家美国公司连夜部署，舆论反差被放大</strong>：网友 Ding 整理的名单显示，在美国政府和 Anthropic 等公司花钱游说封锁中国开源模型的同时，至少 18 家美国公司权重开源当晚就部署商用。Cursor、Cognition（Devin 开发商）公开确认接入；Cognition 原话是"在 Frontier Code1.1 基准上，K3 是我们测试过的第一个性能接近前沿水平的开源模型"。这条只反映了部分美国科技公司的快速反应，不代表美国政府封锁政策本身发生了变化，两者是同一新闻里的不同主体。</span>
+          <span class="src"><span class="lv t3">T3</span>aibase.com（转引网友 Ding 整理名单）、futunn.com（转引 Cognition 官方表态）</span></li>
+        <li><span class="t"><strong>阿里云同时上架 K3</strong>：阿里云 Bailian 与通义千问 API 平台均已上架 K3 模型 API，与摩尔线程超节点实例达成 Day-0 兼容——即 Qwen 的运营方阿里云，同时在卖 Kimi 的模型服务。</span>
+          <span class="src"><span class="lv t3">T3</span>futunn.com</span></li>
+      </ul>
+
+      <p><strong>下载量/点赞数</strong>：downloads 99,214（与 07-28 记录一致，24 小时内未见新增，说明这个数字本身在 API 端可能有更新延迟，需要明天再核实一次），likes 8,082（较 07-28 记录的 7,209 上升 873）。Hugging Face CEO Clem Delangue 公开发帖称 K3 开源半小时内冲上平台热榜第一，"史上最快的增长速度"。
+        <span class="src"><span class="lv t1">T1</span>HF API 端点</span>
+        <span class="src"><span class="lv t3">T3</span>futunn.com 转引 Clem Delangue 推文</span></p>
+    </div>
+  </details>
+
+  <!-- ===== 3 Qwen ===== -->
+  <details id="s3">
+    <summary><span class="sn">3</span><span class="st">Qwen</span><span class="pill promised">已承诺</span></summary>
+    <div class="dbody">
+      <p>官方口径没有变化，仍是 07-19 那条 X 帖子：<span class="k">"Qwen3.8 is launching and going open-weight soon!"</span>——只说"soon"，无日期无仓库。</p>
+
+      <ul class="facts">
+        <li><span class="t">Qwen 官方研究页最新仍是 07-21 的 Qwen-Image-3.0（Release 标签）；HF 组织页最新更新是 7 天前的 Qwen3-ASR 系列，模型总数 458。</span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方研究页、HF Qwen 组织页</span></li>
+        <li><span class="t">HF 论文列表（48 篇，最新是 9 天前的《Qwen-Music Technical Report》）、ModelScope（模型总数 460，最新更新 07-22 的 Qwen3-ASR 系列）均无新增。GitHub QwenLM（49 个仓库）今天活跃的是 <code>qwen-code</code>（2 分钟前）和 <code>qwen-code-docs</code>（18 分钟前），均为编程工具类常规迭代，非模型新闻。</span>
+          <span class="src"><span class="lv t1">T1</span>HF Qwen 论文列表、ModelScope、GitHub QwenLM</span></li>
+        <li><span class="t">第三方口径没有更新的信息：搜索到的最新报道（约 07-27）仍写"open weights haven't landed yet"，与昨天记录的状态一致。</span>
+          <span class="src"><span class="lv t3">T3</span>媒体搜索交叉确认</span></li>
+      </ul>
+
+      <p><strong>判读</strong>：连续两天复查五个一手信源，Qwen3.8 没有任何新增动作。今天 Qwen 团队的工程投入仍在基础设施和编码工具上。</p>
+    </div>
+  </details>
+
+  <!-- ===== 4 明日盯点 ===== -->
+  <details id="s4">
+    <summary><span class="sn">4</span><span class="st">明日盯点</span></summary>
+    <div class="dbody">
+      <ol class="watch">
+        <li>K3 下载量是否突破 10 万（07-28 已到 99,214，接近整数关口）。</li>
+        <li>SGLang 官方支持文章是否跟进发布（目前仍标"Final Verification In Progress"）。</li>
+        <li>Qwen 是否在 WAIC 之外有新表态。</li>
+        <li>华为昇腾、摩尔线程适配 K3 的第三方独立复现测试是否出现。</li>
+        <li>Artificial Analysis 是否更新 K3 独立跑分（今日沿用 07-28 的 57 分）。</li>
+      </ol>
+    </div>
+  </details>
+
+  <!-- ===== 5 取证清单 ===== -->
+  <details id="s5">
+    <summary><span class="sn">5</span><span class="st">取证清单</span></summary>
+    <div class="dbody">
+
+      <h4>5.1 一级信源直查</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源</th><th scope="col">层级</th><th scope="col">方式</th><th scope="col">结果</th><th scope="col">读到的关键信息</th></tr></thead>
+          <tbody>
+            <tr class="hl"><td class="u">api/models/moonshotai/Kimi-K3</td><td><span class="lv t1">T1</span></td><td class="n">API 直查</td><td><span class="yes">成功</span></td><td>downloads 99,214（与昨日一致）、likes 8,082（昨日 7,209）</td></tr>
+            <tr class="hl"><td class="u">github.com/MoonshotAI（组织页）</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>MoonEP、AgentEnv 已出现在仓库列表，K3 仓库 15 小时前有更新，仓库总数 43</td></tr>
+            <tr><td class="u">github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>49 个仓库，qwen-code／qwen-code-docs 今日活跃，无新模型仓库</td></tr>
+            <tr><td class="u">qwen.ai/research</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>最新仍是 07-21 Qwen-Image-3.0，无 Qwen3.8</td></tr>
+            <tr><td class="u">huggingface.co/Qwen（组织页）</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>458 个模型，最新更新 7 天前，无 Qwen3.8</td></tr>
+            <tr><td class="u">huggingface.co/Qwen/papers</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>48 篇论文，最新 9 天前，无 Qwen3.8 技术报告</td></tr>
+            <tr><td class="u">modelscope.cn（qwen 组织页）</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>460 个模型，最新更新 07-22，无 Qwen3.8</td></tr>
+            <tr class="hl"><td class="u">vllm.ai/blog/2026-07-27-k3</td><td><span class="lv t2">T2</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>官方 K3 支持文章全文，118→370 tok/s（DSpark）、最低 8×B300/GB300 硬件门槛</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>5.2 网络搜索补充</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源</th><th scope="col">日期</th><th scope="col">命中内容</th><th scope="col">交叉验证</th></tr></thead>
+          <tbody>
+            <tr><td class="u">futunn.com、geopolitechs.org</td><td class="n">07-28</td><td>技术报告全文、MoonEP/AgentEnv 开源、47 页报告技术要点</td><td><span class="yes">是</span>（两家独立转述内容一致）</td></tr>
+            <tr><td class="u">aibase.com</td><td class="n">07-28/07-29</td><td>18 家美国公司连夜部署；华为昇腾、摩尔线程适配 K3</td><td>部分是（适配结果为厂商官方公告，暂无第三方复现数字）</td></tr>
+            <tr><td class="u">aiweekly.co</td><td class="n">07-28</td><td>AgentEnv 与 kvcache-ai 联合开发的细节</td><td><span class="yes">是</span>（与 futunn.com 一致）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>5.3 该查未查 / 抓取失败</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源 / 对象</th><th scope="col">层级</th><th scope="col">结果或原因</th></tr></thead>
+          <tbody>
+            <tr><td class="u">SGLang cookbook 更新时间戳</td><td><span class="lv t2">T2</span></td><td>页面仍标"Final Verification In Progress"，无法确认是否有内容更新</td></tr>
+            <tr><td class="u">Artificial Analysis K3 独立跑分（07-29 版本）</td><td><span class="lv t1">T1</span></td><td>未复查，沿用 07-28 记录的 57 分</td></tr>
+            <tr><td class="u">Hacker News / Reddit 具体楼层评论</td><td><span class="lv t3">T3</span></td><td>仅搜到标题摘要，未展开读取评论内容</td></tr>
+            <tr><td class="u">twitter.com/Kimi_Moonshot、Qwen 官方 X</td><td><span class="lv t1">T1</span></td><td>未查（平台限制，见 sources.md）</td></tr>
+            <tr><td class="u">华为昇腾、摩尔线程适配的第三方独立复现测试</td><td><span class="lv t3">T3</span></td><td>未查，目前只有厂商官方公告</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="sum">层级说明：T1 厂商官方页面与模型仓库（判定"是否已开源"只认这一层）· T2 推理框架等生态适配信号 · T3 媒体与社区（只作线索）。</p>
+      <a class="totop" href="#top">回到顶部 ↑</a>
+    </div>
+  </details>
+
+  <!-- ===== 延伸阅读 ===== -->
+  <details id="s6">
+    <summary><span class="sn">＋</span><span class="st">延伸阅读</span></summary>
+    <div class="dbody">
+      <p class="sum">今日筛选，供参考不代表本项目结论。</p>
+      <ul class="readlist">
+        <li>
+          <a href="https://vllm.ai/blog/2026-07-27-k3" target="_blank" rel="noopener">Kimi K3 Is Here: Efficient Day-0 Support on vLLM</a>
+          <p>官方支持文章，DSpark 投机解码把速度提升 3.14 倍是最大看点。</p>
+        </li>
+        <li>
+          <a href="https://news.aibase.com/news/29942" target="_blank" rel="noopener">At least 18 US companies quickly deployed Kimi K3 on its open-source night</a>
+          <p>政策游说与商业理性的反差，值得一读。</p>
+        </li>
+        <li>
+          <a href="https://codingfleet.com/blog/kimi-k3-vs-claude-fable-5/" target="_blank" rel="noopener">2.8T Open Model vs Mythos-Class — 35 Benchmarks Compared</a>
+          <p>35 项评测拆解到子项，比单一分数更细：K3 在 Terminal-Bench、SWE Marathon、BrowseComp 上赢 Fable 5，但 HLE、多数视觉任务上明显落后。</p>
+        </li>
+        <li>
+          <a href="https://thenewstack.io/kimi-k3-fable-coding-benchmark/" target="_blank" rel="noopener">Claude Fable 5 vs. Kimi K3: Same results, one-third the cost, 4x slower</a>
+          <p>标题本身就是一句话总结。</p>
+        </li>
+      </ul>
+    </div>
+  </details>
+
+</div>
+
+<script>
+  function openTarget(){
+    var el = location.hash ? document.querySelector(location.hash) : null;
+    if (el && el.tagName === 'DETAILS') el.open = true;
+  }
+  window.addEventListener('hashchange', openTarget);
+  openTarget();
+</script>
+</body>
+</html>
