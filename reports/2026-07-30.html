@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qwen / Kimi 开源动态日报 · 2026-07-30</title>
+<style>
+  :root{
+    --paper:#fbfaf8; --ink:#15181d; --ink-2:#3f464f; --ink-3:#8a929c;
+    --rule:#e2ded7; --rule-2:#efece7;
+    --dated:#1b4d8f;    --dated-bg:#e8eef8;
+    --promised:#8a5300; --promised-bg:#fbf0dc;
+    --open:#146b3c;      --open-bg:#e6f3ea;
+    --none:#6b7280;      --none-bg:#eeeff1;
+    --serif:"Songti SC","Source Han Serif SC","Noto Serif CJK SC",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#15171a; --ink:#eceef1; --ink-2:#b3bac2; --ink-3:#7d858f;
+      --rule:#2d3339; --rule-2:#232830;
+      --dated:#8ab4f8; --dated-bg:#1a2740;
+      --promised:#e2b563; --promised-bg:#33280f;
+      --open:#66cf94;    --open-bg:#14301f;
+      --none:#9aa1ab;    --none-bg:#252a31;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.85;
+    font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:760px; margin:0 auto; padding:56px 28px 64px}
+
+  .kicker{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink-3); padding-bottom:10px; border-bottom:1px solid var(--ink);
+  }
+  h1{font-family:var(--serif); font-weight:700; font-size:38px; line-height:1.3;
+     letter-spacing:-.015em; margin:22px 0 0}
+  .dateline{margin-top:10px; margin-bottom:18px; color:var(--ink-3); font-size:13px; letter-spacing:.02em}
+  .dateline span+span::before{content:"·"; margin:0 10px; color:var(--rule)}
+
+  .srcline{padding:14px 0 16px; border-top:1px solid var(--rule-2); border-bottom:1px solid var(--rule)}
+  .srcline .lbl{float:left; margin-right:12px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); line-height:2.2}
+  .srcline p{margin:0; overflow:hidden; color:var(--ink-3); font-size:12.5px; line-height:1.85}
+
+  .lead{padding:34px 0 30px; border-bottom:1px solid var(--rule)}
+  .lead h2{font-family:var(--serif); font-weight:700; font-size:27px; line-height:1.45; letter-spacing:-.01em; margin:0 0 16px; text-wrap:balance}
+  .lead h2 .mark{background:linear-gradient(transparent 62%, var(--open-bg) 62%); padding:0 2px}
+  .lead p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.9; padding-left:16px; border-left:2px solid var(--rule)}
+
+  .brief{margin:0; padding:0; list-style:none}
+  .brief>li{display:grid; grid-template-columns:44px 1fr; gap:0 18px; padding:26px 0; border-bottom:1px solid var(--rule-2)}
+  .brief>li:last-child{border-bottom:none}
+  .no{font-family:var(--serif); font-size:26px; line-height:1.25; color:var(--ink-3); font-weight:700; letter-spacing:-.02em}
+  .hd{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:4px}
+  .hd h3{font-size:19px; font-weight:700; margin:0; letter-spacing:-.005em}
+  .body{margin:0; color:var(--ink-2); font-size:15px; line-height:1.9}
+  .body strong{color:var(--ink); font-weight:650}
+
+  .pill{font-size:11.5px; font-weight:700; letter-spacing:.04em; padding:2px 9px; border-radius:2px; white-space:nowrap}
+  .pill.dated{color:var(--dated); background:var(--dated-bg)}
+  .pill.promised{color:var(--promised); background:var(--promised-bg)}
+  .pill.open{color:var(--open); background:var(--open-bg)}
+  .pill.none{color:var(--none); background:var(--none-bg)}
+
+  .k{color:var(--ink); font-weight:650; border-bottom:1px solid var(--rule); padding-bottom:1px}
+  code{font-family:var(--mono); font-size:.86em; color:var(--ink)}
+
+  .detail-head{
+    margin:44px 0 0; padding-bottom:9px; border-bottom:1px solid var(--ink);
+    display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+  }
+  .detail-head nav{display:flex; flex-wrap:wrap; gap:14px; letter-spacing:.02em; text-transform:none}
+  .detail-head nav a{font-size:12.5px; color:var(--ink-3); text-decoration:none; border-bottom:1px solid transparent; padding-bottom:1px}
+  .detail-head nav a:hover,.detail-head nav a:focus{color:var(--ink); border-bottom-color:var(--ink)}
+  .totop{display:inline-block; margin-top:4px; font-size:12px; color:var(--ink-3); text-decoration:none; border-bottom:1px solid var(--rule)}
+  .totop:hover,.totop:focus{color:var(--ink)}
+
+  details{border-bottom:1px solid var(--rule)}
+  details>summary{display:flex; align-items:baseline; gap:12px; cursor:pointer; padding:20px 0; list-style:none}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::after{content:"＋"; margin-left:auto; color:var(--ink-3); font-size:15px; line-height:1.6}
+  details[open]>summary::after{content:"−"}
+  details>summary:hover .st,details>summary:focus-visible .st{text-decoration:underline}
+  .sn{font-family:var(--serif); font-size:15px; font-weight:700; color:var(--ink-3); min-width:16px}
+  .st{font-family:var(--serif); font-size:21px; font-weight:700; letter-spacing:-.01em}
+  .dbody{padding:0 0 26px}
+  .dbody>p{margin:0 0 14px; color:var(--ink-2); font-size:15px}
+  h4{font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin:24px 0 12px; font-weight:700}
+  h4:first-child{margin-top:4px}
+
+  ul.facts{list-style:none; margin:0 0 4px; padding:0}
+  ul.facts>li{padding:13px 0; border-top:1px solid var(--rule-2); font-size:14.5px; line-height:1.85}
+  ul.facts>li>span.t{display:block; color:var(--ink-2)}
+  ul.facts>li>span.t strong{color:var(--ink)}
+  ol.watch{margin:0; padding-left:20px; color:var(--ink-2); font-size:14.5px}
+  ol.watch li{padding:6px 0}
+  ol.watch li::marker{color:var(--ink-3); font-family:var(--serif)}
+
+  .src{display:inline-block; margin-top:6px; margin-right:8px; font-family:var(--mono); font-size:11px; letter-spacing:.01em; color:var(--ink-3)}
+  .src .lv{font-weight:700; margin-right:4px}
+  .lv.t1{color:var(--open)}
+  .lv.t2{color:var(--dated)}
+  .lv.t3{color:var(--promised)}
+
+  .note{margin:14px 0; padding:12px 15px; font-size:14px; line-height:1.85; background:var(--rule-2); border-left:2px solid var(--dated); color:var(--ink-2)}
+  .note.gap{border-left-color:var(--promised)}
+  .note.warn{border-left-color:#a33131}
+  .note b{color:var(--ink)}
+
+  .tw{overflow-x:auto; margin:4px 0 8px}
+  table{border-collapse:collapse; width:100%; font-size:13px; min-width:480px}
+  caption{text-align:left; color:var(--ink-3); font-size:12px; padding:0 0 8px}
+  th,td{padding:8px 12px 8px 0; text-align:left; border-bottom:1px solid var(--rule-2); vertical-align:top}
+  thead th{border-bottom:1px solid var(--ink); color:var(--ink-3); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap}
+  td.n{white-space:nowrap; color:var(--ink-2)}
+  td.u{font-family:var(--mono); font-size:11.5px; word-break:break-all}
+  tr.hl td{background:var(--open-bg)}
+  .yes{color:var(--open); font-weight:700}
+  .no{color:#a33131; font-weight:700}
+  .sum{color:var(--ink-3); font-size:12.5px; margin:6px 0 0}
+
+  .readlist{list-style:none; margin:0; padding:0}
+  .readlist>li{padding:12px 0; border-top:1px solid var(--rule-2)}
+  .readlist>li a{color:var(--ink); font-weight:650; text-decoration:none; border-bottom:1px solid var(--rule)}
+  .readlist>li a:hover{border-bottom-color:var(--ink)}
+  .readlist>li p{margin:5px 0 0; color:var(--ink-2); font-size:13.5px; line-height:1.7}
+
+  @media (max-width:600px){
+    .srcline .lbl{float:none; display:block; margin-bottom:4px; line-height:1.6}
+    .sheet{padding:36px 20px 48px}
+    h1{font-size:29px}
+    .lead h2{font-size:21px}
+    .brief>li{grid-template-columns:30px 1fr; gap:0 12px; padding:22px 0}
+    .no{font-size:20px}
+    .hd h3{font-size:17px}
+    .st{font-size:18px}
+  }
+  @media print{
+    body{background:#fff}
+    .sheet{padding:0; max-width:none}
+    .brief>li,.lead{break-inside:avoid}
+  }
+</style>
+</head>
+<body id="top">
+<div class="sheet">
+
+  <div class="kicker">
+    <span>每日追踪 / Daily Brief</span>
+    <span class="r">No. 04</span>
+  </div>
+
+  <h1>Qwen / Kimi 开源动态日报</h1>
+  <p class="dateline">
+    <span>2026-07-30　周四</span>
+    <span>取证时间 09:20–11:10 CST</span>
+  </p>
+
+  <div class="srcline">
+    <span class="lbl">信息来源</span>
+    <p>Hugging Face moonshotai 组织页与 API 端点、unsloth/Kimi-K3-GGUF 仓库、GitHub MoonshotAI 组织页、vLLM 官方 Recipe 页、SGLang Cookbook（新上线）、Artificial Analysis Kimi K3 模型页、Qwen 官方研究页、Hugging Face 与 ModelScope Qwen 组织页、GitHub QwenLM；地缘政治与资本市场一节主要依赖路透社/Axios/NYT/Politico/MLQ.ai 等媒体转引，未见白宫或商务部官方声明原文。完整取证底账见第 5 段。</p>
+  </div>
+
+  <div class="lead">
+    <h2>Kimi K3 外溢到资本市场 <span class="mark">已开源</span>。</h2>
+    <p>费城半导体指数跌入熊市，两天内波及韩国三星、SK 海力士；同一天社区 1-bit 量化把 K3 压到 594GB，SGLang 官方 Cookbook 页上线，中国商务部就蒸馏指控正式发声反击。</p>
+  </div>
+
+  <ul class="brief">
+
+    <li>
+      <div class="no">01</div>
+      <div>
+        <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span></div>
+        <p class="body"><strong>1-bit 量化落地、SGLang Cookbook 页上线</strong>，"能不能用"往前走了一步，但 594GB 仍非普通消费级设备能跑。点赞数三连涨到 8,654，下载数连续三天卡在 99,214。资本市场外溢：半导体指数跌入熊市，中美围绕蒸馏指控的对峙从"讨论"升级到"中国商务部正式表态"。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">02</div>
+      <div>
+        <div class="hd"><h3>Qwen</h3><span class="pill promised">已承诺</span></div>
+        <p class="body">官方口径仍是 07-19 那条 <span class="k">"soon"</span>，距首次承诺已满 11 天。五个一手信源今日复查依旧全部空手，上一个真正开源的通用模型（Qwen3.6-27B）已停在 99 天前。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">03</div>
+      <div>
+        <div class="hd"><h3>第三家</h3><span class="pill none">暂无</span></div>
+        <p class="body">今日没有够格的第三家开源模型。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">04</div>
+      <div>
+        <div class="hd"><h3>明日盯点</h3></div>
+        <p class="body">K3 下载量计数器三天未变是否解除；SGLang 是否发布正式支持文章（非仅 cookbook 页）。</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="no">05</div>
+      <div>
+        <div class="hd"><h3>态势判断</h3></div>
+        <p class="body">点赞/下载曲线背离值得盯是否为 API 缓存问题；半导体股抛售与国产芯适配同步发生，市场似在结构性定价 K3 冲击；中美政策从"内部讨论"升级到"商务部正式反击"，但据 NYT 报道美方更倾向逐案审查而非全面禁令，尚无正式制裁落地。</p>
+      </div>
+    </li>
+
+  </ul>
+
+  <div class="detail-head">
+    <span>详细内容 / Detail</span>
+    <nav aria-label="正文导航">
+      <a href="#s2">2 Kimi</a>
+      <a href="#s3">3 Qwen</a>
+      <a href="#s4">4 明日盯点</a>
+      <a href="#s5">5 态势判断</a>
+      <a href="#s6">6 取证清单</a>
+      <a href="#s7">延伸阅读</a>
+    </nav>
+  </div>
+
+  <!-- ===== 2 Kimi ===== -->
+  <details id="s2" open>
+    <summary><span class="sn">2</span><span class="st">Kimi（K3）</span><span class="pill open">已开源</span></summary>
+    <div class="dbody">
+      <p>判定依据：Hugging Face API 端点直查、LICENSE 原文直读、GitHub/HF/ModelScope 组织页直查，非媒体转述。</p>
+
+      <ul class="facts">
+        <li><span class="t"><strong>社区 1-bit 量化落地</strong>：Unsloth 发布 Kimi-K3-GGUF，提供 UD-IQ1_S（594GB）到 UD-Q8_K_XL（1.56TB，无损）全系列量化，1-bit 版本据发布者自述保留约 78.9% 准确率，相比原始 1.56TB 权重压缩约 62%。这把自建门槛往下拉了一截，但 594GB 仍无法塞进消费级 128GB 内存的 Mac Studio，需要 SSD 卸载或多卡工作站/服务器级设备——量化落地了，但"能用"仍只对拥有高端本地设备或多卡集群的用户开放。</span>
+          <span class="src"><span class="lv t1">T1</span>Hugging Face unsloth/Kimi-K3-GGUF 仓库</span></li>
+        <li><span class="t"><strong>SGLang 官方 Cookbook 页上线</strong>：新增 Kimi-K3 页面（标注"NEW"，覆盖 8 个硬件平台，含 PD 分离、DSPARK 投机解码），但命令面板仍统一标注"Final Verification In Progress"——说明 SGLang 团队的收敛工作还在进行，尚未达到 vLLM 07-27 那篇"正式支持"文章的完成度。</span>
+          <span class="src"><span class="lv t1">T1</span>SGLang 官方 Cookbook</span></li>
+        <li><span class="t"><strong>LICENSE 原文直读确认</strong>：今日直接读取官方 LICENSE 全文，条款与此前报道一致——年营收超 2000 万美元的 MaaS 业务需单独签约；月活超 1 亿或月收入超 2000 万美元的产品需展示"Kimi K3"字样；内部使用及通过官方产品/认证伙伴访问不受约束。判读不变：防大厂转售牟利，不防中小团队自用。</span>
+          <span class="src"><span class="lv t1">T1</span>Kimi K3 官方 LICENSE 原文</span></li>
+      </ul>
+
+      <div class="note">
+        <b>点赞/下载曲线背离</b>：downloads 99,214（连续第三天读数完全不变），likes 8,654（较昨日 8,082 上升 572，三天来第三次上涨）。比较可能的解释是 HF API 端点对下载计数字段存在缓存延迟，而不是真实下载量停滞——但这只是推断，需要明天用渲染页面而非 API 交叉核实。
+        <span class="src"><span class="lv t1">T1</span>HF API 端点，三次抓取对比</span>
+      </div>
+
+      <ul class="facts">
+        <li><span class="t"><strong>资本市场外溢效应</strong>：费城半导体指数（SOX）自 06 月末高点下跌超 20%，正式进入技术性熊市；SOXX ETF 07-29 收盘跌 5.52%。媒体普遍将诱因归为"市场对中国开源模型冲击美系算力需求预期的重新定价"，英伟达、博通、AMD、英特尔、美光均受波及；07-28 传导至亚洲，韩国 Kospi 跌近 11%，SK 海力士跌 14%，三星跌 13%。需要谨慎：把跌幅完全归因于 K3 是简化叙事，同期还叠加芯片管制、AI 资本支出预期降温等因素。</span>
+          <span class="src"><span class="lv t3">T3</span>cryptobriefing.com、SOXX 历史价格数据</span></li>
+        <li><span class="t"><strong>中美政策公开对峙升级</strong>：中国商务部 07-27 发表声明，指责美方"AI 霸权主义"，警告"将采取一切必要措施维护自身合法权益"——这是中方首次就蒸馏指控争议作出正式政府层面回应。同期纽约时报报道（援引四名知情人士）称美方更倾向对个别模型"逐案审查"而非全面禁令，截至目前白宫和商务部均未发布正式规则或制裁清单。</span>
+          <span class="src"><span class="lv t3">T3</span>Reuters（经多家媒体转载）、纽约时报（经 MLQ.ai 转引）</span></li>
+        <li><span class="t"><strong>Anthropic 公开表态不支持全面禁令</strong>：CEO Dario Amodei 07-27 发文明确表示"从未主张禁止开放权重模型"，称不含危险能力的开放权重模型是"公共品"，但主张收紧对华芯片管制、打击"工业级蒸馏"。Anthropic 未签署 07-24 由英伟达、微软等 50 家机构联署的支持开放权重联名信，理由是不认同其"开放访问必然更利于防御方"的假设。</span>
+          <span class="src"><span class="lv t1">T1</span>Anthropic 官方博客（经 MLQ.ai 转引原文链接）</span></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- ===== 3 Qwen ===== -->
+  <details id="s3">
+    <summary><span class="sn">3</span><span class="st">Qwen</span><span class="pill promised">已承诺</span></summary>
+    <div class="dbody">
+      <p>官方口径未变，仍是 07-19 那条 X 帖子：<span class="k">"Qwen3.8 is launching and going open-weight soon!"</span>——只说"soon"，无日期无仓库。距首次承诺已满 11 天。</p>
+
+      <ul class="facts">
+        <li><span class="t">Qwen 官方研究页最新仍是 07-21 的 Qwen-Image-3.0；HF 组织页最新更新仍是 7 天前的 Qwen3-ASR 系列，模型总数 458，与前两日一致。</span>
+          <span class="src"><span class="lv t1">T1</span>Qwen 官方研究页、HF Qwen 组织页</span></li>
+        <li><span class="t">HF 论文列表（48 篇）、ModelScope（模型总数 460）均无新增。GitHub QwenLM（49 个仓库）今天活跃的是 <code>qwen-code</code> 与 <code>FlashQLA</code>，均为基础设施/工具类常规迭代，非模型新闻。</span>
+          <span class="src"><span class="lv t1">T1</span>HF Qwen 论文列表、ModelScope、GitHub QwenLM</span></li>
+        <li><span class="t">第三方分析梳理出一条背景时间线：Qwen 最近一次真正开源的通用模型是 Qwen3.6-27B（Apache 2.0，2026-04-22），从那之后到今天已 99 天没有新的开源通用模型；同期 Qwen3.6-Max、Qwen3.7-Max、Qwen3.8-Max-Preview 三代旗舰全部闭源，形成"四连闭源"模式。此为第三方对公开时间线的整理，非官方表态，仅作背景参考。</span>
+          <span class="src"><span class="lv t3">T3</span>digitalapplied.com 时间线整理</span></li>
+      </ul>
+
+      <p><strong>判读</strong>：连续三天复查五个一手信源，Qwen3.8 没有任何新增动作。Qwen 团队的工程投入仍集中在编码工具和基础设施库上，模型层面持续静默。</p>
+    </div>
+  </details>
+
+  <!-- ===== 4 明日盯点 ===== -->
+  <details id="s4">
+    <summary><span class="sn">4</span><span class="st">明日盯点</span></summary>
+    <div class="dbody">
+      <ol class="watch">
+        <li>K3 下载量计数器三天未变是否解除（切换渲染页面路径交叉核实）。</li>
+        <li>SGLang 是否发布正式支持文章（非仅 cookbook 页，参照 vLLM 07-27 的完成度）。</li>
+        <li>中国商务部声明是否有进一步跟进措施。</li>
+        <li>Artificial Analysis 是否更新 K3 独立跑分子项。</li>
+        <li>Qwen3.8 是否在 07-19 承诺满两周节点前给出任何新表态。</li>
+      </ol>
+    </div>
+  </details>
+
+  <!-- ===== 5 态势判断 ===== -->
+  <details id="s5">
+    <summary><span class="sn">5</span><span class="st">态势判断</span></summary>
+    <div class="dbody">
+      <p class="sum">基于当天和之前几天已核实的具体数字做外推判断，不下确定性断言，供参考。</p>
+      <ul class="facts">
+        <li><span class="t"><strong>点赞/下载曲线背离值得持续盯</strong>：点赞数三天连涨（7,209→8,082→8,654），下载数三天原地不动（均为 99,214）。如果明天用不同抓取路径（渲染页面而非 API）仍读到 99,214，基本可以确认是缓存问题；如果读到显著更高的数字，说明 API 端点本身有滞后（本判断基于三次连续抓取的对比，样本量有限）。</span></li>
+        <li><span class="t"><strong>半导体股抛售可能不是一次性事件</strong>：国产芯适配（海光→昇腾/摩尔线程）与半导体股抛售同步发生，市场似乎把 K3 当作结构性威胁在定价，而不只是发布当天的情绪反应。但这是间接信号推断——同期还有芯片出口管制、AI 资本支出预期降温等其他因素叠加，不能把跌幅完全归因于 K3（本判断基于媒体报道的时间相关性，非因果证据）。</span></li>
+        <li><span class="t"><strong>中美政策短期内造成实质冲击的概率可能低于舆论声量</strong>：中国商务部正式声明反击，是这场对峙从"讨论"升级到"政府对政府"的信号；但据纽约时报援引四名知情人士的报道，美方内部更倾向"逐案审查"而非全面禁令，且截至目前无正式制裁或 Entity List 落地。如果这种"表态升级、行动未跟进"的模式持续，短期内对 K3 实际可用性的冲击可能有限（本判断基于媒体转述的政策讨论方向，未见官方文件，需持续验证）。</span></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- ===== 6 取证清单 ===== -->
+  <details id="s6">
+    <summary><span class="sn">6</span><span class="st">取证清单</span></summary>
+    <div class="dbody">
+
+      <h4>5.1 一级信源直查</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源</th><th scope="col">层级</th><th scope="col">方式</th><th scope="col">结果</th><th scope="col">读到的关键信息</th></tr></thead>
+          <tbody>
+            <tr class="hl"><td class="u">api/models/moonshotai/Kimi-K3</td><td><span class="lv t1">T1</span></td><td class="n">API 直查</td><td><span class="yes">成功</span></td><td>downloads 99,214（连续第三天不变）、likes 8,654（昨日 8,082）</td></tr>
+            <tr><td class="u">moonshotai/Kimi-K3/raw/main/LICENSE</td><td><span class="lv t1">T1</span></td><td class="n">直接读取</td><td><span class="yes">成功</span></td><td>LICENSE 全文，条款与此前报道一致</td></tr>
+            <tr class="hl"><td class="u">huggingface.co/unsloth/Kimi-K3-GGUF</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>1-bit 至 8-bit 全系列量化，UD-IQ1_S 594GB</td></tr>
+            <tr><td class="u">github.com/MoonshotAI（组织页）</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>43 个仓库，MoonEP/AgentEnv/FlashKDA 均在列</td></tr>
+            <tr class="hl"><td class="u">docs.sglang.io/cookbook/autoregressive/Moonshotai/Kimi-K3</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>8 平台部署矩阵，命令面板标"Final Verification In Progress"</td></tr>
+            <tr><td class="u">recipes.vllm.ai/moonshotai/Kimi-K3</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>页面标注 Updated 2026-07-29，硬件门槛未变</td></tr>
+            <tr><td class="u">artificialanalysis.ai/models/kimi-k3</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>Intelligence Index 57、Active Params 104B、Released July 16 2026</td></tr>
+            <tr><td class="u">qwen.ai/research、huggingface.co/Qwen、huggingface.co/Qwen/papers、modelscope.cn（qwen 组织页）、github.com/QwenLM</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>均无新条目/新模型，详见正文第 3 段</td></tr>
+            <tr><td class="u">huggingface.co/deepseek-ai、zai-org、MiniMaxAI</td><td><span class="lv t1">T1</span></td><td class="n">渲染抓取</td><td><span class="yes">成功</span></td><td>均无今日够格的新发布，用于第三家排除判断</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>5.2 网络搜索补充</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源</th><th scope="col">日期</th><th scope="col">命中内容</th><th scope="col">交叉验证</th></tr></thead>
+          <tbody>
+            <tr><td class="u">cryptobriefing.com、startuphub.ai</td><td class="n">07-28/07-29</td><td>SOXX 单周跌 10%、跌入熊市；韩股联动下跌</td><td><span class="yes">是</span>（与 investing.com 历史价格一致）</td></tr>
+            <tr><td class="u">Reuters（经多家媒体转载）</td><td class="n">07-27</td><td>中国商务部"AI 霸权主义"声明摘录</td><td>部分是（多家转引同一声明，未见商务部官网原文）</td></tr>
+            <tr><td class="u">MLQ.ai（转引 NYT、Anthropic 博客）</td><td class="n">07-25/07-26/07-28</td><td>特朗普政府"逐案审查"倾向；Anthropic 官方立场声明</td><td><span class="yes">是</span>（附原始信源链接，可溯源）</td></tr>
+            <tr><td class="u">digitalapplied.com</td><td class="n">07-22</td><td>Qwen"四连闭源旗舰"时间线整理</td><td>部分是（基于其引用报道，本篇未逐一回查原文）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>5.3 该查未查 / 抓取失败</h4>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">来源 / 对象</th><th scope="col">层级</th><th scope="col">结果或原因</th></tr></thead>
+          <tbody>
+            <tr><td class="u">SGLang 官方支持文章（vLLM 同等规格独立发布）</td><td><span class="lv t1">T1</span></td><td>未查到，目前只有 cookbook 页面</td></tr>
+            <tr><td class="u">中国商务部官网声明原文</td><td><span class="lv t1">T1</span></td><td>未查，仅有媒体转引</td></tr>
+            <tr><td class="u">白宫 / 商务部 Entity List 正式文件</td><td><span class="lv t1">T1</span></td><td>未查，据报道截至目前尚无正式文件</td></tr>
+            <tr><td class="u">twitter.com/Kimi_Moonshot、Qwen 官方 X</td><td><span class="lv t1">T1</span></td><td>未查（平台限制，见 sources.md）</td></tr>
+            <tr><td class="u">HF 下载计数三天未变是否为缓存问题</td><td><span class="lv t1">T1</span></td><td>未能验证，需明天换渲染页面交叉核实</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="sum">层级说明：T1 厂商官方页面与模型仓库（判定"是否已开源"只认这一层）· T2 推理框架等生态适配信号 · T3 媒体与社区（只作线索）。</p>
+      <a class="totop" href="#top">回到顶部 ↑</a>
+    </div>
+  </details>
+
+  <!-- ===== 延伸阅读 ===== -->
+  <details id="s7">
+    <summary><span class="sn">＋</span><span class="st">延伸阅读</span></summary>
+    <div class="dbody">
+      <p class="sum">今日筛选，供参考不代表本项目结论。</p>
+      <ul class="readlist">
+        <li>
+          <a href="https://www.cnbc.com/2026/07/28/chip-stocks-head-for-one-of-their-worst-months-ever-is-it-the-end.html" target="_blank" rel="noopener">Chip stocks head for one of their worst months ever</a>
+          <p>费城半导体指数本月跌超 22%，历史第六差月份。</p>
+        </li>
+        <li>
+          <a href="https://cryptobriefing.com/ai-hardware-stocks-decline-china-competition/" target="_blank" rel="noopener">AI hardware stocks tumble as China's Kimi K3 reignites competition fears</a>
+          <p>把这轮抛售与 2025 年 1 月 DeepSeek R1 引发的抛售相类比。</p>
+        </li>
+        <li>
+          <a href="https://mlq.ai/news/trump-team-reportedly-leans-toward-case-by-case-curbs-on-chinese-open-weight-ai/" target="_blank" rel="noopener">Trump Team Reportedly Leans Toward Case-by-Case Curbs on Chinese Open-Weight AI</a>
+          <p>梳理美方现有法律工具（Entity List、ICTS 项目）分别能做什么、不能做什么。</p>
+        </li>
+        <li>
+          <a href="https://mlq.ai/news/anthropic-rejects-open-weight-ai-ban-but-declines-industry-letter/" target="_blank" rel="noopener">Anthropic Rejects Open-Weight AI Ban but Declines Industry Letter</a>
+          <p>Anthropic 与开放权重支持联盟的分歧点说得很清楚。</p>
+        </li>
+        <li>
+          <a href="https://www.digitalapplied.com/blog/qwen-closed-flagship-pivot-open-weight-retreat-2026" target="_blank" rel="noopener">Qwen's Closed-Flagship Pivot: The Open-Weight Retreat</a>
+          <p>把 WAIC 一周三个闭源旗舰发布拼成一条策略线索，用表格量化"四连闭源"。</p>
+        </li>
+        <li>
+          <a href="https://huggingface.co/posts/danielhanchen/221085064284176" target="_blank" rel="noopener">Kimi K3 can now be run locally</a>
+          <p>1-bit 量化到 594GB 的技术说明原帖。</p>
+        </li>
+      </ul>
+    </div>
+  </details>
+
+</div>
+
+<script>
+  function openTarget(){
+    var el = location.hash ? document.querySelector(location.hash) : null;
+    if (el && el.tagName === 'DETAILS') el.open = true;
+  }
+  window.addEventListener('hashchange', openTarget);
+  openTarget();
+</script>
+</body>
+</html>

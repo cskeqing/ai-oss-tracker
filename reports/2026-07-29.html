@@ -169,8 +169,8 @@
   </div>
 
   <div class="lead">
-    <h2>Kimi K3 技术报告全文与三项训练基建 <span class="mark">已开源</span>。</h2>
-    <p>47 页技术报告全文公开，MoonEP、AgentEnv 随本次一并开源；vLLM 官方支持文章同步发布，DSpark 投机解码把速度从 118 提到 370 tok/s。Qwen3.8 今日仍无仓库无日期。</p>
+    <h2>Kimi K3 训练基建三件套集齐 <span class="mark">已开源</span>。</h2>
+    <p>MoonEP、AgentEnv 随技术报告全文一并开源，FlashKDA 此前已开源；vLLM 正式支持文章同步发布，单用户速度提到 370 tok/s。国产芯适配两天内从海光一家扩张到三家。</p>
   </div>
 
   <ul class="brief">
@@ -179,7 +179,7 @@
       <div class="no">01</div>
       <div>
         <div class="hd"><h3>Kimi</h3><span class="pill open">已开源</span></div>
-        <p class="body"><strong>技术报告全文 + MoonEP/AgentEnv 训练基建今天正式开源</strong>，vLLM 官方支持文章同步发布（DSpark 投机解码 118→370 tok/s）。华为昇腾、摩尔线程跟进适配，国产芯生态扩展到三家。18 家美国公司权重开源当晚就部署商用，跟美国政府游说封锁形成反差。</p>
+        <p class="body"><strong>47 页技术报告首次交代 KDA/Gated MLA 3:1 混合与稳定训练细节</strong>，MoonEP、AgentEnv 随本次一并开源，意味着外部团队现在具备复现训练流程的路径，不只是能调用模型。vLLM 正式支持把速度从 118 提到 370 tok/s（3.14 倍），国产芯适配两天内扩张到昇腾、摩尔线程三家；18 家美国公司权重开源当晚就接入商用，跟白宫内部讨论是否禁用的谨慎态度形成反差。</p>
       </div>
     </li>
 
@@ -187,7 +187,7 @@
       <div class="no">02</div>
       <div>
         <div class="hd"><h3>Qwen</h3><span class="pill promised">已承诺</span></div>
-        <p class="body">官方口径没有变化，仍是 07-19 那条 X 帖子的 <span class="k">"soon"</span>。今日五个一手信源（研究页、HF、ModelScope、论文列表、GitHub）复查全部空手，没有 Qwen3.8 踪迹。</p>
+        <p class="body">官方口径没有变化，仍是 07-19 那条 X 帖子的 <span class="k">"soon"</span>，距首次承诺已满 10 天，可信度持续走低。今日五个一手信源（研究页、HF、ModelScope、论文列表、GitHub）复查全部空手，没有 Qwen3.8 踪迹。</p>
       </div>
     </li>
 
@@ -211,7 +211,7 @@
       <div class="no">05</div>
       <div>
         <div class="hd"><h3>态势判断</h3></div>
-        <p class="body">国产芯适配两天内从 1 家变 3 家，速度在加快；vLLM 隔 5 天从预览到正式支持，SGLang 卡在同一阶段值得关注；Qwen3.8 连续两天五个信源全部空手，短期落地概率在下降。</p>
+        <p class="body">国产芯适配两天内从 1 家变 3 家，速度在加快；vLLM 隔 5 天从预览到正式支持，SGLang 卡在同一阶段值得关注；Qwen3.8 连续两天五个信源全部空手，短期落地概率在下降；阿里云同时上架 K3 与 Qwen 的 API，Qwen 迟迟不开源的机会成本可能上升。</p>
       </div>
     </li>
 
@@ -273,7 +273,7 @@
   <details id="s3">
     <summary><span class="sn">3</span><span class="st">Qwen</span><span class="pill promised">已承诺</span></summary>
     <div class="dbody">
-      <p>官方口径没有变化，仍是 07-19 那条 X 帖子：<span class="k">"Qwen3.8 is launching and going open-weight soon!"</span>——只说"soon"，无日期无仓库。</p>
+      <p>官方口径没有变化，仍是 07-19 那条 X 帖子：<span class="k">"Qwen3.8 is launching and going open-weight soon!"</span>——只说"soon"，无日期无仓库。距首次承诺已满 10 天。</p>
 
       <ul class="facts">
         <li><span class="t">Qwen 官方研究页最新仍是 07-21 的 Qwen-Image-3.0（Release 标签）；HF 组织页最新更新是 7 天前的 Qwen3-ASR 系列，模型总数 458。</span>
@@ -311,6 +311,7 @@
         <li><span class="t"><strong>国产芯适配速度在加快</strong>：07-28 只有海光 DCU 一家完成适配，07-29 新增华为昇腾、摩尔线程两家，两天内从 1 家变 3 家。如果这个速度维持，未来几天可能看到更多厂商跟进（本判断基于 07-28、07-29 两天记录的适配公告数量，不代表官方发布节奏）。</span></li>
         <li><span class="t"><strong>SGLang 官方支持文章值得关注是否近期跟进</strong>：vLLM 从 07-22 预览文章到 07-27 正式支持文章隔了 5 天；SGLang 目前仍卡在"Final Verification In Progress"阶段，参照 vLLM 的节奏，如果流程类似，可能在近几天内发布（本判断基于 vLLM 单一案例的时间差，样本量小，仅供参考）。</span></li>
         <li><span class="t"><strong>Qwen3.8 短期落地概率在下降</strong>：连续两天（07-28、07-29）复查五个一手信源（研究页、HF、ModelScope、论文列表、GitHub）全部空手，没有任何新增动作。如果这个"零动作"状态继续持续，说明官方 07-19"soon"表态距离真正落地可能还有一段距离，不是"随时可能开源"（本判断基于两天的复查记录，样本量有限，需持续观察）。</span></li>
+        <li><span class="t"><strong>Qwen 不开源的机会成本可能在上升</strong>：阿里云 Bailian 与通义千问 API 平台已同时上架 K3 模型服务，即 Qwen 的运营方阿里云在卖竞争对手 Kimi 的模型。如果这种"生态兼容优先于品牌排他"的姿态持续，加上 Qwen3.8 承诺迟迟未兑现，对 Qwen 团队而言尽快给出明确日期的动力可能增加（本判断基于单一事实推断，属于间接信号，非直接证据）。</span></li>
       </ul>
     </div>
   </details>
